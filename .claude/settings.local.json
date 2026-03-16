@@ -6,7 +6,11 @@
       "mcp__plugin_chrome-devtools-mcp_chrome-devtools__get_console_message",
       "mcp__plugin_chrome-devtools-mcp_chrome-devtools__list_network_requests",
       "mcp__plugin_chrome-devtools-mcp_chrome-devtools__navigate_page",
-      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__take_screenshot"
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__take_screenshot",
+      "WebFetch(domain:www.16personalities.com)",
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "mcp__plugin_playwright_playwright__browser_take_screenshot",
+      "mcp__plugin_playwright_playwright__browser_click"
     ]
   }
 }

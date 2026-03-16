@@ -1,9 +1,8 @@
 import { analyzePersonalColor, getRecommendedColors, getAvoidColors } from "../utils/analyzer";
 import { colorData } from "../data/colorData";
-import { LangToggle } from "./LangToggle";
 import { translations } from "../i18n/translations";
 
-export const Results = ({ likedColors, onRetry, lang, onToggleLang }) => {
+export const Results = ({ likedColors, onRetry, lang }) => {
   const t = translations[lang];
   const personalColorType = analyzePersonalColor(likedColors);
   const recommendedColors = getRecommendedColors(personalColorType, colorData);
@@ -27,13 +26,8 @@ export const Results = ({ likedColors, onRetry, lang, onToggleLang }) => {
   }
 
   return (
-    <div className="w-full h-screen overflow-auto bg-gradient-to-br from-gray-50 to-gray-100 p-6">
+    <div className="w-full min-h-screen overflow-auto bg-gradient-to-br from-gray-50 to-gray-100 p-6 pt-20">
       <div className="max-w-2xl mx-auto">
-        {/* Lang toggle */}
-        <div className="flex justify-end mb-4">
-          <LangToggle lang={lang} onToggle={onToggleLang} />
-        </div>
-
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold mb-2">{t.yourPersonalColor}</h1>
