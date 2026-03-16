@@ -3,15 +3,19 @@ import { colorData } from "../data/colorData";
 import { ColorCard } from "./ColorCard";
 import { SwipeButtons } from "./SwipeButtons";
 import { ProgressBar } from "./ProgressBar";
+import { LangToggle } from "./LangToggle";
+import { translations } from "../i18n/translations";
 
 const allColors = Object.values(colorData).flat();
 
-export const ColorTest = ({ onComplete, onHome }) => {
+export const ColorTest = ({ onComplete, onHome, lang, onToggleLang }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [likedColors, setLikedColors] = useState([]);
   const [dislikedColors, setDislikedColors] = useState([]);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [shuffledColors, setShuffledColors] = useState([]);
+
+  const t = translations[lang];
 
   // Shuffle colors on mount
   useEffect(() => {
@@ -37,7 +41,6 @@ export const ColorTest = ({ onComplete, onHome }) => {
         setCurrentIndex(currentIndex + 1);
         setIsTransitioning(false);
       } else {
-        // Test complete
         onComplete(liked ? [...likedColors, currentColor] : likedColors);
       }
     }, 300);
@@ -57,7 +60,7 @@ export const ColorTest = ({ onComplete, onHome }) => {
   if (!currentColor) {
     return (
       <div className="w-full h-screen flex items-center justify-center bg-gray-100">
-        <p className="text-xl">Loading colors...</p>
+        <p className="text-xl">{t.loading}</p>
       </div>
     );
   }
@@ -76,16 +79,23 @@ export const ColorTest = ({ onComplete, onHome }) => {
         <p className="text-sm">
           {currentIndex + 1} / {shuffledColors.length}
         </p>
-        <p className="text-sm">Liked: {likedColors.length}</p>
+        <p className="text-sm">{t.liked}: {likedColors.length}</p>
       </div>
 
-      {/* Home button */}
-      <button
-        onClick={onHome}
-        className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm text-white text-sm px-3 py-1.5 rounded-full shadow hover:bg-white/30 transition-all active:scale-95"
-      >
-        ← 처음으로
-      </button>
+      {/* Top-right: lang toggle + home button */}
+      <div className="absolute top-4 right-4 flex items-center gap-2">
+        <LangToggle
+          lang={lang}
+          onToggle={onToggleLang}
+          className="bg-white/20 backdrop-blur-sm text-white hover:bg-white/30"
+        />
+        <button
+          onClick={onHome}
+          className="bg-white/20 backdrop-blur-sm text-white text-sm px-3 py-1.5 rounded-full shadow hover:bg-white/30 transition-all active:scale-95"
+        >
+          {t.homeButton}
+        </button>
+      </div>
 
       {/* Intermediate results button */}
       {currentIndex >= 10 && (
@@ -93,7 +103,7 @@ export const ColorTest = ({ onComplete, onHome }) => {
           onClick={() => onComplete(likedColors)}
           className="absolute bottom-6 right-6 bg-white/90 backdrop-blur-sm text-gray-800 text-sm font-semibold px-4 py-2.5 rounded-full shadow-lg border border-white/50 hover:bg-white transition-all hover:scale-105 active:scale-95"
         >
-          중간 결과 보기 →
+          {t.earlyExit}
         </button>
       )}
     </div>

@@ -1,24 +1,26 @@
 import { analyzePersonalColor, getRecommendedColors, getAvoidColors } from "../utils/analyzer";
 import { colorData } from "../data/colorData";
+import { LangToggle } from "./LangToggle";
+import { translations } from "../i18n/translations";
 
-export const Results = ({ likedColors, onRetry }) => {
+export const Results = ({ likedColors, onRetry, lang, onToggleLang }) => {
+  const t = translations[lang];
   const personalColorType = analyzePersonalColor(likedColors);
   const recommendedColors = getRecommendedColors(personalColorType, colorData);
   const avoidColors = getAvoidColors(personalColorType, colorData);
 
-  // Select top 6 from each
   const topRecommended = recommendedColors.slice(0, 6);
   const topAvoid = avoidColors.slice(0, 6);
 
   if (!personalColorType) {
     return (
       <div className="w-full h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 gap-4">
-        <p className="text-xl font-semibold text-gray-700">좋아요한 색이 없어서 분석할 수 없어요.</p>
+        <p className="text-xl font-semibold text-gray-700">{t.noLikes}</p>
         <button
           onClick={onRetry}
           className="bg-blue-500 hover:bg-blue-600 text-white font-bold px-6 py-3 rounded-lg transition-colors"
         >
-          다시 시작
+          {t.tryAgain}
         </button>
       </div>
     );
@@ -27,11 +29,20 @@ export const Results = ({ likedColors, onRetry }) => {
   return (
     <div className="w-full h-screen overflow-auto bg-gradient-to-br from-gray-50 to-gray-100 p-6">
       <div className="max-w-2xl mx-auto">
+        {/* Lang toggle */}
+        <div className="flex justify-end mb-4">
+          <LangToggle
+            lang={lang}
+            onToggle={onToggleLang}
+            className="bg-white shadow text-gray-700 hover:bg-gray-100"
+          />
+        </div>
+
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-2">Your Personal Color</h1>
+          <h1 className="text-4xl font-bold mb-2">{t.yourPersonalColor}</h1>
           <div className="inline-block bg-white rounded-lg shadow-lg p-6">
-            <p className="text-gray-600 text-sm mb-2">Your Color Type</p>
+            <p className="text-gray-600 text-sm mb-2">{t.colorType}</p>
             <p className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
               {personalColorType}
             </p>
@@ -40,7 +51,7 @@ export const Results = ({ likedColors, onRetry }) => {
 
         {/* Liked Colors */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <h2 className="text-xl font-bold mb-4">Colors You Liked ({likedColors.length})</h2>
+          <h2 className="text-xl font-bold mb-4">{t.colorsYouLiked} ({likedColors.length})</h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {likedColors.map((color, i) => (
               <div key={i} className="flex flex-col items-center">
@@ -60,7 +71,7 @@ export const Results = ({ likedColors, onRetry }) => {
         {/* Recommended Colors */}
         {topRecommended.length > 0 && (
           <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h2 className="text-xl font-bold mb-4">Recommended Colors for You</h2>
+            <h2 className="text-xl font-bold mb-4">{t.recommendedColors}</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {topRecommended.map((color, i) => (
                 <div key={i} className="flex flex-col items-center">
@@ -81,7 +92,7 @@ export const Results = ({ likedColors, onRetry }) => {
         {/* Colors to Avoid */}
         {topAvoid.length > 0 && (
           <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h2 className="text-xl font-bold mb-4">Colors to Avoid</h2>
+            <h2 className="text-xl font-bold mb-4">{t.colorsToAvoid}</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {topAvoid.map((color, i) => (
                 <div key={i} className="flex flex-col items-center opacity-60">
@@ -101,44 +112,36 @@ export const Results = ({ likedColors, onRetry }) => {
 
         {/* Analysis Info */}
         <div className="bg-blue-50 rounded-lg p-6 mb-6 border-l-4 border-blue-500">
-          <h3 className="font-bold mb-2">About Your Color Type</h3>
-          <p className="text-sm text-gray-700 mb-3">
-            Based on your color preferences, your dominant characteristics are:
-          </p>
+          <h3 className="font-bold mb-2">{t.aboutColorType}</h3>
+          <p className="text-sm text-gray-700 mb-3">{t.basedOn}</p>
           <ul className="text-sm text-gray-700 space-y-1">
             {personalColorType.includes("Spring") && (
               <>
-                <li>✓ Warm undertone (Spring/Autumn family)</li>
-                <li>✓ Preference for bright, warm colors</li>
+                <li>✓ {t.warmUndertone}</li>
+                <li>✓ {t.springTrait}</li>
               </>
             )}
             {personalColorType.includes("Summer") && (
               <>
-                <li>✓ Cool undertone (Summer/Winter family)</li>
-                <li>✓ Preference for soft, cool colors</li>
+                <li>✓ {t.coolUndertone}</li>
+                <li>✓ {t.summerTrait}</li>
               </>
             )}
             {personalColorType.includes("Autumn") && (
               <>
-                <li>✓ Warm undertone (Spring/Autumn family)</li>
-                <li>✓ Preference for deep, warm colors</li>
+                <li>✓ {t.warmUndertone}</li>
+                <li>✓ {t.autumnTrait}</li>
               </>
             )}
             {personalColorType.includes("Winter") && (
               <>
-                <li>✓ Cool undertone (Summer/Winter family)</li>
-                <li>✓ Preference for deep, cool colors</li>
+                <li>✓ {t.coolUndertone}</li>
+                <li>✓ {t.winterTrait}</li>
               </>
             )}
-            {personalColorType.includes("Light") && (
-              <li>✓ High lightness preference</li>
-            )}
-            {personalColorType.includes("Bright") && (
-              <li>✓ High saturation preference</li>
-            )}
-            {personalColorType.includes("Muted") && (
-              <li>✓ Lower saturation preference</li>
-            )}
+            {personalColorType.includes("Light") && <li>✓ {t.lightTrait}</li>}
+            {personalColorType.includes("Bright") && <li>✓ {t.brightTrait}</li>}
+            {personalColorType.includes("Muted") && <li>✓ {t.mutedTrait}</li>}
           </ul>
         </div>
 
@@ -148,17 +151,16 @@ export const Results = ({ likedColors, onRetry }) => {
             onClick={onRetry}
             className="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded-lg transition-colors"
           >
-            Try Again
+            {t.tryAgain}
           </button>
           <button
             onClick={() => {
-              const text = `My Personal Color is ${personalColorType}! 🎨`;
-              navigator.clipboard.writeText(text);
-              alert("Copied to clipboard!");
+              navigator.clipboard.writeText(t.shareText(personalColorType));
+              alert(t.copied);
             }}
             className="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 rounded-lg transition-colors"
           >
-            Share Result
+            {t.shareResult}
           </button>
         </div>
       </div>

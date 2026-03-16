@@ -15,12 +15,13 @@ const PREVIEW_LIKED_COLORS = [
 
 function App() {
   const isPreview = new URLSearchParams(window.location.search).get("preview") === "results";
-  const [screen, setScreen] = useState(isPreview ? "results" : "home"); // 'home', 'test', 'results'
+  const [screen, setScreen] = useState(isPreview ? "results" : "home");
   const [likedColors, setLikedColors] = useState(isPreview ? PREVIEW_LIKED_COLORS : []);
+  const [lang, setLang] = useState("ko");
 
-  const handleStartTest = () => {
-    setScreen("test");
-  };
+  const handleToggleLang = () => setLang((l) => (l === "ko" ? "en" : "ko"));
+
+  const handleStartTest = () => setScreen("test");
 
   const handleTestComplete = (colors) => {
     setLikedColors(colors);
@@ -39,9 +40,25 @@ function App() {
 
   return (
     <div className="w-full h-screen">
-      {screen === "home" && <Home onStart={handleStartTest} />}
-      {screen === "test" && <ColorTest onComplete={handleTestComplete} onHome={handleGoHome} />}
-      {screen === "results" && <Results likedColors={likedColors} onRetry={handleRetry} />}
+      {screen === "home" && (
+        <Home onStart={handleStartTest} lang={lang} onToggleLang={handleToggleLang} />
+      )}
+      {screen === "test" && (
+        <ColorTest
+          onComplete={handleTestComplete}
+          onHome={handleGoHome}
+          lang={lang}
+          onToggleLang={handleToggleLang}
+        />
+      )}
+      {screen === "results" && (
+        <Results
+          likedColors={likedColors}
+          onRetry={handleRetry}
+          lang={lang}
+          onToggleLang={handleToggleLang}
+        />
+      )}
     </div>
   );
 }
