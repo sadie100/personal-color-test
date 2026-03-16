@@ -32,10 +32,15 @@ function App() {
     setScreen("test");
   };
 
+  const handleGoHome = () => {
+    setLikedColors([]);
+    setScreen("home");
+  };
+
   return (
     <div className="w-full h-screen">
       {screen === "home" && <Home onStart={handleStartTest} />}
-      {screen === "test" && <ColorTest onComplete={handleTestComplete} />}
+      {screen === "test" && <ColorTest onComplete={handleTestComplete} onHome={handleGoHome} />}
       {screen === "results" && <Results likedColors={likedColors} onRetry={handleRetry} />}
     </div>
   );

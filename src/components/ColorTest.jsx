@@ -6,7 +6,7 @@ import { ProgressBar } from "./ProgressBar";
 
 const allColors = Object.values(colorData).flat();
 
-export const ColorTest = ({ onComplete }) => {
+export const ColorTest = ({ onComplete, onHome }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [likedColors, setLikedColors] = useState([]);
   const [dislikedColors, setDislikedColors] = useState([]);
@@ -43,35 +43,16 @@ export const ColorTest = ({ onComplete }) => {
     }, 300);
   }, [currentIndex, shuffledColors.length, likedColors, dislikedColors, isTransitioning, currentColor, onComplete]);
 
-  const handleSkip = useCallback(() => {
-    if (isTransitioning) return;
-
-    setIsTransitioning(true);
-
-    setTimeout(() => {
-      if (currentIndex < shuffledColors.length - 1) {
-        setCurrentIndex(currentIndex + 1);
-        setIsTransitioning(false);
-      } else {
-        onComplete(likedColors);
-      }
-    }, 300);
-  }, [currentIndex, shuffledColors.length, isTransitioning, likedColors, onComplete]);
-
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyPress = (e) => {
       if (e.key === "ArrowLeft") handleNext(false);
       if (e.key === "ArrowRight") handleNext(true);
-      if (e.key === " ") {
-        e.preventDefault();
-        handleSkip();
-      }
     };
 
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [handleNext, handleSkip]);
+  }, [handleNext]);
 
   if (!currentColor) {
     return (
@@ -88,8 +69,6 @@ export const ColorTest = ({ onComplete }) => {
       <SwipeButtons
         onDislike={() => handleNext(false)}
         onLike={() => handleNext(true)}
-        onSkip={handleSkip}
-        hasMore={currentIndex < shuffledColors.length - 1}
       />
 
       {/* Top info */}
@@ -99,6 +78,14 @@ export const ColorTest = ({ onComplete }) => {
         </p>
         <p className="text-sm">Liked: {likedColors.length}</p>
       </div>
+
+      {/* Home button */}
+      <button
+        onClick={onHome}
+        className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm text-white text-sm px-3 py-1.5 rounded-full shadow hover:bg-white/30 transition-all active:scale-95"
+      >
+        ← 처음으로
+      </button>
 
       {/* Intermediate results button */}
       {currentIndex >= 10 && (

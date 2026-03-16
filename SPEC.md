@@ -40,16 +40,17 @@ Main quiz screen. Displays colors one at a time for the user to rate.
 - ColorCard: Full-screen background filled with the current color; shows color name and hex value in the bottom-left
 - ProgressBar: Thin bar at the top, fills left-to-right as the user advances
 - Counter (top-left): `{currentIndex + 1} / {total}` and liked count
-- SwipeButtons (bottom-center): Dislike (✕), Skip (⟳), Like (♥)
+- SwipeButtons (bottom-center): Dislike (✕), Like (♥)
 - Early exit button: "중간 결과 보기 →" — appears after 10 colors have been seen
+- Home button (top-right): "← 처음으로" — returns to Home screen, resetting progress
 
 **User Actions**
 | Action | Trigger | Result |
 |--------|---------|--------|
 | Like | Click ♥ or press → | Adds color to liked list, advances to next |
 | Dislike | Click ✕ or press ← | Adds color to disliked list, advances to next |
-| Skip | Click ⟳ or press Space | Advances to next without recording preference |
 | Early exit | Click "중간 결과 보기 →" | Completes test with liked colors so far |
+| Go home | Click "← 처음으로" | Resets all progress, transitions to `home` |
 
 **State**
 - Manages: `currentIndex`, `likedColors[]`, `dislikedColors[]`, `isTransitioning`, `shuffledColors[]`
