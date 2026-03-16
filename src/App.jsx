@@ -19,7 +19,7 @@ function App() {
   const [likedColors, setLikedColors] = useState(isPreview ? PREVIEW_LIKED_COLORS : []);
   const [lang, setLang] = useState("ko");
 
-  const handleToggleLang = () => setLang((l) => (l === "ko" ? "en" : "ko"));
+  const handleToggleLang = (newLang) => setLang(newLang);
 
   const handleStartTest = () => setScreen("test");
 

@@ -144,19 +144,17 @@ Shows the user's diagnosed personal color type and derived color recommendations
 
 All user-facing strings are stored in a centralized translations object at `src/i18n/translations.js`. Keys cover all screens: Home, ColorTest, Results, and season/tone trait descriptions.
 
-### Language Toggle Component
+### Language Select Component
 
-A small `LangToggle` component (`src/components/LangToggle.jsx`) renders the toggle button and is included in all three screens.
+A small `LangToggle` component (`src/components/LangToggle.jsx`) renders a `<select>` dropdown and is included in all three screens.
 
 ```tsx
 // props
-{ lang: 'ko' | 'en', onToggle: () => void }
+{ lang: 'ko' | 'en', onToggle: (newLang: 'ko' | 'en') => void }
 
-// renders: "한국어" when lang='en', "English" when lang='ko'
-// (shows the language you'd switch TO, not the current one)
+// renders a <select> with options: "한국어" (ko), "English" (en)
+// current lang is pre-selected
 ```
-
-Alternatively: displays `KO | EN` with the active language highlighted.
 
 ---
 

@@ -5,16 +5,12 @@ export const Home = ({ onStart, lang, onToggleLang }) => {
   const t = translations[lang];
 
   return (
-    <div className="w-full h-screen bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 flex items-center justify-center p-4">
-      <div className="text-center text-white max-w-md">
-        <div className="flex justify-end mb-4">
-          <LangToggle
-            lang={lang}
-            onToggle={onToggleLang}
-            className="bg-white/20 backdrop-blur-sm text-white hover:bg-white/30"
-          />
-        </div>
+    <div className="relative w-full h-screen bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 flex items-center justify-center p-4">
+      <div className="absolute top-4 right-4">
+        <LangToggle lang={lang} onToggle={onToggleLang} />
+      </div>
 
+      <div className="text-center text-white max-w-md">
         <h1 className="text-5xl font-bold mb-4">{t.title}</h1>
         <p className="text-xl mb-4">{t.subtitle}</p>
 

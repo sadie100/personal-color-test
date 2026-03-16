@@ -82,19 +82,15 @@ export const ColorTest = ({ onComplete, onHome, lang, onToggleLang }) => {
         <p className="text-sm">{t.liked}: {likedColors.length}</p>
       </div>
 
-      {/* Top-right: lang toggle + home button */}
+      {/* Top-right: home button + lang toggle */}
       <div className="absolute top-4 right-4 flex items-center gap-2">
-        <LangToggle
-          lang={lang}
-          onToggle={onToggleLang}
-          className="bg-white/20 backdrop-blur-sm text-white hover:bg-white/30"
-        />
         <button
           onClick={onHome}
-          className="bg-white/20 backdrop-blur-sm text-white text-sm px-3 py-1.5 rounded-full shadow hover:bg-white/30 transition-all active:scale-95"
+          className="bg-white/90 backdrop-blur-sm text-gray-800 text-sm font-semibold px-4 py-2.5 rounded-full shadow-lg border border-white/50 hover:bg-white transition-all hover:scale-105 active:scale-95"
         >
           {t.homeButton}
         </button>
+        <LangToggle lang={lang} onToggle={onToggleLang} />
       </div>
 
       {/* Intermediate results button */}

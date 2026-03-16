@@ -31,11 +31,7 @@ export const Results = ({ likedColors, onRetry, lang, onToggleLang }) => {
       <div className="max-w-2xl mx-auto">
         {/* Lang toggle */}
         <div className="flex justify-end mb-4">
-          <LangToggle
-            lang={lang}
-            onToggle={onToggleLang}
-            className="bg-white shadow text-gray-700 hover:bg-gray-100"
-          />
+          <LangToggle lang={lang} onToggle={onToggleLang} />
         </div>
 
         {/* Header */}
