@@ -99,6 +99,16 @@ export const ColorTest = ({ onComplete }) => {
         </p>
         <p className="text-sm">Liked: {likedColors.length}</p>
       </div>
+
+      {/* Intermediate results button */}
+      {currentIndex >= 10 && (
+        <button
+          onClick={() => onComplete(likedColors)}
+          className="absolute bottom-6 right-6 bg-white/90 backdrop-blur-sm text-gray-800 text-sm font-semibold px-4 py-2.5 rounded-full shadow-lg border border-white/50 hover:bg-white transition-all hover:scale-105 active:scale-95"
+        >
+          중간 결과 보기 →
+        </button>
+      )}
     </div>
   );
 };

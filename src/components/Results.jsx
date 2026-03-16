@@ -10,6 +10,20 @@ export const Results = ({ likedColors, onRetry }) => {
   const topRecommended = recommendedColors.slice(0, 6);
   const topAvoid = avoidColors.slice(0, 6);
 
+  if (!personalColorType) {
+    return (
+      <div className="w-full h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 gap-4">
+        <p className="text-xl font-semibold text-gray-700">좋아요한 색이 없어서 분석할 수 없어요.</p>
+        <button
+          onClick={onRetry}
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold px-6 py-3 rounded-lg transition-colors"
+        >
+          다시 시작
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full h-screen overflow-auto bg-gradient-to-br from-gray-50 to-gray-100 p-6">
       <div className="max-w-2xl mx-auto">
