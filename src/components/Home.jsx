@@ -5,7 +5,7 @@ export const Home = ({ onStart }) => {
         <h1 className="text-5xl font-bold mb-4">Personal Color Test</h1>
         <p className="text-xl mb-4">Discover your seasonal color palette</p>
 
-        <div className="bg-white bg-opacity-20 rounded-lg p-6 mb-8 backdrop-blur-md">
+        <div className="bg-white/20 rounded-lg p-6 mb-8 backdrop-blur-md">
           <p className="text-sm mb-4">
             Test your preferences across a range of colors and discover your personal color type among the 12 seasons.
           </p>
