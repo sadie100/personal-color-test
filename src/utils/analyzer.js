@@ -1,4 +1,24 @@
-import { seasonTones } from "../data/colorData";
+export const TONE_THRESHOLDS = {
+  turbidityMuted: 55,
+  light: 75,
+  saturationBright: 65,
+};
+
+export const calculateChromaFromHsl = ({ s, l }) => {
+  const sNorm = s / 100;
+  const lNorm = l / 100;
+  return (1 - Math.abs(2 * lNorm - 1)) * sNorm;
+};
+
+export const calculateTurbidityFromHsl = (hsl) => {
+  const chroma = calculateChromaFromHsl(hsl);
+  return (1 - chroma) * 100;
+};
+
+export const calculateAverageTurbidity = (colors) => {
+  if (colors.length === 0) return 0;
+  return colors.reduce((sum, color) => sum + calculateTurbidityFromHsl(color.hsl), 0) / colors.length;
+};
 
 export const analyzePersonalColor = (likedColors) => {
   if (likedColors.length === 0) {
@@ -8,6 +28,7 @@ export const analyzePersonalColor = (likedColors) => {
   // Calculate average lightness and saturation
   const avgLightness = likedColors.reduce((sum, c) => sum + c.hsl.l, 0) / likedColors.length;
   const avgSaturation = likedColors.reduce((sum, c) => sum + c.hsl.s, 0) / likedColors.length;
+  const avgTurbidity = calculateAverageTurbidity(likedColors);
 
   // Calculate average hue (accounting for circular nature)
   const hueValues = likedColors.map(c => c.hsl.h);
@@ -26,9 +47,11 @@ export const analyzePersonalColor = (likedColors) => {
 
   // Determine tone (Light/Bright/Muted)
   let tone;
-  if (avgLightness > 75) {
+  if (avgTurbidity >= TONE_THRESHOLDS.turbidityMuted) {
+    tone = "Muted";
+  } else if (avgLightness >= TONE_THRESHOLDS.light) {
     tone = "Light";
-  } else if (avgSaturation > 65) {
+  } else if (avgSaturation >= TONE_THRESHOLDS.saturationBright) {
     tone = "Bright";
   } else {
     tone = "Muted";
