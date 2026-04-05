@@ -25,15 +25,23 @@ export const translations = {
     // Results
     yourPersonalColor: "당신의 퍼스널 컬러",
     colorType: "컬러 타입",
+    bestColor: "Best Color",
+    secondBestColor: "Second Best",
+    thirdBestColor: "Third Best",
+    worstColor: "Worst Color",
     colorsYouLiked: "좋아한 색상",
     recommendedColors: "추천 색상",
     colorsToAvoid: "피해야 할 색상",
     aboutColorType: "내 컬러 타입 분석",
-    basedOn: "색상 선호도를 분석한 결과, 주요 특성은 다음과 같습니다:",
+    basedOn: "좋아요/싫어요 패턴을 분석한 결과, 가장 잘 맞는 컬러 특성은 다음과 같습니다:",
     tryAgain: "다시 시작",
     shareResult: "결과 공유",
     copied: "클립보드에 복사되었습니다!",
-    shareText: (type) => `내 퍼스널 컬러는 ${type}입니다! 🎨`,
+    shareText: (bestType, secondaryTypes = [], worstType = null) => {
+      const secondaryText = secondaryTypes.length > 0 ? ` 차순위 후보는 ${secondaryTypes.join(", ")}입니다.` : "";
+      const worstText = worstType ? ` 가장 피하면 좋은 컬러는 ${worstType}입니다.` : "";
+      return `내 베스트 퍼스널 컬러는 ${bestType}입니다!${secondaryText}${worstText} 🎨`;
+    },
     noLikes: "좋아요한 색이 없어서 분석할 수 없어요.",
     // Traits
     warmUndertone: "웜톤 (봄/가을 계열)",
@@ -108,15 +116,24 @@ export const translations = {
     // Results
     yourPersonalColor: "Your Personal Color",
     colorType: "Your Color Type",
+    bestColor: "Best Color",
+    secondBestColor: "Second Best",
+    thirdBestColor: "Third Best",
+    worstColor: "Worst Color",
     colorsYouLiked: "Colors You Liked",
     recommendedColors: "Recommended Colors for You",
     colorsToAvoid: "Colors to Avoid",
     aboutColorType: "About Your Color Type",
-    basedOn: "Based on your color preferences, your dominant characteristics are:",
+    basedOn: "Based on your like/dislike patterns, these are your strongest color characteristics:",
     tryAgain: "Try Again",
     shareResult: "Share Result",
     copied: "Copied to clipboard!",
-    shareText: (type) => `My Personal Color is ${type}! 🎨`,
+    shareText: (bestType, secondaryTypes = [], worstType = null) => {
+      const secondaryText =
+        secondaryTypes.length > 0 ? ` Runner-up matches: ${secondaryTypes.join(", ")}.` : "";
+      const worstText = worstType ? ` The least flattering category is ${worstType}.` : "";
+      return `My best personal color is ${bestType}!${secondaryText}${worstText} 🎨`;
+    },
     noLikes: "No liked colors to analyze.",
     // Traits
     warmUndertone: "Warm undertone (Spring/Autumn family)",

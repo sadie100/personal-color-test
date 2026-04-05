@@ -6,22 +6,18 @@ import { ProgressBar } from "./ProgressBar";
 import { LangToggle } from "./LangToggle";
 import { translations } from "../i18n/translations";
 
-const allColors = Object.values(colorData).flat();
+const allColors = Object.entries(colorData).flatMap(([seasonTone, colors]) =>
+  colors.map((color) => ({ ...color, seasonTone }))
+);
 
 export const ColorTest = ({ onComplete, onHome, lang, onToggleLang }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [likedColors, setLikedColors] = useState([]);
   const [dislikedColors, setDislikedColors] = useState([]);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [shuffledColors, setShuffledColors] = useState([]);
+  const [shuffledColors] = useState(() => [...allColors].sort(() => Math.random() - 0.5));
 
   const t = translations[lang];
-
-  // Shuffle colors on mount
-  useEffect(() => {
-    const shuffled = [...allColors].sort(() => Math.random() - 0.5);
-    setShuffledColors(shuffled);
-  }, []);
 
   const currentColor = shuffledColors[currentIndex];
 
@@ -30,10 +26,13 @@ export const ColorTest = ({ onComplete, onHome, lang, onToggleLang }) => {
 
     setIsTransitioning(true);
 
+    const nextLikedColors = liked ? [...likedColors, currentColor] : likedColors;
+    const nextDislikedColors = liked ? dislikedColors : [...dislikedColors, currentColor];
+
     if (liked) {
-      setLikedColors([...likedColors, currentColor]);
+      setLikedColors(nextLikedColors);
     } else {
-      setDislikedColors([...dislikedColors, currentColor]);
+      setDislikedColors(nextDislikedColors);
     }
 
     setTimeout(() => {
@@ -41,7 +40,10 @@ export const ColorTest = ({ onComplete, onHome, lang, onToggleLang }) => {
         setCurrentIndex(currentIndex + 1);
         setIsTransitioning(false);
       } else {
-        onComplete(liked ? [...likedColors, currentColor] : likedColors);
+        onComplete({
+          likedColors: nextLikedColors,
+          dislikedColors: nextDislikedColors,
+        });
       }
     }, 300);
   }, [currentIndex, shuffledColors.length, likedColors, dislikedColors, isTransitioning, currentColor, onComplete]);
@@ -96,7 +98,12 @@ export const ColorTest = ({ onComplete, onHome, lang, onToggleLang }) => {
       {/* Intermediate results button */}
       {currentIndex >= 10 && (
         <button
-          onClick={() => onComplete(likedColors)}
+          onClick={() =>
+            onComplete({
+              likedColors,
+              dislikedColors,
+            })
+          }
           className="absolute bottom-6 right-6 bg-white/90 backdrop-blur-sm text-gray-800 text-sm font-semibold px-4 py-2.5 rounded-full shadow-lg border border-white/50 hover:bg-white transition-all hover:scale-105 active:scale-95"
         >
           {t.earlyExit}

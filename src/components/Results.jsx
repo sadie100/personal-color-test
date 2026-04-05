@@ -1,15 +1,53 @@
-import { analyzePersonalColor, getRecommendedColors, getAvoidColors } from "../utils/analyzer";
+import {
+  analyzePersonalColor,
+  getAvoidColors,
+  getBestResults,
+  getRecommendedColors,
+  getWorstResult,
+} from "../utils/analyzer";
 import { colorData } from "../data/colorData";
 import { translations } from "../i18n/translations";
 
-export const Results = ({ likedColors, onRetry, lang }) => {
+export const Results = ({ likedColors, dislikedColors = [], onRetry, lang }) => {
   const t = translations[lang];
+  const bestResults = getBestResults(likedColors);
   const personalColorType = analyzePersonalColor(likedColors);
+  const worstColorType = getWorstResult(dislikedColors, personalColorType);
   const recommendedColors = getRecommendedColors(personalColorType, colorData);
-  const avoidColors = getAvoidColors(personalColorType, colorData);
+  const avoidColors = getAvoidColors(worstColorType, colorData);
 
   const topRecommended = recommendedColors.slice(0, 6);
   const topAvoid = avoidColors.slice(0, 6);
+  const secondaryBestResults = bestResults.slice(1, 3);
+  const rankedResultCards = [
+    secondaryBestResults[0]
+      ? {
+          label: t.secondBestColor,
+          value: secondaryBestResults[0],
+          containerClass: "border-indigo-100 bg-indigo-50/70",
+          labelClass: "text-indigo-600",
+          valueClass: "text-indigo-900",
+        }
+      : null,
+    secondaryBestResults[1]
+      ? {
+          label: t.thirdBestColor,
+          value: secondaryBestResults[1],
+          containerClass: "border-sky-100 bg-sky-50/70",
+          labelClass: "text-sky-600",
+          valueClass: "text-sky-900",
+        }
+      : null,
+    worstColorType
+      ? {
+          label: t.worstColor,
+          value: worstColorType,
+          containerClass: "border-red-100 bg-red-50/70",
+          labelClass: "text-red-600",
+          valueClass: "text-red-900",
+        }
+      : null,
+  ].filter(Boolean);
 
   if (!personalColorType) {
     return (
@@ -32,12 +70,26 @@ export const Results = ({ likedColors, onRetry, lang }) => {
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold mb-2">{t.yourPersonalColor}</h1>
           <div className="inline-block bg-white rounded-lg shadow-lg p-6">
-            <p className="text-gray-600 text-sm mb-2">{t.colorType}</p>
+            <p className="text-gray-600 text-sm mb-2">{t.bestColor}</p>
             <p className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
               {personalColorType}
             </p>
           </div>
         </div>
+
+        {rankedResultCards.length > 0 && (
+          <div className="grid gap-4 sm:grid-cols-3 mb-6">
+            {rankedResultCards.map((result) => (
+              <div
+                key={result.label}
+                className={`rounded-lg border p-4 shadow-sm ${result.containerClass}`}
+              >
+                <p className={`text-sm font-semibold mb-2 ${result.labelClass}`}>{result.label}</p>
+                <p className={`text-lg font-bold ${result.valueClass}`}>{result.value}</p>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Liked Colors */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
@@ -61,7 +113,12 @@ export const Results = ({ likedColors, onRetry, lang }) => {
         {/* Recommended Colors */}
         {topRecommended.length > 0 && (
           <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h2 className="text-xl font-bold mb-4">{t.recommendedColors}</h2>
+            <div className="flex items-center justify-between gap-3 mb-4">
+              <h2 className="text-xl font-bold">{t.recommendedColors}</h2>
+              <span className="text-xs font-semibold text-green-700 bg-green-50 px-3 py-1 rounded-full">
+                {personalColorType}
+              </span>
+            </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {topRecommended.map((color, i) => (
                 <div key={i} className="flex flex-col items-center">
@@ -82,7 +139,12 @@ export const Results = ({ likedColors, onRetry, lang }) => {
         {/* Colors to Avoid */}
         {topAvoid.length > 0 && (
           <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h2 className="text-xl font-bold mb-4">{t.colorsToAvoid}</h2>
+            <div className="flex items-center justify-between gap-3 mb-4">
+              <h2 className="text-xl font-bold">{t.colorsToAvoid}</h2>
+              <span className="text-xs font-semibold text-red-700 bg-red-50 px-3 py-1 rounded-full">
+                {worstColorType}
+              </span>
+            </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {topAvoid.map((color, i) => (
                 <div key={i} className="flex flex-col items-center opacity-60">
@@ -145,7 +207,9 @@ export const Results = ({ likedColors, onRetry, lang }) => {
           </button>
           <button
             onClick={() => {
-              navigator.clipboard.writeText(t.shareText(personalColorType));
+              navigator.clipboard.writeText(
+                t.shareText(personalColorType, secondaryBestResults, worstColorType)
+              );
               alert(t.copied);
             }}
             className="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 rounded-lg transition-colors"
