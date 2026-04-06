@@ -1,11 +1,9 @@
 export const translations = {
   ko: {
     // Header
-    navHome: "홈",
     navAbout: "퍼스널 컬러란?",
     navTest: "테스트 시작",
     // Home
-    title: "퍼스널 컬러 테스트",
     subtitle: "12시즌 컬러 시스템으로 나만의 컬러 타입 찾기",
     homeHeroQuote: "당신에게 어울리는 색은 따로 있습니다",
     homeHeroSubtext:
@@ -24,26 +22,14 @@ export const translations = {
     earlyExit: "중간 결과 보기 →",
     // Results
     yourPersonalColor: "당신의 퍼스널 컬러",
-    colorType: "컬러 타입",
     bestColor: "Best Color",
     secondBestColor: "Second Best",
     thirdBestColor: "Third Best",
     worstColor: "Worst Color",
-    colorsYouLiked: "좋아한 색상",
-    recommendedColors: "추천 색상",
-    colorsToAvoid: "피해야 할 색상",
     resultPaletteIntro:
       "가장 잘 맞는 타입부터 차순위 타입, 그리고 피하면 좋은 타입까지 팔레트로 비교해보세요.",
     paletteTitle: (label) => `${label} 팔레트`,
     bestPaletteDescription: "당신의 베스트 타입에 속한 전체 컬러셋입니다.",
-    compareOtherMatches: "차순위 타입 비교",
-    compareTopMatches: "상위 타입 비교",
-    clickPaletteHint: "Best Color, Second Best, Third Best 카드를 눌러 컬러셋을 비교해보세요.",
-    topCardHint: "각 카드 안의 동그란 미리보기 팔레트로 타입 분위기를 빠르게 비교해보세요.",
-    detailPaletteSectionTitle: "세부 팔레트 보기",
-    detailPaletteHint: "아래 버튼으로 Best, Second Best, Third Best 팔레트를 전환해보세요.",
-    viewPaletteAction: "보기",
-    openPaletteAction: "열림",
     comparisonPaletteDescription: "선택한 차순위 타입에 속한 전체 컬러셋입니다.",
     worstPaletteDescription: "상대적으로 피하는 편이 좋은 타입의 전체 컬러셋입니다.",
     paletteContainsCount: (count) => `포함 색상 ${count}개`,
@@ -115,11 +101,9 @@ export const translations = {
   },
   en: {
     // Header
-    navHome: "Home",
     navAbout: "About Personal Color",
     navTest: "Start Test",
     // Home
-    title: "Personal Color Test",
     subtitle: "Discover your seasonal color palette",
     homeHeroQuote: "There's a color palette made just for you",
     homeHeroSubtext:
@@ -138,28 +122,14 @@ export const translations = {
     earlyExit: "See Results →",
     // Results
     yourPersonalColor: "Your Personal Color",
-    colorType: "Your Color Type",
     bestColor: "Best Color",
     secondBestColor: "Second Best",
     thirdBestColor: "Third Best",
     worstColor: "Worst Color",
-    colorsYouLiked: "Colors You Liked",
-    recommendedColors: "Recommended Colors for You",
-    colorsToAvoid: "Colors to Avoid",
     resultPaletteIntro:
       "Compare your best match, runner-up palettes, and the palette that tends to work against you.",
     paletteTitle: (label) => `${label} Palette`,
     bestPaletteDescription: "This is the full palette for your strongest personal color match.",
-    compareOtherMatches: "Compare Runner-up Matches",
-    compareTopMatches: "Compare Top Matches",
-    clickPaletteHint: "Tap Best Color, Second Best, or Third Best to switch palettes.",
-    topCardHint:
-      "Use the circular preview swatches in each card to compare the overall vibe quickly.",
-    detailPaletteSectionTitle: "Detailed Palette",
-    detailPaletteHint:
-      "Use the buttons below to switch between Best, Second Best, and Third Best palettes.",
-    viewPaletteAction: "View",
-    openPaletteAction: "Open",
     comparisonPaletteDescription: "This is the full palette for the selected runner-up match.",
     worstPaletteDescription: "This is the palette that is relatively better to avoid.",
     paletteContainsCount: (count) => `${count} colors`,

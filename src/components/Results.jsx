@@ -59,8 +59,6 @@ export const Results = ({ likedColors, dislikedColors = [], onRetry, lang }) => 
     ? {
         label: t.bestColor,
         tone: personalColorType,
-        viewActionLabel: t.viewPaletteAction,
-        openActionLabel: t.openPaletteAction,
         ...toneCardStyles.best,
       }
     : null;
@@ -68,8 +66,6 @@ export const Results = ({ likedColors, dislikedColors = [], onRetry, lang }) => 
   const comparisonCards = secondaryBestResults.map((tone, index) => ({
     label: index === 0 ? t.secondBestColor : t.thirdBestColor,
     tone,
-    viewActionLabel: t.viewPaletteAction,
-    openActionLabel: t.openPaletteAction,
     ...(index === 0 ? toneCardStyles.second : toneCardStyles.third),
   }));
 
@@ -110,13 +106,9 @@ export const Results = ({ likedColors, dislikedColors = [], onRetry, lang }) => 
         </div>
 
         {topCards.length > 0 && (
-          <div className="mb-6 rounded-3xl border border-slate-100 bg-white p-6 shadow-md">
-            <div className="mb-5 flex flex-col gap-2">
-              <h2 className="text-2xl font-bold text-slate-900">{t.compareTopMatches}</h2>
-              <p className="text-sm text-slate-600">{t.topCardHint}</p>
-            </div>
+          <div className="mb-6">
             {bestCard && (
-              <div className="mx-auto mb-4 max-w-2xl">
+              <div className="mx-auto mb-4 max-w-lg">
                 <ResultToneCard
                   card={bestCard}
                   className="min-h-[168px]"
@@ -142,11 +134,7 @@ export const Results = ({ likedColors, dislikedColors = [], onRetry, lang }) => 
 
         {topCards.length > 0 && (
           <div className="mb-6 rounded-3xl border border-slate-100 bg-white p-6 shadow-md">
-            <div className="mb-5 flex flex-col gap-2">
-              <h2 className="text-2xl font-bold text-slate-900">{t.detailPaletteSectionTitle}</h2>
-              <p className="text-sm text-slate-600">{t.detailPaletteHint}</p>
-            </div>
-            <div className="mb-5 flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-3">
               {topCards.map((card) => (
                 <button
                   key={card.tone}
@@ -263,57 +251,34 @@ export const Results = ({ likedColors, dislikedColors = [], onRetry, lang }) => 
   );
 };
 
-const ResultToneCard = ({
-  card,
-  isActive = false,
-  isInteractive = false,
-  onClick,
-  className = "",
-  toneClassName = "",
-  previewColors = [],
-}) => {
-  const Tag = isInteractive ? "button" : "div";
-
+const ResultToneCard = ({ card, className = "", toneClassName = "", previewColors = [] }) => {
   return (
-    <Tag
-      type={isInteractive ? "button" : undefined}
-      onClick={isInteractive ? onClick : undefined}
+    <div
       className={[
-        "w-full rounded-3xl border p-5 text-left transition-all",
+        "w-full flex-col items-center rounded-3xl border p-5 text-left",
         card.containerClass,
-        isInteractive ? "cursor-pointer hover:-translate-y-0.5 hover:shadow-md" : "",
-        isActive ? "ring-2 ring-slate-300 ring-offset-2" : "",
         className,
       ]
         .filter(Boolean)
         .join(" ")}
     >
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <p className={`mb-2 text-sm font-semibold ${card.labelClass}`}>{card.label}</p>
-          <p className={`text-2xl font-bold ${card.valueClass} ${toneClassName}`}>{card.tone}</p>
-        </div>
-        {isInteractive && (
-          <span className={`rounded-full px-3 py-1 text-xs font-semibold ${card.badgeClass}`}>
-            {isActive ? card.openActionLabel : card.viewActionLabel}
-          </span>
-        )}
-      </div>
+      <p className={`mb-2 text-center text-sm font-semibold ${card.labelClass}`}>{card.label}</p>
+      <p className={`text-center text-2xl font-bold ${card.valueClass} ${toneClassName}`}>
+        {card.tone}
+      </p>
       {previewColors.length > 0 && (
-        <div className="mt-5">
-          <div className="flex items-center gap-2">
-            {previewColors.map((color) => (
-              <span
-                key={`${card.tone}-${color.hex}`}
-                className="h-8 w-8 rounded-full border-2 border-white shadow-sm"
-                style={{ backgroundColor: color.hex }}
-                title={color.name}
-              />
-            ))}
-          </div>
+        <div className="mt-5 flex justify-center gap-2">
+          {previewColors.map((color) => (
+            <span
+              key={`${card.tone}-${color.hex}`}
+              className="h-8 w-8 rounded-full border-2 border-white shadow-sm"
+              style={{ backgroundColor: color.hex }}
+              title={color.name}
+            />
+          ))}
         </div>
       )}
-    </Tag>
+    </div>
   );
 };
 
