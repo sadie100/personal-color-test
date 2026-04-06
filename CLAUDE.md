@@ -18,6 +18,7 @@ No test framework is configured.
 Single-page React app with no routing library. Screen transitions are managed by a `screen` state in [App.jsx](src/App.jsx) with three values: `'home'`, `'test'`, `'results'`.
 
 **Data flow:**
+
 1. `Home` → calls `onStart` → switches to `'test'`
 2. `ColorTest` → calls `onComplete(likedColors)` → switches to `'results'`
 3. `Results` → calls `onRetry` → switches back to `'test'`

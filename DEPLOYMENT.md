@@ -7,6 +7,7 @@ Vercel은 가장 빠르고 쉬운 배포 플랫폼입니다.
 ### 방법 1: GitHub에 푸시 후 Vercel 연결 (권장)
 
 #### 단계 1: GitHub 저장소 생성
+
 1. https://github.com/new 방문
 2. Repository name: `personal-color-test`
 3. Description: `Personal Color Diagnosis Web App`
@@ -14,6 +15,7 @@ Vercel은 가장 빠르고 쉬운 배포 플랫폼입니다.
 5. Create repository 클릭
 
 #### 단계 2: GitHub에 코드 푸시
+
 ```bash
 cd D:\dev\side-projects\personal-color-test
 
@@ -24,6 +26,7 @@ git push -u origin main
 ```
 
 #### 단계 3: Vercel에 배포
+
 1. https://vercel.com/login 방문
 2. "GitHub로 계속" 클릭
 3. GitHub 계정 인증
@@ -82,7 +85,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: "18"
 
       - run: npm install
       - run: npm run build
@@ -92,10 +95,11 @@ jobs:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
+          vercel-args: "--prod"
 ```
 
 설정:
+
 1. Vercel에서 토큰 생성
 2. GitHub 저장소 Settings → Secrets 추가
 3. 각각 추가:
@@ -118,6 +122,7 @@ jobs:
 ## 🔄 업데이트 배포
 
 ### GitHub 방법
+
 ```bash
 git add .
 git commit -m "Update features"
@@ -126,6 +131,7 @@ git push origin main
 ```
 
 ### Vercel CLI
+
 ```bash
 vercel --prod
 ```
@@ -135,6 +141,7 @@ vercel --prod
 ## 🌐 커스텀 도메인 연결 (선택)
 
 Vercel 대시보드에서:
+
 1. 프로젝트 선택
 2. Settings → Domains
 3. 커스텀 도메인 추가
@@ -145,6 +152,7 @@ Vercel 대시보드에서:
 ## 📊 배포 최적화
 
 프로덕션 빌드 확인:
+
 ```bash
 npm run build
 npm run preview
@@ -153,16 +161,20 @@ npm run preview
 ## 🆘 문제 해결
 
 ### 빌드 실패
+
 - `npm run build` 로컬에서 실행해보기
 - node_modules 삭제 후 재설치
 - Node.js 버전 확인 (16+ 필요)
 
 ### 배포 느림
+
 - `package-lock.json` 커밋되었는지 확인
 - Vercel 빌드 로그 확인
 
 ### 라우팅 문제
+
 Vite SPA 설정 확인 - vercel.json 생성:
+
 ```json
 {
   "rewrites": [

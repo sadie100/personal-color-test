@@ -1,9 +1,9 @@
 export const SwipeButtons = ({ onDislike, onLike }) => {
   return (
-    <div className="absolute bottom-8 left-0 right-0 flex justify-center items-center gap-4 px-4">
+    <div className="absolute right-0 bottom-8 left-0 flex items-center justify-center gap-4 px-4">
       <button
         onClick={onDislike}
-        className="bg-red-500 hover:bg-red-600 text-white rounded-full w-16 h-16 flex items-center justify-center shadow-lg transition-all hover:scale-110 active:scale-95"
+        className="flex h-16 w-16 items-center justify-center rounded-full bg-red-500 text-white shadow-lg transition-all hover:scale-110 hover:bg-red-600 active:scale-95"
         title="Dislike (Left Arrow)"
       >
         <span className="text-2xl">✕</span>
@@ -11,7 +11,7 @@ export const SwipeButtons = ({ onDislike, onLike }) => {
 
       <button
         onClick={onLike}
-        className="bg-green-500 hover:bg-green-600 text-white rounded-full w-16 h-16 flex items-center justify-center shadow-lg transition-all hover:scale-110 active:scale-95"
+        className="flex h-16 w-16 items-center justify-center rounded-full bg-green-500 text-white shadow-lg transition-all hover:scale-110 hover:bg-green-600 active:scale-95"
         title="Like (Right Arrow)"
       >
         <span className="text-2xl">♥</span>

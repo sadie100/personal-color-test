@@ -48,6 +48,7 @@ personal-color-test/
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js 16+ and npm
 
 ### Installation
@@ -79,14 +80,17 @@ The app will be available at `http://localhost:5173` (or next available port if 
 The system divides personal colors into 12 types:
 
 **Warm tones (Spring & Autumn):**
+
 - **Spring**: Light, bright, warm colors (Light, Bright, Muted)
 - **Autumn**: Deep, warm colors (Light, Bright, Muted)
 
 **Cool tones (Summer & Winter):**
+
 - **Summer**: Soft, cool colors (Light, Bright, Muted)
 - **Winter**: Deep, cool colors (Light, Bright, Muted)
 
 Each type has three tone variations:
+
 - **Light**: High lightness (pastels and pale colors)
 - **Bright**: High saturation (vivid colors)
 - **Muted**: Lower saturation (softer colors)
@@ -94,6 +98,7 @@ Each type has three tone variations:
 ## 🧮 Color Analysis Algorithm
 
 The diagnosis engine analyzes:
+
 1. **Lightness average**: Determines Light/Light vs. Bright/Muted
 2. **Saturation average**: Distinguishes Bright from Muted
 3. **Hue average**: Determines warm (Spring/Autumn) vs. cool (Summer/Winter)
@@ -116,17 +121,22 @@ The algorithm calculates HSL values and performs circular mean for hue averaging
 ## 🎨 UI Components
 
 ### Home.jsx
+
 Welcome screen with project description and start button.
 
 ### ColorTest.jsx
+
 Main testing interface managing:
+
 - Color shuffling
 - State management (liked/disliked)
 - Keyboard event handling
 - Progress tracking
 
 ### Results.jsx
+
 Displays:
+
 - Diagnosed personal color type
 - All liked colors
 - Recommended colors for the diagnosed type
@@ -136,11 +146,13 @@ Displays:
 ## 🔧 Build & Deploy
 
 ### Development
+
 ```bash
 npm run dev
 ```
 
 ### Production Build
+
 ```bash
 npm run build
 npm run preview  # Preview built app
@@ -151,6 +163,7 @@ The built files will be in the `dist/` directory.
 ## 📝 Color Data Format
 
 Each color is defined as:
+
 ```javascript
 {
   name: "Color Name",

@@ -57,7 +57,8 @@ export const translations = {
     shareResult: "결과 공유",
     copied: "클립보드에 복사되었습니다!",
     shareText: (bestType, secondaryTypes = [], worstType = null) => {
-      const secondaryText = secondaryTypes.length > 0 ? ` 차순위 후보는 ${secondaryTypes.join(", ")}입니다.` : "";
+      const secondaryText =
+        secondaryTypes.length > 0 ? ` 차순위 후보는 ${secondaryTypes.join(", ")}입니다.` : "";
       const worstText = worstType ? ` 가장 피하면 좋은 컬러는 ${worstType}입니다.` : "";
       return `내 베스트 퍼스널 컬러는 ${bestType}입니다!${secondaryText}${worstText} 🎨`;
     },
@@ -98,11 +99,14 @@ export const translations = {
       "차갑고 선명한 색감이 특징입니다. 순백, 블랙, 로열블루, 마젠타 등 강렬하고 대비가 뚜렷한 색상이 어울리며, 피부가 하얗거나 깊은 쿨톤을 가진 분들에게 잘 맞습니다.",
     aboutTonesTitle: "3가지 톤",
     aboutLightTitle: "라이트 (Light)",
-    aboutLightDesc: "명도가 높은 밝고 가벼운 느낌의 색상입니다. 파스텔 계열이 대표적이며, 부드럽고 여성스러운 이미지를 줍니다.",
+    aboutLightDesc:
+      "명도가 높은 밝고 가벼운 느낌의 색상입니다. 파스텔 계열이 대표적이며, 부드럽고 여성스러운 이미지를 줍니다.",
     aboutBrightTitle: "브라이트 (Bright)",
-    aboutBrightDesc: "채도가 높은 선명하고 생동감 있는 색상입니다. 비비드한 색감으로 활기차고 에너지 넘치는 이미지를 줍니다.",
+    aboutBrightDesc:
+      "채도가 높은 선명하고 생동감 있는 색상입니다. 비비드한 색감으로 활기차고 에너지 넘치는 이미지를 줍니다.",
     aboutMutedTitle: "뮤트 (Muted)",
-    aboutMutedDesc: "채도가 낮은 차분하고 탁한 느낌의 색상입니다. 그레이가 섞인 듯한 색감으로 성숙하고 세련된 이미지를 줍니다.",
+    aboutMutedDesc:
+      "채도가 낮은 차분하고 탁한 느낌의 색상입니다. 그레이가 섞인 듯한 색감으로 성숙하고 세련된 이미지를 줍니다.",
     aboutHowItWorks: "테스트 방법",
     aboutStep1: "다양한 색상을 풀스크린으로 감상합니다",
     aboutStep2: "각 색상에 대해 좋아요 또는 싫어요로 평가합니다",
@@ -149,9 +153,11 @@ export const translations = {
     compareOtherMatches: "Compare Runner-up Matches",
     compareTopMatches: "Compare Top Matches",
     clickPaletteHint: "Tap Best Color, Second Best, or Third Best to switch palettes.",
-    topCardHint: "Use the circular preview swatches in each card to compare the overall vibe quickly.",
+    topCardHint:
+      "Use the circular preview swatches in each card to compare the overall vibe quickly.",
     detailPaletteSectionTitle: "Detailed Palette",
-    detailPaletteHint: "Use the buttons below to switch between Best, Second Best, and Third Best palettes.",
+    detailPaletteHint:
+      "Use the buttons below to switch between Best, Second Best, and Third Best palettes.",
     viewPaletteAction: "View",
     openPaletteAction: "Open",
     comparisonPaletteDescription: "This is the full palette for the selected runner-up match.",
@@ -193,7 +199,8 @@ export const translations = {
     aboutPCCSTitle: "PCCS Tone System",
     aboutPCCSDesc:
       "PCCS (Practical Color Co-ordinate System) classifies colors along two axes: Lightness and Saturation. In the chart above, the vertical axis represents lightness and the horizontal axis represents saturation. The same hue can feel completely different depending on its lightness and saturation — this is the core principle behind personal color analysis.",
-    aboutPCCSImageAlt: "PCCS Tone Classification Chart — colors organized by lightness and saturation",
+    aboutPCCSImageAlt:
+      "PCCS Tone Classification Chart — colors organized by lightness and saturation",
     aboutSeasonsTitle: "The 4 Season Color System",
     aboutSpringTitle: "Spring",
     aboutSpringDesc:
@@ -209,11 +216,14 @@ export const translations = {
       "Characterized by cool and vivid colors. Pure white, black, royal blue, and magenta — bold, high-contrast colors. Best suited for those with a fair or deep cool undertone.",
     aboutTonesTitle: "3 Tone Types",
     aboutLightTitle: "Light",
-    aboutLightDesc: "High-lightness colors with a bright, airy feel. Pastels are representative, giving a soft and feminine impression.",
+    aboutLightDesc:
+      "High-lightness colors with a bright, airy feel. Pastels are representative, giving a soft and feminine impression.",
     aboutBrightTitle: "Bright",
-    aboutBrightDesc: "High-saturation vivid colors full of life. These vibrant hues create an energetic and dynamic impression.",
+    aboutBrightDesc:
+      "High-saturation vivid colors full of life. These vibrant hues create an energetic and dynamic impression.",
     aboutMutedTitle: "Muted",
-    aboutMutedDesc: "Low-saturation calm and subdued colors. Grayed-out tones that give a mature and sophisticated impression.",
+    aboutMutedDesc:
+      "Low-saturation calm and subdued colors. Grayed-out tones that give a mature and sophisticated impression.",
     aboutHowItWorks: "How the Test Works",
     aboutStep1: "View various colors in full-screen mode",
     aboutStep2: "Rate each color with like or dislike",

@@ -53,6 +53,7 @@ export const getWorstResult = (dislikedColors, bestResult) => {
   return worstMatch?.seasonTone || null;
 };
 
-export const getRecommendedColors = (personalColorType, allColors) => allColors[personalColorType] || [];
+export const getRecommendedColors = (personalColorType, allColors) =>
+  allColors[personalColorType] || [];
 
 export const getAvoidColors = (worstColorType, allColors) => allColors[worstColorType] || [];

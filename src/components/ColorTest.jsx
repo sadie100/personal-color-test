@@ -7,7 +7,7 @@ import { LangToggle } from "./LangToggle";
 import { translations } from "../i18n/translations";
 
 const allColors = Object.entries(colorData).flatMap(([seasonTone, colors]) =>
-  colors.map((color) => ({ ...color, seasonTone }))
+  colors.map((color) => ({ ...color, seasonTone })),
 );
 
 export const ColorTest = ({ onComplete, onHome, lang, onToggleLang }) => {
@@ -21,32 +21,43 @@ export const ColorTest = ({ onComplete, onHome, lang, onToggleLang }) => {
 
   const currentColor = shuffledColors[currentIndex];
 
-  const handleNext = useCallback((liked) => {
-    if (isTransitioning) return;
+  const handleNext = useCallback(
+    (liked) => {
+      if (isTransitioning) return;
 
-    setIsTransitioning(true);
+      setIsTransitioning(true);
 
-    const nextLikedColors = liked ? [...likedColors, currentColor] : likedColors;
-    const nextDislikedColors = liked ? dislikedColors : [...dislikedColors, currentColor];
+      const nextLikedColors = liked ? [...likedColors, currentColor] : likedColors;
+      const nextDislikedColors = liked ? dislikedColors : [...dislikedColors, currentColor];
 
-    if (liked) {
-      setLikedColors(nextLikedColors);
-    } else {
-      setDislikedColors(nextDislikedColors);
-    }
-
-    setTimeout(() => {
-      if (currentIndex < shuffledColors.length - 1) {
-        setCurrentIndex(currentIndex + 1);
-        setIsTransitioning(false);
+      if (liked) {
+        setLikedColors(nextLikedColors);
       } else {
-        onComplete({
-          likedColors: nextLikedColors,
-          dislikedColors: nextDislikedColors,
-        });
+        setDislikedColors(nextDislikedColors);
       }
-    }, 300);
-  }, [currentIndex, shuffledColors.length, likedColors, dislikedColors, isTransitioning, currentColor, onComplete]);
+
+      setTimeout(() => {
+        if (currentIndex < shuffledColors.length - 1) {
+          setCurrentIndex(currentIndex + 1);
+          setIsTransitioning(false);
+        } else {
+          onComplete({
+            likedColors: nextLikedColors,
+            dislikedColors: nextDislikedColors,
+          });
+        }
+      }, 300);
+    },
+    [
+      currentIndex,
+      shuffledColors.length,
+      likedColors,
+      dislikedColors,
+      isTransitioning,
+      currentColor,
+      onComplete,
+    ],
+  );
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -61,34 +72,33 @@ export const ColorTest = ({ onComplete, onHome, lang, onToggleLang }) => {
 
   if (!currentColor) {
     return (
-      <div className="w-full h-screen flex items-center justify-center bg-gray-100">
+      <div className="flex h-screen w-full items-center justify-center bg-gray-100">
         <p className="text-xl">{t.loading}</p>
       </div>
     );
   }
 
   return (
-    <div className="relative w-full h-screen overflow-hidden">
+    <div className="relative h-screen w-full overflow-hidden">
       <ProgressBar current={currentIndex + 1} total={shuffledColors.length} />
       <ColorCard color={currentColor} isTransitioning={isTransitioning} />
-      <SwipeButtons
-        onDislike={() => handleNext(false)}
-        onLike={() => handleNext(true)}
-      />
+      <SwipeButtons onDislike={() => handleNext(false)} onLike={() => handleNext(true)} />
 
       {/* Top info */}
       <div className="absolute top-4 left-4 text-white drop-shadow-lg">
         <p className="text-sm">
           {currentIndex + 1} / {shuffledColors.length}
         </p>
-        <p className="text-sm">{t.liked}: {likedColors.length}</p>
+        <p className="text-sm">
+          {t.liked}: {likedColors.length}
+        </p>
       </div>
 
       {/* Top-right: home button + lang toggle */}
       <div className="absolute top-4 right-4 flex items-center gap-2">
         <button
           onClick={onHome}
-          className="bg-white/90 backdrop-blur-sm text-gray-800 text-sm font-semibold px-4 py-2.5 rounded-full shadow-lg border border-white/50 hover:bg-white transition-all hover:scale-105 active:scale-95"
+          className="rounded-full border border-white/50 bg-white/90 px-4 py-2.5 text-sm font-semibold text-gray-800 shadow-lg backdrop-blur-sm transition-all hover:scale-105 hover:bg-white active:scale-95"
         >
           {t.homeButton}
         </button>
@@ -104,7 +114,7 @@ export const ColorTest = ({ onComplete, onHome, lang, onToggleLang }) => {
               dislikedColors,
             })
           }
-          className="absolute bottom-6 right-6 bg-white/90 backdrop-blur-sm text-gray-800 text-sm font-semibold px-4 py-2.5 rounded-full shadow-lg border border-white/50 hover:bg-white transition-all hover:scale-105 active:scale-95"
+          className="absolute right-6 bottom-6 rounded-full border border-white/50 bg-white/90 px-4 py-2.5 text-sm font-semibold text-gray-800 shadow-lg backdrop-blur-sm transition-all hover:scale-105 hover:bg-white active:scale-95"
         >
           {t.earlyExit}
         </button>

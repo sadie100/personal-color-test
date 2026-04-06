@@ -9,7 +9,7 @@ const buildSelectionSet = (colors) =>
   new Set(
     colors
       .filter((color) => color?.seasonTone && color?.hex)
-      .map((color) => getSelectionKey(color.seasonTone, color.hex))
+      .map((color) => getSelectionKey(color.seasonTone, color.hex)),
   );
 
 const toneCardStyles = {
@@ -89,11 +89,11 @@ export const Results = ({ likedColors, dislikedColors = [], onRetry, lang }) => 
 
   if (!personalColorType) {
     return (
-      <div className="w-full h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 gap-4">
+      <div className="flex h-screen w-full flex-col items-center justify-center gap-4 bg-gradient-to-br from-gray-50 to-gray-100">
         <p className="text-xl font-semibold text-gray-700">{t.noLikes}</p>
         <button
           onClick={onRetry}
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold px-6 py-3 rounded-lg transition-colors"
+          className="rounded-lg bg-blue-500 px-6 py-3 font-bold text-white transition-colors hover:bg-blue-600"
         >
           {t.tryAgain}
         </button>
@@ -102,21 +102,21 @@ export const Results = ({ likedColors, dislikedColors = [], onRetry, lang }) => 
   }
 
   return (
-    <div className="w-full min-h-screen overflow-auto bg-gradient-to-br from-gray-50 to-gray-100 p-6 pt-20">
-      <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-2">{t.yourPersonalColor}</h1>
-          <p className="text-gray-600 max-w-2xl mx-auto">{t.resultPaletteIntro}</p>
+    <div className="min-h-screen w-full overflow-auto bg-gradient-to-br from-gray-50 to-gray-100 p-6 pt-20">
+      <div className="mx-auto max-w-5xl">
+        <div className="mb-8 text-center">
+          <h1 className="mb-2 text-4xl font-bold">{t.yourPersonalColor}</h1>
+          <p className="mx-auto max-w-2xl text-gray-600">{t.resultPaletteIntro}</p>
         </div>
 
         {topCards.length > 0 && (
-          <div className="bg-white rounded-3xl shadow-md p-6 mb-6 border border-slate-100">
-            <div className="flex flex-col gap-2 mb-5">
+          <div className="mb-6 rounded-3xl border border-slate-100 bg-white p-6 shadow-md">
+            <div className="mb-5 flex flex-col gap-2">
               <h2 className="text-2xl font-bold text-slate-900">{t.compareTopMatches}</h2>
               <p className="text-sm text-slate-600">{t.topCardHint}</p>
             </div>
             {bestCard && (
-              <div className="max-w-2xl mx-auto mb-4">
+              <div className="mx-auto mb-4 max-w-2xl">
                 <ResultToneCard
                   card={bestCard}
                   className="min-h-[168px]"
@@ -126,7 +126,7 @@ export const Results = ({ likedColors, dislikedColors = [], onRetry, lang }) => 
               </div>
             )}
             {comparisonCards.length > 0 && (
-              <div className="grid gap-4 md:grid-cols-2 max-w-3xl mx-auto">
+              <div className="mx-auto grid max-w-3xl gap-4 md:grid-cols-2">
                 {comparisonCards.map((card) => (
                   <ResultToneCard
                     key={card.tone}
@@ -141,22 +141,22 @@ export const Results = ({ likedColors, dislikedColors = [], onRetry, lang }) => 
         )}
 
         {topCards.length > 0 && (
-          <div className="bg-white rounded-3xl shadow-md p-6 mb-6 border border-slate-100">
-            <div className="flex flex-col gap-2 mb-5">
+          <div className="mb-6 rounded-3xl border border-slate-100 bg-white p-6 shadow-md">
+            <div className="mb-5 flex flex-col gap-2">
               <h2 className="text-2xl font-bold text-slate-900">{t.detailPaletteSectionTitle}</h2>
               <p className="text-sm text-slate-600">{t.detailPaletteHint}</p>
             </div>
-            <div className="flex flex-wrap gap-3 mb-5">
+            <div className="mb-5 flex flex-wrap gap-3">
               {topCards.map((card) => (
                 <button
                   key={card.tone}
                   type="button"
                   onClick={() => setSelectedPaletteTone(card.tone)}
                   className={[
-                    "px-4 py-2 rounded-full border text-sm font-semibold transition-colors",
+                    "rounded-full border px-4 py-2 text-sm font-semibold transition-colors",
                     card.tone === activePaletteTone
                       ? `${card.badgeClass} border-transparent`
-                      : "bg-white text-slate-600 border-slate-200 hover:border-slate-300",
+                      : "border-slate-200 bg-white text-slate-600 hover:border-slate-300",
                   ].join(" ")}
                 >
                   {card.label}
@@ -205,10 +205,10 @@ export const Results = ({ likedColors, dislikedColors = [], onRetry, lang }) => 
           </>
         )}
 
-        <div className="bg-blue-50 rounded-lg p-6 mb-6 border-l-4 border-blue-500">
-          <h3 className="font-bold mb-2">{t.aboutColorType}</h3>
-          <p className="text-sm text-gray-700 mb-3">{t.basedOn}</p>
-          <ul className="text-sm text-gray-700 space-y-1">
+        <div className="mb-6 rounded-lg border-l-4 border-blue-500 bg-blue-50 p-6">
+          <h3 className="mb-2 font-bold">{t.aboutColorType}</h3>
+          <p className="mb-3 text-sm text-gray-700">{t.basedOn}</p>
+          <ul className="space-y-1 text-sm text-gray-700">
             {personalColorType.includes("Spring") && (
               <>
                 <li>✓ {t.warmUndertone}</li>
@@ -239,21 +239,21 @@ export const Results = ({ likedColors, dislikedColors = [], onRetry, lang }) => 
           </ul>
         </div>
 
-        <div className="flex gap-4 mb-8">
+        <div className="mb-8 flex gap-4">
           <button
             onClick={onRetry}
-            className="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded-lg transition-colors"
+            className="flex-1 rounded-lg bg-blue-500 py-3 font-bold text-white transition-colors hover:bg-blue-600"
           >
             {t.tryAgain}
           </button>
           <button
             onClick={() => {
               navigator.clipboard.writeText(
-                t.shareText(personalColorType, secondaryBestResults, worstColorType)
+                t.shareText(personalColorType, secondaryBestResults, worstColorType),
               );
               alert(t.copied);
             }}
-            className="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 rounded-lg transition-colors"
+            className="flex-1 rounded-lg bg-gray-500 py-3 font-bold text-white transition-colors hover:bg-gray-600"
           >
             {t.shareResult}
           </button>
@@ -282,7 +282,7 @@ const ResultToneCard = ({
         "w-full rounded-3xl border p-5 text-left transition-all",
         card.containerClass,
         isInteractive ? "cursor-pointer hover:-translate-y-0.5 hover:shadow-md" : "",
-        isActive ? "ring-2 ring-offset-2 ring-slate-300" : "",
+        isActive ? "ring-2 ring-slate-300 ring-offset-2" : "",
         className,
       ]
         .filter(Boolean)
@@ -290,11 +290,11 @@ const ResultToneCard = ({
     >
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className={`text-sm font-semibold mb-2 ${card.labelClass}`}>{card.label}</p>
+          <p className={`mb-2 text-sm font-semibold ${card.labelClass}`}>{card.label}</p>
           <p className={`text-2xl font-bold ${card.valueClass} ${toneClassName}`}>{card.tone}</p>
         </div>
         {isInteractive && (
-          <span className={`text-xs font-semibold px-3 py-1 rounded-full ${card.badgeClass}`}>
+          <span className={`rounded-full px-3 py-1 text-xs font-semibold ${card.badgeClass}`}>
             {isActive ? card.openActionLabel : card.viewActionLabel}
           </span>
         )}
@@ -305,7 +305,7 @@ const ResultToneCard = ({
             {previewColors.map((color) => (
               <span
                 key={`${card.tone}-${color.hex}`}
-                className="w-8 h-8 rounded-full border-2 border-white shadow-sm"
+                className="h-8 w-8 rounded-full border-2 border-white shadow-sm"
                 style={{ backgroundColor: color.hex }}
                 title={color.name}
               />
@@ -337,23 +337,23 @@ const PaletteSection = ({
   }
 
   const likedCount = paletteColors.filter((color) =>
-    likedSelectionSet.has(getSelectionKey(tone, color.hex))
+    likedSelectionSet.has(getSelectionKey(tone, color.hex)),
   ).length;
   const dislikedCount = paletteColors.filter((color) =>
-    dislikedSelectionSet.has(getSelectionKey(tone, color.hex))
+    dislikedSelectionSet.has(getSelectionKey(tone, color.hex)),
   ).length;
 
   return (
     <div
       className={[
-        "bg-white rounded-3xl p-6 border border-slate-100",
-        insideCard ? "shadow-none px-0 pb-0 border-0 rounded-none" : "shadow-md mb-6",
+        "rounded-3xl border border-slate-100 bg-white p-6",
+        insideCard ? "rounded-none border-0 px-0 pb-0 shadow-none" : "mb-6 shadow-md",
       ].join(" ")}
     >
-      <div className="flex flex-col gap-3 mb-5">
+      <div className="mb-5 flex flex-col gap-3">
         <div className="flex flex-wrap items-center gap-2">
           <h2 className="text-2xl font-bold text-slate-900">{title}</h2>
-          <span className={`text-xs font-semibold px-3 py-1 rounded-full ${badgeClass}`}>
+          <span className={`rounded-full px-3 py-1 text-xs font-semibold ${badgeClass}`}>
             {tone}
           </span>
         </div>
@@ -369,7 +369,7 @@ const PaletteSection = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
         {paletteColors.map((color) => {
           const isLiked = likedSelectionSet.has(getSelectionKey(tone, color.hex));
           const isDisliked = dislikedSelectionSet.has(getSelectionKey(tone, color.hex));
@@ -387,7 +387,7 @@ const PaletteSection = ({
             >
               <div className="relative">
                 <div
-                  className="w-full h-24 rounded-xl shadow-sm border border-white/60"
+                  className="h-24 w-full rounded-xl border border-white/60 shadow-sm"
                   style={{ backgroundColor: color.hex }}
                   title={color.name}
                 />
@@ -399,7 +399,7 @@ const PaletteSection = ({
                 )}
               </div>
               <div className="pt-3">
-                <p className="text-sm font-semibold text-slate-800 truncate">{color.name}</p>
+                <p className="truncate text-sm font-semibold text-slate-800">{color.name}</p>
                 <p className="text-xs text-slate-500">{color.hex}</p>
               </div>
             </div>
@@ -419,7 +419,7 @@ const MetaPill = ({ text, tone = "default" }) => {
         : "bg-slate-50 text-slate-600 border-slate-200";
 
   return (
-    <span className={`text-xs font-semibold px-3 py-1 rounded-full border ${toneClass}`}>
+    <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${toneClass}`}>
       {text}
     </span>
   );
@@ -433,7 +433,7 @@ const StickerBadge = ({ label, tone }) => {
 
   return (
     <span
-      className={`absolute -bottom-2 -right-2 px-2.5 py-1 rounded-full text-[10px] font-black tracking-[0.16em] shadow-md rotate-[-8deg] ${toneClass}`}
+      className={`absolute -right-2 -bottom-2 rotate-[-8deg] rounded-full px-2.5 py-1 text-[10px] font-black tracking-[0.16em] shadow-md ${toneClass}`}
     >
       {label}
     </span>

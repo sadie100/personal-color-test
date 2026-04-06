@@ -16,6 +16,7 @@ The app supports **Korean and English** simultaneously. A language toggle button
 Landing screen. Introduces the test concept and prompts the user to begin.
 
 **UI Elements**
+
 - Language toggle (top-right): `한국어 / EN` — switches the app language globally
 - Title: "퍼스널 컬러 테스트" / "Personal Color Test"
 - Description: Brief explanation of the 12-season system
@@ -30,6 +31,7 @@ Landing screen. Introduces the test concept and prompts the user to begin.
 | Toggle language | Click language toggle | Switches all UI text between Korean and English |
 
 **State**
+
 - Manages: nothing (stateless, receives `lang` and `onToggleLang` as props)
 - Transitions to: `test` when Start is clicked
 
@@ -41,6 +43,7 @@ Landing screen. Introduces the test concept and prompts the user to begin.
 Main quiz screen. Displays colors one at a time for the user to rate.
 
 **UI Elements**
+
 - ColorCard: Full-screen background filled with the current color; shows color name and hex value in the bottom-left
 - ProgressBar: Thin bar at the top, fills left-to-right as the user advances
 - Counter (top-left): `{currentIndex + 1} / {total}` and liked count label ("좋아요" / "Liked")
@@ -59,11 +62,13 @@ Main quiz screen. Displays colors one at a time for the user to rate.
 | Toggle language | Click language toggle | Switches all UI text between Korean and English |
 
 **State**
+
 - Manages: `currentIndex`, `likedColors[]`, `dislikedColors[]`, `isTransitioning`, `shuffledColors[]`
 - Receives: `lang` as prop
 - Transitions to: `results` when last color is rated or early exit is triggered
 
 **Behavior**
+
 - All ~180 colors are shuffled randomly on mount (Fisher-Yates via `Array.sort(() => Math.random() - 0.5)`)
 - A 300ms transition lock (`isTransitioning`) prevents double-input during card fade animations
 - Color card fades out (opacity 0) on advance, then the next card appears
@@ -78,6 +83,7 @@ Main quiz screen. Displays colors one at a time for the user to rate.
 Shows the user's diagnosed personal color type and derived color recommendations.
 
 **UI Elements**
+
 - Language toggle: consistent position with other screens
 - Result header: "당신의 퍼스널 컬러" / "Your Personal Color" with the color type string (e.g. "Autumn Muted") with gradient text
 - "좋아한 색상" / "Colors You Liked" grid: All liked colors shown as swatches with names
@@ -94,11 +100,13 @@ Shows the user's diagnosed personal color type and derived color recommendations
 | Toggle language | Click language toggle | Switches all UI text between Korean and English |
 
 **State**
+
 - Manages: nothing (derived from props)
 - Receives: `lang` as prop
 - Transitions to: `test` on retry
 
 **Behavior**
+
 - If `likedColors` is empty, analysis returns `null` and an error state is shown with a retry button
   - Korean: "좋아요한 색이 없어서 분석할 수 없어요."
   - English: "No liked colors to analyze."
@@ -166,12 +174,12 @@ Represents a single color swatch.
 
 ```ts
 {
-  name: string       // display name (e.g. "Peach Blossom")
-  hex:  string       // CSS hex (e.g. "#FFCBA4")
+  name: string; // display name (e.g. "Peach Blossom")
+  hex: string; // CSS hex (e.g. "#FFCBA4")
   hsl: {
-    h: number        // hue, 0–360
-    s: number        // saturation, 0–100
-    l: number        // lightness, 0–100
+    h: number; // hue, 0–360
+    s: number; // saturation, 0–100
+    l: number; // lightness, 0–100
   }
 }
 ```
