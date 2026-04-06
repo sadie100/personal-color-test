@@ -1,4 +1,9 @@
-export const SwipeButtons = ({ onDislike, onLike }) => {
+interface SwipeButtonsProps {
+  onDislike: () => void;
+  onLike: () => void;
+}
+
+export const SwipeButtons = ({ onDislike, onLike }: SwipeButtonsProps) => {
   return (
     <div className="absolute right-0 bottom-8 left-0 flex items-center justify-center gap-4 px-4">
       <button

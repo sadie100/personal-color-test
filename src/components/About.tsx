@@ -1,8 +1,46 @@
-import { translations } from "../i18n/translations";
-import { colorData } from "../data/colorData";
 import pccsImage from "../assets/pccs_tone_map.jpg";
+import { colorData } from "../data/colorData";
+import { translations } from "../i18n/translations";
+import type {
+  AboutSeasonDescKey,
+  AboutSeasonTitleKey,
+  AboutToneDescKey,
+  AboutToneTitleKey,
+  Color,
+  Lang,
+  SeasonTone,
+} from "../types";
 
-const seasonConfig = [
+interface AboutProps {
+  lang: Lang;
+  onStart: () => void;
+}
+
+interface SeasonConfigItem {
+  key: "Spring" | "Summer" | "Autumn" | "Winter";
+  titleKey: AboutSeasonTitleKey;
+  descKey: AboutSeasonDescKey;
+  gradient: string;
+  borderColor: string;
+  bgColor: string;
+  sampleKey: SeasonTone;
+}
+
+interface ToneConfigItem {
+  titleKey: AboutToneTitleKey;
+  descKey: AboutToneDescKey;
+  sampleKey: SeasonTone;
+  icon: string;
+  bgColor: string;
+  borderColor: string;
+}
+
+interface ColorSwatchesProps {
+  colors: ReadonlyArray<Color>;
+  count?: number;
+}
+
+const seasonConfig: ReadonlyArray<SeasonConfigItem> = [
   {
     key: "Spring",
     titleKey: "aboutSpringTitle",
@@ -41,7 +79,7 @@ const seasonConfig = [
   },
 ];
 
-const toneConfig = [
+const toneConfig: ReadonlyArray<ToneConfigItem> = [
   {
     titleKey: "aboutLightTitle",
     descKey: "aboutLightDesc",
@@ -68,11 +106,11 @@ const toneConfig = [
   },
 ];
 
-const ColorSwatches = ({ colors, count = 5 }) => (
+const ColorSwatches = ({ colors, count = 5 }: ColorSwatchesProps) => (
   <div className="mt-3 flex gap-1.5">
-    {colors.slice(0, count).map((color, i) => (
+    {colors.slice(0, count).map((color, index) => (
       <div
-        key={i}
+        key={`${color.hex}-${index}`}
         className="h-8 w-8 rounded-full border border-white/50 shadow-sm"
         style={{ backgroundColor: color.hex }}
         title={color.name}
@@ -81,12 +119,11 @@ const ColorSwatches = ({ colors, count = 5 }) => (
   </div>
 );
 
-export const About = ({ lang, onStart }) => {
+export const About = ({ lang, onStart }: AboutProps) => {
   const t = translations[lang];
 
   return (
     <div className="min-h-screen w-full bg-gray-50 pt-16">
-      {/* Hero */}
       <section className="bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 px-4 py-16 text-center text-white">
         <h1 className="mb-4 text-4xl font-bold drop-shadow-lg md:text-5xl">{t.aboutTitle}</h1>
         <p className="mx-auto max-w-2xl text-lg leading-relaxed break-keep opacity-95 md:text-xl">
@@ -95,7 +132,6 @@ export const About = ({ lang, onStart }) => {
       </section>
 
       <div className="mx-auto max-w-4xl space-y-16 px-4 py-12">
-        {/* What is Personal Color? */}
         <section className="rounded-2xl bg-white p-6 shadow-lg md:p-10">
           <h2 className="mb-4 text-2xl font-bold text-gray-800 md:text-3xl">{t.aboutWhatIsPC}</h2>
           <p className="text-base leading-relaxed break-keep text-gray-600 md:text-lg">
@@ -103,7 +139,6 @@ export const About = ({ lang, onStart }) => {
           </p>
         </section>
 
-        {/* PCCS Tone System */}
         <section className="rounded-2xl bg-white p-6 shadow-lg md:p-10">
           <h2 className="mb-6 text-2xl font-bold text-gray-800 md:text-3xl">{t.aboutPCCSTitle}</h2>
           <div className="mb-6 flex justify-center">
@@ -118,7 +153,6 @@ export const About = ({ lang, onStart }) => {
           </p>
         </section>
 
-        {/* 4 Seasons */}
         <section>
           <h2 className="mb-8 text-center text-2xl font-bold text-gray-800 md:text-3xl">
             {t.aboutSeasonsTitle}
@@ -139,7 +173,6 @@ export const About = ({ lang, onStart }) => {
           </div>
         </section>
 
-        {/* 3 Tones */}
         <section>
           <h2 className="mb-8 text-center text-2xl font-bold text-gray-800 md:text-3xl">
             {t.aboutTonesTitle}
@@ -152,25 +185,22 @@ export const About = ({ lang, onStart }) => {
               >
                 <div className="mb-2 text-2xl">{tone.icon}</div>
                 <h3 className="mb-2 text-lg font-bold text-gray-800">{t[tone.titleKey]}</h3>
-                <p className="text-sm leading-relaxed break-keep text-gray-600">
-                  {t[tone.descKey]}
-                </p>
+                <p className="text-sm leading-relaxed break-keep text-gray-600">{t[tone.descKey]}</p>
                 <ColorSwatches colors={colorData[tone.sampleKey]} count={4} />
               </div>
             ))}
           </div>
         </section>
 
-        {/* How it works */}
         <section className="rounded-2xl bg-white p-6 shadow-lg md:p-10">
           <h2 className="mb-6 text-center text-2xl font-bold text-gray-800 md:text-3xl">
             {t.aboutHowItWorks}
           </h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            {[t.aboutStep1, t.aboutStep2, t.aboutStep3].map((step, i) => (
-              <div key={i} className="text-center">
+            {[t.aboutStep1, t.aboutStep2, t.aboutStep3].map((step, index) => (
+              <div key={step} className="text-center">
                 <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-purple-500 text-xl font-bold text-white">
-                  {i + 1}
+                  {index + 1}
                 </div>
                 <p className="text-sm leading-relaxed text-balance break-keep text-gray-600">
                   {step}
@@ -180,7 +210,6 @@ export const About = ({ lang, onStart }) => {
           </div>
         </section>
 
-        {/* CTA */}
         <section className="rounded-2xl bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 p-8 text-center text-white shadow-lg md:p-12">
           <h2 className="mb-4 text-2xl font-bold md:text-3xl">{t.aboutCTA}</h2>
           <button
@@ -192,7 +221,6 @@ export const About = ({ lang, onStart }) => {
         </section>
       </div>
 
-      {/* Bottom spacer */}
       <div className="h-12" />
     </div>
   );

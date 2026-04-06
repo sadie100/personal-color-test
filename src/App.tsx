@@ -1,12 +1,14 @@
-import { useState, useEffect } from "react";
-import { Home } from "./components/Home";
-import { ColorTest } from "./components/ColorTest";
-import { Results } from "./components/Results";
-import { Header } from "./components/Header";
-import { About } from "./components/About";
-import "./index.css";
+import { useEffect, useState } from "react";
 
-const PREVIEW_RESULT = {
+import { About } from "./components/About";
+import { ColorTest } from "./components/ColorTest";
+import { Header } from "./components/Header";
+import { Home } from "./components/Home";
+import { Results } from "./components/Results";
+import "./index.css";
+import type { ColorWithSeason, Lang, Screen, TestCompletePayload, TestCompleteResult } from "./types";
+
+const PREVIEW_RESULT: TestCompletePayload = {
   likedColors: [
     {
       hex: "#FFA07A",
@@ -14,7 +16,12 @@ const PREVIEW_RESULT = {
       hsl: { h: 17, s: 100, l: 74 },
       seasonTone: "Autumn Light",
     },
-    { hex: "#DEB887", name: "Burlywood", hsl: { h: 34, s: 57, l: 70 }, seasonTone: "Autumn Light" },
+    {
+      hex: "#DEB887",
+      name: "Burlywood",
+      hsl: { h: 34, s: 57, l: 70 },
+      seasonTone: "Autumn Light",
+    },
     { hex: "#FFD700", name: "Gold", hsl: { h: 51, s: 100, l: 50 }, seasonTone: "Spring Bright" },
     {
       hex: "#FF8C00",
@@ -63,59 +70,83 @@ const PREVIEW_RESULT = {
   ],
 };
 
+const getInitialScreen = (preview: string | null): Screen => {
+  if (preview === "results") {
+    return "results";
+  }
+
+  if (preview === "about") {
+    return "about";
+  }
+
+  return "home";
+};
+
+const getResultPayload = (result: TestCompleteResult): TestCompletePayload => {
+  if (Array.isArray(result)) {
+    return {
+      likedColors: result,
+      dislikedColors: [],
+    };
+  }
+
+  return result;
+};
+
 function App() {
   const preview = new URLSearchParams(window.location.search).get("preview");
-  const initialScreen = preview === "results" ? "results" : preview === "about" ? "about" : "home";
-  const [screen, setScreen] = useState(initialScreen);
-  const [likedColors, setLikedColors] = useState(
+  const initialScreen = getInitialScreen(preview);
+  const [screen, setScreen] = useState<Screen>(initialScreen);
+  const [likedColors, setLikedColors] = useState<ColorWithSeason[]>(
     preview === "results" ? PREVIEW_RESULT.likedColors : [],
   );
-  const [dislikedColors, setDislikedColors] = useState(
+  const [dislikedColors, setDislikedColors] = useState<ColorWithSeason[]>(
     preview === "results" ? PREVIEW_RESULT.dislikedColors : [],
   );
-  const [lang, setLang] = useState("ko");
+  const [lang, setLang] = useState<Lang>("ko");
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [screen]);
 
-  const handleToggleLang = (newLang) => setLang(newLang);
+  const handleToggleLang = (newLang: Lang) => setLang(newLang);
 
   const handleStartTest = () => setScreen("test");
 
-  const handleTestComplete = (result) => {
-    if (Array.isArray(result)) {
-      setLikedColors(result);
-      setDislikedColors([]);
-      setScreen("results");
-      return;
-    }
-
-    setLikedColors(result.likedColors);
-    setDislikedColors(result.dislikedColors);
+  const handleTestComplete = (result: TestCompleteResult) => {
+    const payload = getResultPayload(result);
+    setLikedColors(payload.likedColors);
+    setDislikedColors(payload.dislikedColors);
     setScreen("results");
   };
 
-  const handleRetry = () => {
+  const resetSelections = () => {
     setLikedColors([]);
     setDislikedColors([]);
+  };
+
+  const handleRetry = () => {
+    resetSelections();
     setScreen("test");
   };
 
   const handleGoHome = () => {
-    setLikedColors([]);
-    setDislikedColors([]);
+    resetSelections();
     setScreen("home");
   };
 
-  const handleNavigate = (target) => {
+  const handleNavigate = (target: Screen) => {
     if (target === "test") {
       handleStartTest();
-    } else if (target === "home") {
-      handleGoHome();
-    } else {
-      setScreen(target);
+      return;
     }
+
+    if (target === "home") {
+      handleGoHome();
+      return;
+    }
+
+    setScreen(target);
   };
 
   return (

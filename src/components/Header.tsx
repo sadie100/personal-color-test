@@ -1,12 +1,21 @@
 import { useState } from "react";
-import { LangToggle } from "./LangToggle";
-import { translations } from "../i18n/translations";
 
-export const Header = ({ lang, onToggleLang, screen, onNavigate }) => {
+import { translations } from "../i18n/translations";
+import type { Lang, Screen } from "../types";
+import { LangToggle } from "./LangToggle";
+
+interface HeaderProps {
+  lang: Lang;
+  onToggleLang: (lang: Lang) => void;
+  screen: Screen;
+  onNavigate: (target: Screen) => void;
+}
+
+export const Header = ({ lang, onToggleLang, screen, onNavigate }: HeaderProps) => {
   const t = translations[lang];
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const handleNav = (target) => {
+  const handleNav = (target: Screen) => {
     onNavigate(target);
     setMenuOpen(false);
   };
@@ -14,7 +23,6 @@ export const Header = ({ lang, onToggleLang, screen, onNavigate }) => {
   return (
     <header className="fixed top-0 z-50 w-full border-b border-gray-200 bg-white/85 backdrop-blur-md">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
-        {/* Logo */}
         <button
           onClick={() => handleNav("home")}
           className="cursor-pointer bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-lg font-bold text-transparent"
@@ -22,7 +30,6 @@ export const Header = ({ lang, onToggleLang, screen, onNavigate }) => {
           Personal Color Test
         </button>
 
-        {/* Desktop nav */}
         <nav className="hidden items-center gap-6 md:flex">
           <button
             onClick={() => handleNav("about")}
@@ -43,11 +50,10 @@ export const Header = ({ lang, onToggleLang, screen, onNavigate }) => {
           <LangToggle lang={lang} onToggle={onToggleLang} />
         </nav>
 
-        {/* Mobile: lang toggle + hamburger */}
         <div className="flex items-center gap-2 md:hidden">
           <LangToggle lang={lang} onToggle={onToggleLang} />
           <button
-            onClick={() => setMenuOpen((v) => !v)}
+            onClick={() => setMenuOpen((value) => !value)}
             className="cursor-pointer p-2 text-gray-600 hover:text-gray-900"
             aria-label="Menu"
           >
@@ -72,7 +78,6 @@ export const Header = ({ lang, onToggleLang, screen, onNavigate }) => {
         </div>
       </div>
 
-      {/* Mobile dropdown */}
       {menuOpen && (
         <div className="space-y-2 border-t border-gray-100 bg-white/95 px-4 py-3 backdrop-blur-md md:hidden">
           <button

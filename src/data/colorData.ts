@@ -1,4 +1,21 @@
-export const colorData = {
+import type { ColorDataMap, SeasonTone } from "../types";
+
+export const seasonTones = [
+  "Spring Light",
+  "Spring Bright",
+  "Spring Muted",
+  "Summer Light",
+  "Summer Bright",
+  "Summer Muted",
+  "Autumn Light",
+  "Autumn Bright",
+  "Autumn Muted",
+  "Winter Light",
+  "Winter Bright",
+  "Winter Muted",
+] as const satisfies readonly SeasonTone[];
+
+export const colorData: ColorDataMap = {
   "Spring Light": [
     { name: "Peach Blossom", hex: "#FFCBA4", hsl: { h: 30, s: 100, l: 82 } },
     { name: "Pale Yellow", hex: "#FFFACD", hsl: { h: 60, s: 100, l: 79 } },
@@ -205,35 +222,19 @@ export const colorData = {
   ],
 };
 
-export const seasonTones = [
-  "Spring Light",
-  "Spring Bright",
-  "Spring Muted",
-  "Summer Light",
-  "Summer Bright",
-  "Summer Muted",
-  "Autumn Light",
-  "Autumn Bright",
-  "Autumn Muted",
-  "Winter Light",
-  "Winter Bright",
-  "Winter Muted",
-];
-
-export const getOppositeType = (type) => {
-  const opposites = {
-    "Spring Light": "Autumn Muted",
-    "Spring Bright": "Autumn Muted",
-    "Spring Muted": "Autumn Bright",
-    "Summer Light": "Winter Muted",
-    "Summer Bright": "Winter Muted",
-    "Summer Muted": "Winter Bright",
-    "Autumn Light": "Spring Muted",
-    "Autumn Bright": "Spring Muted",
-    "Autumn Muted": "Spring Bright",
-    "Winter Light": "Summer Muted",
-    "Winter Bright": "Summer Muted",
-    "Winter Muted": "Summer Bright",
-  };
-  return opposites[type] || type;
+const oppositeTypeMap: Record<SeasonTone, SeasonTone> = {
+  "Spring Light": "Autumn Muted",
+  "Spring Bright": "Autumn Muted",
+  "Spring Muted": "Autumn Bright",
+  "Summer Light": "Winter Muted",
+  "Summer Bright": "Winter Muted",
+  "Summer Muted": "Winter Bright",
+  "Autumn Light": "Spring Muted",
+  "Autumn Bright": "Spring Muted",
+  "Autumn Muted": "Spring Bright",
+  "Winter Light": "Summer Muted",
+  "Winter Bright": "Summer Muted",
+  "Winter Muted": "Summer Bright",
 };
+
+export const getOppositeType = (type: SeasonTone): SeasonTone => oppositeTypeMap[type];

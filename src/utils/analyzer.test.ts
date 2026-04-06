@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { calculateChromaFromHsl, calculateTurbidityFromHsl } from "./analyzer";
 
 describe("chroma/turbidity calculations", () => {

@@ -1,5 +1,14 @@
-export const ColorCard = ({ color, isTransitioning }) => {
-  if (!color) return null;
+import type { ColorWithSeason } from "../types";
+
+interface ColorCardProps {
+  color: ColorWithSeason | null;
+  isTransitioning: boolean;
+}
+
+export const ColorCard = ({ color, isTransitioning }: ColorCardProps) => {
+  if (!color) {
+    return null;
+  }
 
   return (
     <div

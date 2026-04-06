@@ -1,6 +1,13 @@
 import { translations } from "../i18n/translations";
+import type { Lang } from "../types";
 
-export const Home = ({ onStart, lang, onAbout }) => {
+interface HomeProps {
+  onStart: () => void;
+  lang: Lang;
+  onAbout: () => void;
+}
+
+export const Home = ({ onStart, lang, onAbout }: HomeProps) => {
   const t = translations[lang];
 
   return (

@@ -1,18 +1,79 @@
 import { useState } from "react";
-import { analyzePersonalColor, getBestResults, getWorstResult } from "../utils/analyzer";
+
 import { colorData } from "../data/colorData";
 import { translations } from "../i18n/translations";
+import { analyzePersonalColor, getBestResults, getWorstResult } from "../utils/analyzer";
+import type {
+  Color,
+  ColorWithSeason,
+  Lang,
+  SeasonTone,
+  TranslationSchema,
+} from "../types";
 
-const getSelectionKey = (seasonTone, hex) => `${seasonTone}::${hex}`;
+type BadgeMode = "liked" | "disliked";
+type MetaTone = "default" | BadgeMode;
+type ToneCardVariant = "best" | "second" | "third" | "worst";
 
-const buildSelectionSet = (colors) =>
-  new Set(
-    colors
-      .filter((color) => color?.seasonTone && color?.hex)
-      .map((color) => getSelectionKey(color.seasonTone, color.hex)),
-  );
+interface ResultsProps {
+  likedColors: ColorWithSeason[];
+  dislikedColors?: ColorWithSeason[];
+  onRetry: () => void;
+  lang: Lang;
+}
 
-const toneCardStyles = {
+interface ToneCardStyle {
+  containerClass: string;
+  labelClass: string;
+  valueClass: string;
+  badgeClass: string;
+  borderClass: string;
+}
+
+interface ToneCardData extends ToneCardStyle {
+  label: string;
+  tone: SeasonTone;
+}
+
+interface ResultToneCardProps {
+  card: ToneCardData;
+  className?: string;
+  toneClassName?: string;
+  previewColors?: ReadonlyArray<Color>;
+}
+
+interface PaletteSectionProps {
+  title: string;
+  description: string;
+  tone: SeasonTone;
+  badgeClass: string;
+  borderClass: string;
+  likedSelectionSet: ReadonlySet<string>;
+  dislikedSelectionSet: ReadonlySet<string>;
+  badgeMode?: BadgeMode;
+  t: TranslationSchema;
+  muted?: boolean;
+  insideCard?: boolean;
+}
+
+interface MetaPillProps {
+  text: string;
+  tone?: MetaTone;
+}
+
+interface StickerBadgeProps {
+  label: string;
+  tone: BadgeMode;
+}
+
+const getSelectionKey = (seasonTone: SeasonTone, hex: string) => `${seasonTone}::${hex}`;
+
+const buildSelectionSet = (colors: ReadonlyArray<ColorWithSeason>): Set<string> =>
+  new Set(colors.map((color) => getSelectionKey(color.seasonTone, color.hex)));
+
+const isToneCardData = (card: ToneCardData | null): card is ToneCardData => card !== null;
+
+const toneCardStyles: Record<ToneCardVariant, ToneCardStyle> = {
   best: {
     containerClass:
       "border-blue-100 bg-gradient-to-br from-white via-blue-50 to-purple-50 shadow-lg shadow-blue-100/60",
@@ -44,18 +105,25 @@ const toneCardStyles = {
   },
 };
 
-export const Results = ({ likedColors, dislikedColors = [], onRetry, lang }) => {
+export const Results = ({
+  likedColors,
+  dislikedColors = [],
+  onRetry,
+  lang,
+}: ResultsProps) => {
   const t = translations[lang];
   const bestResults = getBestResults(likedColors);
   const personalColorType = analyzePersonalColor(likedColors);
   const worstColorType = getWorstResult(dislikedColors, personalColorType);
   const secondaryBestResults = bestResults.slice(1, 3);
-  const [selectedPaletteTone, setSelectedPaletteTone] = useState(personalColorType);
+  const [selectedPaletteTone, setSelectedPaletteTone] = useState<SeasonTone | null>(
+    personalColorType,
+  );
 
   const likedSelectionSet = buildSelectionSet(likedColors);
   const dislikedSelectionSet = buildSelectionSet(dislikedColors);
 
-  const bestCard = personalColorType
+  const bestCard: ToneCardData | null = personalColorType
     ? {
         label: t.bestColor,
         tone: personalColorType,
@@ -63,19 +131,21 @@ export const Results = ({ likedColors, dislikedColors = [], onRetry, lang }) => 
       }
     : null;
 
-  const comparisonCards = secondaryBestResults.map((tone, index) => ({
+  const comparisonCards: ToneCardData[] = secondaryBestResults.map((tone, index) => ({
     label: index === 0 ? t.secondBestColor : t.thirdBestColor,
     tone,
     ...(index === 0 ? toneCardStyles.second : toneCardStyles.third),
   }));
 
-  const topCards = [bestCard, ...comparisonCards].filter(Boolean);
-  const activePaletteTone = topCards.some((card) => card.tone === selectedPaletteTone)
-    ? selectedPaletteTone
-    : topCards[0]?.tone || null;
-  const activePaletteCard = topCards.find((card) => card.tone === activePaletteTone) || null;
+  const topCards = [bestCard, ...comparisonCards].filter(isToneCardData);
+  const activePaletteTone =
+    selectedPaletteTone && topCards.some((card) => card.tone === selectedPaletteTone)
+      ? selectedPaletteTone
+      : (topCards[0]?.tone ?? null);
+  const activePaletteCard =
+    topCards.find((card) => card.tone === activePaletteTone) ?? null;
 
-  const worstCard = worstColorType
+  const worstCard: ToneCardData | null = worstColorType
     ? {
         label: t.worstColor,
         tone: worstColorType,
@@ -113,7 +183,7 @@ export const Results = ({ likedColors, dislikedColors = [], onRetry, lang }) => 
                   card={bestCard}
                   className="min-h-[168px]"
                   toneClassName="text-3xl sm:text-4xl"
-                  previewColors={(colorData[bestCard.tone] || []).slice(0, 5)}
+                  previewColors={colorData[bestCard.tone].slice(0, 5)}
                 />
               </div>
             )}
@@ -124,7 +194,7 @@ export const Results = ({ likedColors, dislikedColors = [], onRetry, lang }) => 
                     key={card.tone}
                     card={card}
                     className="min-h-[144px]"
-                    previewColors={(colorData[card.tone] || []).slice(0, 5)}
+                    previewColors={colorData[card.tone].slice(0, 5)}
                   />
                 ))}
               </div>
@@ -236,10 +306,10 @@ export const Results = ({ likedColors, dislikedColors = [], onRetry, lang }) => 
           </button>
           <button
             onClick={() => {
-              navigator.clipboard.writeText(
+              void navigator.clipboard.writeText(
                 t.shareText(personalColorType, secondaryBestResults, worstColorType),
               );
-              alert(t.copied);
+              window.alert(t.copied);
             }}
             className="flex-1 rounded-lg bg-gray-500 py-3 font-bold text-white transition-colors hover:bg-gray-600"
           >
@@ -251,14 +321,15 @@ export const Results = ({ likedColors, dislikedColors = [], onRetry, lang }) => 
   );
 };
 
-const ResultToneCard = ({ card, className = "", toneClassName = "", previewColors = [] }) => {
+const ResultToneCard = ({
+  card,
+  className = "",
+  toneClassName = "",
+  previewColors = [],
+}: ResultToneCardProps) => {
   return (
     <div
-      className={[
-        "w-full flex-col items-center rounded-3xl border p-5 text-left",
-        card.containerClass,
-        className,
-      ]
+      className={["w-full flex-col items-center rounded-3xl border p-5 text-left", card.containerClass, className]
         .filter(Boolean)
         .join(" ")}
     >
@@ -294,13 +365,8 @@ const PaletteSection = ({
   t,
   muted = false,
   insideCard = false,
-}) => {
-  const paletteColors = colorData[tone] || [];
-
-  if (paletteColors.length === 0) {
-    return null;
-  }
-
+}: PaletteSectionProps) => {
+  const paletteColors = colorData[tone];
   const likedCount = paletteColors.filter((color) =>
     likedSelectionSet.has(getSelectionKey(tone, color.hex)),
   ).length;
@@ -342,11 +408,7 @@ const PaletteSection = ({
           return (
             <div
               key={`${tone}-${color.name}-${color.hex}`}
-              className={[
-                "rounded-2xl border bg-white p-3 transition-shadow",
-                borderClass,
-                muted ? "opacity-75" : "",
-              ]
+              className={["rounded-2xl border bg-white p-3 transition-shadow", borderClass, muted ? "opacity-75" : ""]
                 .filter(Boolean)
                 .join(" ")}
             >
@@ -375,7 +437,7 @@ const PaletteSection = ({
   );
 };
 
-const MetaPill = ({ text, tone = "default" }) => {
+const MetaPill = ({ text, tone = "default" }: MetaPillProps) => {
   const toneClass =
     tone === "liked"
       ? "bg-rose-50 text-rose-600 border-rose-100"
@@ -390,7 +452,7 @@ const MetaPill = ({ text, tone = "default" }) => {
   );
 };
 
-const StickerBadge = ({ label, tone }) => {
+const StickerBadge = ({ label, tone }: StickerBadgeProps) => {
   const toneClass =
     tone === "liked"
       ? "bg-rose-500 text-white shadow-rose-200"

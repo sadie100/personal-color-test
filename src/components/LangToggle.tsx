@@ -1,28 +1,41 @@
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 
-const options = [
+import type { Lang } from "../types";
+
+interface LangToggleProps {
+  lang: Lang;
+  onToggle: (value: Lang) => void;
+}
+
+const options: ReadonlyArray<{ value: Lang; label: string }> = [
   { value: "ko", label: "한국어" },
   { value: "en", label: "English" },
 ];
 
-export const LangToggle = ({ lang, onToggle }) => {
+export const LangToggle = ({ lang, onToggle }: LangToggleProps) => {
   const [open, setOpen] = useState(false);
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement | null>(null);
+  const defaultOption = options[0]!;
 
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    const handleClickOutside = (event: MouseEvent) => {
+      const targetNode = event.target;
+
+      if (ref.current && targetNode instanceof Node && !ref.current.contains(targetNode)) {
+        setOpen(false);
+      }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const current = options.find((o) => o.value === lang);
+  const current = options.find((option) => option.value === lang) ?? defaultOption;
 
   return (
     <div ref={ref} className="relative">
       <button
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => setOpen((value) => !value)}
         className="flex items-center gap-1.5 rounded-full border border-white/50 bg-white/90 py-2.5 pr-3 pl-4 text-sm font-semibold text-gray-800 shadow-lg backdrop-blur-sm transition-all hover:bg-white active:scale-95"
       >
         <svg
@@ -63,16 +76,16 @@ export const LangToggle = ({ lang, onToggle }) => {
 
       {open && (
         <div className="absolute right-0 z-50 mt-1.5 min-w-full overflow-hidden rounded-xl border border-gray-100 bg-white shadow-xl">
-          {options.map((opt) => (
+          {options.map((option) => (
             <button
-              key={opt.value}
+              key={option.value}
               onClick={() => {
-                onToggle(opt.value);
+                onToggle(option.value);
                 setOpen(false);
               }}
-              className={`w-full px-4 py-2.5 text-left text-sm font-medium transition-colors hover:bg-gray-50 ${lang === opt.value ? "bg-purple-50/60 text-purple-600" : "text-gray-700"}`}
+              className={`w-full px-4 py-2.5 text-left text-sm font-medium transition-colors hover:bg-gray-50 ${lang === option.value ? "bg-purple-50/60 text-purple-600" : "text-gray-700"}`}
             >
-              {opt.label}
+              {option.label}
             </button>
           ))}
         </div>

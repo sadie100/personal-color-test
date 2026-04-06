@@ -1,29 +1,41 @@
-import { useState, useEffect, useCallback } from "react";
-import { colorData } from "../data/colorData";
-import { ColorCard } from "./ColorCard";
-import { SwipeButtons } from "./SwipeButtons";
-import { ProgressBar } from "./ProgressBar";
-import { LangToggle } from "./LangToggle";
-import { translations } from "../i18n/translations";
+import { useCallback, useEffect, useState } from "react";
 
-const allColors = Object.entries(colorData).flatMap(([seasonTone, colors]) =>
-  colors.map((color) => ({ ...color, seasonTone })),
+import { colorData, seasonTones } from "../data/colorData";
+import { translations } from "../i18n/translations";
+import type { ColorWithSeason, Lang, TestCompletePayload } from "../types";
+import { ColorCard } from "./ColorCard";
+import { LangToggle } from "./LangToggle";
+import { ProgressBar } from "./ProgressBar";
+import { SwipeButtons } from "./SwipeButtons";
+
+interface ColorTestProps {
+  onComplete: (result: TestCompletePayload) => void;
+  onHome: () => void;
+  lang: Lang;
+  onToggleLang: (newLang: Lang) => void;
+}
+
+const allColors: ColorWithSeason[] = seasonTones.flatMap((seasonTone) =>
+  colorData[seasonTone].map((color) => ({ ...color, seasonTone })),
 );
 
-export const ColorTest = ({ onComplete, onHome, lang, onToggleLang }) => {
+export const ColorTest = ({ onComplete, onHome, lang, onToggleLang }: ColorTestProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [likedColors, setLikedColors] = useState([]);
-  const [dislikedColors, setDislikedColors] = useState([]);
+  const [likedColors, setLikedColors] = useState<ColorWithSeason[]>([]);
+  const [dislikedColors, setDislikedColors] = useState<ColorWithSeason[]>([]);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [shuffledColors] = useState(() => [...allColors].sort(() => Math.random() - 0.5));
+  const [shuffledColors] = useState<ColorWithSeason[]>(() =>
+    [...allColors].sort(() => Math.random() - 0.5),
+  );
 
   const t = translations[lang];
-
-  const currentColor = shuffledColors[currentIndex];
+  const currentColor = shuffledColors[currentIndex] ?? null;
 
   const handleNext = useCallback(
-    (liked) => {
-      if (isTransitioning) return;
+    (liked: boolean) => {
+      if (isTransitioning || !currentColor) {
+        return;
+      }
 
       setIsTransitioning(true);
 
@@ -36,7 +48,7 @@ export const ColorTest = ({ onComplete, onHome, lang, onToggleLang }) => {
         setDislikedColors(nextDislikedColors);
       }
 
-      setTimeout(() => {
+      window.setTimeout(() => {
         if (currentIndex < shuffledColors.length - 1) {
           setCurrentIndex(currentIndex + 1);
           setIsTransitioning(false);
@@ -50,20 +62,24 @@ export const ColorTest = ({ onComplete, onHome, lang, onToggleLang }) => {
     },
     [
       currentIndex,
-      shuffledColors.length,
-      likedColors,
+      currentColor,
       dislikedColors,
       isTransitioning,
-      currentColor,
+      likedColors,
       onComplete,
+      shuffledColors.length,
     ],
   );
 
-  // Keyboard shortcuts
   useEffect(() => {
-    const handleKeyPress = (e) => {
-      if (e.key === "ArrowLeft") handleNext(false);
-      if (e.key === "ArrowRight") handleNext(true);
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.key === "ArrowLeft") {
+        handleNext(false);
+      }
+
+      if (event.key === "ArrowRight") {
+        handleNext(true);
+      }
     };
 
     window.addEventListener("keydown", handleKeyPress);
@@ -84,7 +100,6 @@ export const ColorTest = ({ onComplete, onHome, lang, onToggleLang }) => {
       <ColorCard color={currentColor} isTransitioning={isTransitioning} />
       <SwipeButtons onDislike={() => handleNext(false)} onLike={() => handleNext(true)} />
 
-      {/* Top info */}
       <div className="absolute top-4 left-4 text-white drop-shadow-lg">
         <p className="text-sm">
           {currentIndex + 1} / {shuffledColors.length}
@@ -94,7 +109,6 @@ export const ColorTest = ({ onComplete, onHome, lang, onToggleLang }) => {
         </p>
       </div>
 
-      {/* Top-right: home button + lang toggle */}
       <div className="absolute top-4 right-4 flex items-center gap-2">
         <button
           onClick={onHome}
@@ -105,7 +119,6 @@ export const ColorTest = ({ onComplete, onHome, lang, onToggleLang }) => {
         <LangToggle lang={lang} onToggle={onToggleLang} />
       </div>
 
-      {/* Intermediate results button */}
       {currentIndex >= 10 && (
         <button
           onClick={() =>
