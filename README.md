@@ -1,207 +1,85 @@
-# 퍼스널컬러 진단 웹 애플리케이션
+# 퍼스널 컬러 테스트
 
-An interactive web application for discovering your personal color type through a Tinder-style color preference test. This project implements the 12-season personal color system (Light/Bright/Muted × Spring/Summer/Autumn/Winter).
+좋아요/싫어요 기반의 컬러 선호 테스트로 12시즌 퍼스널 컬러 타입을 추정하는 React + TypeScript 웹 애플리케이션입니다.
 
-## 🎨 Features
+사용자는 컬러 카드를 빠르게 평가하고, 결과 화면에서 베스트 타입과 차순위 타입, 워스트 타입 및 팔레트 비교 결과를 확인할 수 있습니다.
 
-- **Full-screen color testing**: View colors at full screen to test against your skin tone
-- **Tinder-style interaction**: Like, dislike, or skip colors with intuitive buttons
-- **Keyboard shortcuts**: Use arrow keys (←/→) and spacebar for hands-free navigation
-- **Intelligent diagnosis**: Analyzes color preferences to determine your seasonal color type
-- **Personalized recommendations**: Shows recommended colors and colors to avoid
-- **Detailed results**: View your personal color type with comprehensive analysis
-- **Responsive design**: Works on desktop and mobile devices
+## 주요 기능
 
-## 🛠️ Tech Stack
+- 풀스크린 컬러 카드 기반 테스트
+- `ArrowRight` / `ArrowLeft` 키보드 단축키 지원
+- 한국어 / 영어 전환 지원
+- `about` 화면에서 퍼스널 컬러 및 PCCS 톤 시스템 소개
+- 결과 화면에서 상위 타입과 워스트 타입 비교
+- 팔레트별 좋아요/싫어요 겹침 표시
 
-- **React 18**: UI framework
-- **Vite**: Fast build tool and dev server
-- **Tailwind CSS v4**: Utility-first CSS framework
-- **JavaScript (ES6+)**: Color analysis and state management
+## 기술 스택
 
-## 📁 Project Structure
+- React 19
+- TypeScript
+- Vite
+- Tailwind CSS v4
+- ESLint
+- Prettier
+- Vitest
 
-```
-personal-color-test/
-├── src/
-│   ├── components/
-│   │   ├── ColorTest.jsx       # Main color testing interface
-│   │   ├── ColorCard.jsx       # Full-screen color display
-│   │   ├── SwipeButtons.jsx    # Like/Dislike/Skip buttons
-│   │   ├── ProgressBar.jsx     # Test progress indicator
-│   │   ├── Results.jsx         # Results and recommendations
-│   │   └── Home.jsx            # Welcome screen
-│   ├── data/
-│   │   └── colorData.js        # 12-season color palettes
-│   ├── utils/
-│   │   └── analyzer.js         # Color analysis algorithm
-│   ├── App.jsx                 # Main app component
-│   ├── main.jsx                # Entry point
-│   └── index.css               # Global styles
-├── index.html
-├── package.json
-├── vite.config.js
-├── tailwind.config.js
-└── postcss.config.js
-```
+## Getting Started
 
-## 🚀 Getting Started
+### Requirements
 
-### Prerequisites
+- Node.js 18+
+- npm
 
-- Node.js 16+ and npm
-
-### Installation
+### Install
 
 ```bash
-# Navigate to project directory
-cd personal-color-test
-
-# Install dependencies
 npm install
-
-# Start development server
-npm run dev
 ```
 
-The app will be available at `http://localhost:5173` (or next available port if busy).
-
-## 📖 How to Use
-
-1. **Start**: Click "Start Color Test" on the welcome screen
-2. **Test**: View each color at full screen
-   - **Like (♥)**: Right button or press →
-   - **Dislike (✕)**: Left button or press ←
-   - **Skip (⟳)**: Middle button or press Space
-3. **Results**: View your personal color type and recommendations
-
-## 🎯 The 12 Seasons System
-
-The system divides personal colors into 12 types:
-
-**Warm tones (Spring & Autumn):**
-
-- **Spring**: Light, bright, warm colors (Light, Bright, Muted)
-- **Autumn**: Deep, warm colors (Light, Bright, Muted)
-
-**Cool tones (Summer & Winter):**
-
-- **Summer**: Soft, cool colors (Light, Bright, Muted)
-- **Winter**: Deep, cool colors (Light, Bright, Muted)
-
-Each type has three tone variations:
-
-- **Light**: High lightness (pastels and pale colors)
-- **Bright**: High saturation (vivid colors)
-- **Muted**: Lower saturation (softer colors)
-
-## 🧮 Color Analysis Algorithm
-
-The diagnosis engine analyzes:
-
-1. **Lightness average**: Determines Light/Light vs. Bright/Muted
-2. **Saturation average**: Distinguishes Bright from Muted
-3. **Hue average**: Determines warm (Spring/Autumn) vs. cool (Summer/Winter)
-4. **Temperature**: Separates Spring from Autumn, Summer from Winter
-
-The algorithm calculates HSL values and performs circular mean for hue averaging (accounting for the circular nature of color hue).
-
-## 📊 Color Data
-
-- **Total colors**: ~180 colors across 12 seasonal types
-- **Per type**: 15 colors each
-- **Format**: Color name, hex value, and HSL values
-
-## 🎮 Keyboard Shortcuts
-
-- **→ / Right Click**: Like the current color
-- **← / Left Click**: Dislike the current color
-- **Space**: Skip to the next color
-
-## 🎨 UI Components
-
-### Home.jsx
-
-Welcome screen with project description and start button.
-
-### ColorTest.jsx
-
-Main testing interface managing:
-
-- Color shuffling
-- State management (liked/disliked)
-- Keyboard event handling
-- Progress tracking
-
-### Results.jsx
-
-Displays:
-
-- Diagnosed personal color type
-- All liked colors
-- Recommended colors for the diagnosed type
-- Colors to avoid
-- Detailed analysis
-
-## 🔧 Build & Deploy
-
-### Development
+### Run Dev Server
 
 ```bash
 npm run dev
 ```
 
-### Production Build
+기본 개발 서버 주소는 `http://localhost:5173`입니다.
 
-```bash
-npm run build
-npm run preview  # Preview built app
-```
+## 사용 방법
 
-The built files will be in the `dist/` directory.
+1. 홈 화면에서 테스트를 시작합니다.
+2. 각 색상을 `좋아요` 또는 `싫어요`로 평가합니다.
+3. 10개 이상 진행하면 중간 결과를 먼저 볼 수 있습니다.
+4. 결과 화면에서 추천 타입과 팔레트 비교 내용을 확인합니다.
 
-## 📝 Color Data Format
+테스트 조작:
 
-Each color is defined as:
+- `ArrowRight`: 좋아요
+- `ArrowLeft`: 싫어요
 
-```javascript
-{
-  name: "Color Name",
-  hex: "#RRGGBB",
-  hsl: { h: 0-360, s: 0-100, l: 0-100 }
-}
-```
+## Scripts
 
-## 🚀 Future Enhancement Ideas
+- `npm run dev`: 개발 서버 실행
+- `npm run build`: 프로덕션 빌드
+- `npm run preview`: 빌드 결과 미리보기
+- `npm run lint`: ESLint 실행
+- `npm run typecheck`: TypeScript 타입 검사
+- `npm run test`: Vitest watch 모드 실행
+- `npm run test:run`: 테스트 1회 실행
+- `npm run format`: Prettier 포맷 적용
+- `npm run format:check`: 포맷 검사
 
-- AI-powered color analysis refinement
-- Seasonal fashion coordination suggestions
-- Celebrity personal color comparisons
-- Friend comparison features
-- Multi-language support (Korean, English)
-- Share results as images
-- Local storage for saved results
-- Dark mode support
+## 프로젝트 구조
 
-## 📄 License
+- `src/App.tsx`: 화면 전환과 앱 전체 상태 관리
+- `src/components`: 화면 및 공통 UI 컴포넌트
+- `src/data/colorData.ts`: 12시즌 컬러 데이터
+- `src/utils/analyzer.ts`: 테스트 결과 분석 로직
+- `src/i18n/translations.ts`: 다국어 문자열
+- `src/types.ts`: 공통 타입 정의
+- `docs/`: 설계, 명세, 배포 문서
 
-This project is open source and available under the MIT License.
+## 문서
 
-## 👨‍💻 Development Notes
-
-- Uses React's `useState` and `useEffect` for state management
-- Keyboard shortcuts implemented with `useCallback` for performance
-- Color shuffling happens on mount using `Math.random()`
-- Transitions use CSS transitions for smooth animations
-- Responsive design using Tailwind CSS grid system
-
-## 🐛 Known Limitations
-
-- Results are based on color preference, not professional color analysis
-- Accurate results require testing with proper lighting
-- Mobile devices may need brightness adjustment for accurate testing
-- Results reflect color preference rather than traditional color theory
-
----
-
-**Created with ❤️ for discovering your perfect color palette**
+- `docs/SPEC.md`
+- `docs/DESIGN.md`
+- `docs/DEPLOYMENT.md`
