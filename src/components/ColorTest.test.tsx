@@ -5,27 +5,27 @@ import { describe, expect, it, vi } from "vitest";
 import { ColorTest } from "./ColorTest";
 
 describe("ColorTest setup flow", () => {
-  it("shows core preset defaults first and starts the test with customized categories", () => {
+  it("shows category selection first and starts the test with customized categories", () => {
     const handleComplete = vi.fn();
 
     render(
       <ColorTest onComplete={handleComplete} onHome={vi.fn()} lang="ko" onToggleLang={vi.fn()} />,
     );
 
-    expect(screen.getByText("어떤 방식으로 테스트할까요?")).toBeTruthy();
-    expect(screen.getByText("선택된 카테고리 5개")).toBeTruthy();
+    expect(screen.getByText("진단에 사용할 색조를 골라보세요")).toBeTruthy();
+    expect(screen.getByText("선택된 카테고리 7개")).toBeTruthy();
 
     const orangeButton = screen.getByRole("button", { name: "주황" });
-    expect(orangeButton.getAttribute("aria-pressed")).toBe("false");
+    expect(orangeButton.getAttribute("aria-pressed")).toBe("true");
 
     fireEvent.click(orangeButton);
 
     expect(screen.getByText("선택된 카테고리 6개")).toBeTruthy();
-    expect(orangeButton.getAttribute("aria-pressed")).toBe("true");
+    expect(orangeButton.getAttribute("aria-pressed")).toBe("false");
 
     fireEvent.click(screen.getByRole("button", { name: "이 설정으로 테스트 시작" }));
 
-    expect(screen.queryByText("어떤 방식으로 테스트할까요?")).toBeNull();
+    expect(screen.queryByText("진단에 사용할 색조를 골라보세요")).toBeNull();
     expect(screen.getByText(/좋아요:/)).toBeTruthy();
     expect(screen.getByText("현재 카테고리 빨강")).toBeTruthy();
     expect(screen.getByText("카테고리 진행 순서")).toBeTruthy();
@@ -34,10 +34,8 @@ describe("ColorTest setup flow", () => {
     expect(handleComplete).not.toHaveBeenCalled();
   });
 
-  it("resets categories when switching to full preset", () => {
+  it("starts with every hue category selected", () => {
     render(<ColorTest onComplete={vi.fn()} onHome={vi.fn()} lang="ko" onToggleLang={vi.fn()} />);
-
-    fireEvent.click(screen.getByRole("button", { name: /^전체 테스트/ }));
 
     expect(screen.getByText("선택된 카테고리 7개")).toBeTruthy();
     expect(screen.getByRole("button", { name: "주황" }).getAttribute("aria-pressed")).toBe("true");
@@ -48,6 +46,8 @@ describe("ColorTest setup flow", () => {
     render(<ColorTest onComplete={vi.fn()} onHome={vi.fn()} lang="ko" onToggleLang={vi.fn()} />);
 
     fireEvent.click(screen.getByRole("button", { name: "빨강" }));
+    fireEvent.click(screen.getByRole("button", { name: "주황" }));
+    fireEvent.click(screen.getByRole("button", { name: "노랑" }));
     fireEvent.click(screen.getByRole("button", { name: "초록" }));
     fireEvent.click(screen.getByRole("button", { name: "파랑" }));
     fireEvent.click(screen.getByRole("button", { name: "보라/핑크" }));
@@ -71,9 +71,11 @@ describe("ColorTest setup flow", () => {
 
     const redLabels = screen.getAllByText("빨강");
     const greenLabels = screen.getAllByText("초록");
+    const orangeLabels = screen.getAllByText("주황");
 
-    expect(screen.getByText("현재 카테고리 초록")).toBeTruthy();
+    expect(screen.getByText("현재 카테고리 주황")).toBeTruthy();
     expect(redLabels[redLabels.length - 1]?.className).not.toContain("bg-white text-gray-900");
-    expect(greenLabels[greenLabels.length - 1]?.className).toContain("bg-white text-gray-900");
+    expect(orangeLabels[orangeLabels.length - 1]?.className).toContain("bg-white text-gray-900");
+    expect(greenLabels[greenLabels.length - 1]?.className).not.toContain("bg-white text-gray-900");
   });
 });

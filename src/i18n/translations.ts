@@ -1,12 +1,12 @@
-import type { SeasonTone, TranslationSchema, Translations } from "../types";
+import type { PersonalColorType, TranslationSchema, Translations } from "../types";
 
 const ko: TranslationSchema = {
   navAbout: "퍼스널 컬러란?",
   navTest: "테스트 시작",
-  subtitle: "12시즌 컬러 시스템으로 나만의 컬러 타입 찾기",
+  subtitle: "8타입 퍼스널 컬러 시스템으로 나만의 타입 찾기",
   homeHeroQuote: "당신에게 어울리는 색은 따로 있습니다",
   homeHeroSubtext:
-    "퍼스널 컬러 분석으로 나만의 시즌 컬러 타입을 발견하세요. 피부톤에 맞는 색상을 알면 더 빛나는 나를 만들 수 있습니다.",
+    "이론 기반 진단 컬러칩으로 나의 퍼스널 컬러 8타입을 찾아보세요. 잘 맞는 색의 방향을 알면 스타일링이 훨씬 선명해집니다.",
   homeLearnMore: "퍼스널 컬러에 대해 알아보기",
   featureViewColors: "다양한 색상을 풀스크린으로 감상",
   featureLikeDislike: "좋아요 / 싫어요로 색상 평가",
@@ -18,13 +18,9 @@ const ko: TranslationSchema = {
   loading: "색상 불러오는 중...",
   homeButton: "← 처음으로",
   earlyExit: "중간 결과 보기 →",
-  testSetupTitle: "어떤 방식으로 테스트할까요?",
-  testSetupDescription: "전체 색상을 모두 보거나, 핵심 색조를 기본값으로 빠르게 시작한 뒤 원하는 카테고리만 골라서 테스트할 수 있어요.",
-  testPresetHelper: "프리셋은 시작용 기본값입니다. 아래 색조 체크는 자유롭게 바꿀 수 있어요.",
-  testPresetFull: "전체 테스트",
-  testPresetFullDescription: "모든 색조 카테고리를 기본 선택해서 전체 색상 세트로 테스트합니다.",
-  testPresetCore: "핵심 테스트",
-  testPresetCoreDescription: "빨강, 초록, 파랑, 보라/핑크, 무채색을 기본 선택해서 더 가볍게 시작합니다.",
+  testSetupTitle: "진단에 사용할 색조를 골라보세요",
+  testSetupDescription:
+    "공식 이론문서 기반 진단 컬러칩을 한 번에 테스트합니다. 보고 싶은 색조 카테고리만 선택해서 흐름을 가볍게 조절할 수 있어요.",
   testCategoryTitle: "탐색할 색조 카테고리",
   testCategoryDescription: "원하는 색조만 체크해서 테스트 범위를 직접 조정하세요.",
   testCategoryRequired: "색조 카테고리는 최소 1개 이상 선택해야 합니다.",
@@ -64,9 +60,9 @@ const ko: TranslationSchema = {
   shareResult: "결과 공유",
   copied: "클립보드에 복사되었습니다!",
   shareText: (
-    bestType: SeasonTone,
-    secondaryTypes: SeasonTone[] = [],
-    worstType: SeasonTone | null = null,
+    bestType: PersonalColorType,
+    secondaryTypes: PersonalColorType[] = [],
+    worstType: PersonalColorType | null = null,
   ) => {
     const secondaryText =
       secondaryTypes.length > 0 ? ` 차순위 후보는 ${secondaryTypes.join(", ")}입니다.` : "";
@@ -83,6 +79,7 @@ const ko: TranslationSchema = {
   lightTrait: "높은 명도 선호",
   brightTrait: "높은 채도 선호",
   mutedTrait: "낮은 채도 선호",
+  darkTrait: "낮은 명도와 깊이감 선호",
   aboutTitle: "퍼스널 컬러의 모든 것",
   aboutIntro:
     "퍼스널 컬러는 개인의 타고난 신체 색상(피부, 눈동자, 머리카락)과 가장 조화를 이루는 색상 팔레트를 찾는 컬러 분석 시스템입니다.",
@@ -106,7 +103,7 @@ const ko: TranslationSchema = {
   aboutWinterTitle: "겨울 (Winter)",
   aboutWinterDesc:
     "차갑고 선명한 색감이 특징입니다. 순백, 블랙, 로열블루, 마젠타 등 강렬하고 대비가 뚜렷한 색상이 어울리며, 피부가 하얗거나 깊은 쿨톤을 가진 분들에게 잘 맞습니다.",
-  aboutTonesTitle: "3가지 톤",
+  aboutTonesTitle: "4가지 세부 톤",
   aboutLightTitle: "라이트 (Light)",
   aboutLightDesc:
     "명도가 높은 밝고 가벼운 느낌의 색상입니다. 파스텔 계열이 대표적이며, 부드럽고 여성스러운 이미지를 줍니다.",
@@ -116,6 +113,9 @@ const ko: TranslationSchema = {
   aboutMutedTitle: "뮤트 (Muted)",
   aboutMutedDesc:
     "채도가 낮은 차분하고 탁한 느낌의 색상입니다. 그레이가 섞인 듯한 색감으로 성숙하고 세련된 이미지를 줍니다.",
+  aboutDarkTitle: "다크 (Dark)",
+  aboutDarkDesc:
+    "명도가 낮고 깊이감이 있는 색상입니다. 무게감과 대비감을 살려 얼굴 윤곽을 또렷하고 안정감 있게 보이게 합니다.",
   aboutHowItWorks: "테스트 방법",
   aboutStep1: "다양한 색상을 풀스크린으로 감상합니다",
   aboutStep2: "각 색상에 대해 좋아요 또는 싫어요로 평가합니다",
@@ -126,10 +126,10 @@ const ko: TranslationSchema = {
 const en: TranslationSchema = {
   navAbout: "About Personal Color",
   navTest: "Start Test",
-  subtitle: "Discover your seasonal color palette",
+  subtitle: "Discover your personal color within 8 canonical types",
   homeHeroQuote: "There's a color palette made just for you",
   homeHeroSubtext:
-    "Discover your seasonal color type through personal color analysis. Knowing the right colors for your skin tone helps you look your best.",
+    "Discover your personal color type through theory-based diagnostic chips. Knowing your best direction makes styling and color choices much clearer.",
   homeLearnMore: "Learn about Personal Color",
   featureViewColors: "View full-screen colors",
   featureLikeDislike: "Like or dislike colors with simple buttons",
@@ -141,15 +141,9 @@ const en: TranslationSchema = {
   loading: "Loading colors...",
   homeButton: "← Home",
   earlyExit: "See Results →",
-  testSetupTitle: "How would you like to test?",
+  testSetupTitle: "Choose the hue groups to explore",
   testSetupDescription:
-    "You can review the full color set, or start from a lighter preset and freely adjust the hue categories before the test begins.",
-  testPresetHelper: "Presets are just starting defaults. You can change the hue selections below at any time.",
-  testPresetFull: "Full Test",
-  testPresetFullDescription: "Starts with every hue category selected, covering the full color set.",
-  testPresetCore: "Core Test",
-  testPresetCoreDescription:
-    "Starts with red, green, blue, purple/pink, and neutrals selected for a lighter test.",
+    "This test uses theory-based diagnostic chips in a single flow. You can narrow the run by selecting only the hue categories you want to review.",
   testCategoryTitle: "Hue categories to explore",
   testCategoryDescription: "Pick only the hue groups you want to include in this run.",
   testCategoryRequired: "Choose at least one hue category to start the test.",
@@ -189,9 +183,9 @@ const en: TranslationSchema = {
   shareResult: "Share Result",
   copied: "Copied to clipboard!",
   shareText: (
-    bestType: SeasonTone,
-    secondaryTypes: SeasonTone[] = [],
-    worstType: SeasonTone | null = null,
+    bestType: PersonalColorType,
+    secondaryTypes: PersonalColorType[] = [],
+    worstType: PersonalColorType | null = null,
   ) => {
     const secondaryText =
       secondaryTypes.length > 0 ? ` Runner-up matches: ${secondaryTypes.join(", ")}.` : "";
@@ -208,6 +202,7 @@ const en: TranslationSchema = {
   lightTrait: "High lightness preference",
   brightTrait: "High saturation preference",
   mutedTrait: "Lower saturation preference",
+  darkTrait: "Preference for deeper, lower-lightness colors",
   aboutTitle: "Everything About Personal Color",
   aboutIntro:
     "Personal color analysis is a color system that identifies the palette of colors that best harmonize with your natural body colors — skin tone, eye color, and hair color.",
@@ -232,7 +227,7 @@ const en: TranslationSchema = {
   aboutWinterTitle: "Winter",
   aboutWinterDesc:
     "Characterized by cool and vivid colors. Pure white, black, royal blue, and magenta — bold, high-contrast colors. Best suited for those with a fair or deep cool undertone.",
-  aboutTonesTitle: "3 Tone Types",
+  aboutTonesTitle: "4 Detail Tones",
   aboutLightTitle: "Light",
   aboutLightDesc:
     "High-lightness colors with a bright, airy feel. Pastels are representative, giving a soft and feminine impression.",
@@ -242,6 +237,9 @@ const en: TranslationSchema = {
   aboutMutedTitle: "Muted",
   aboutMutedDesc:
     "Low-saturation calm and subdued colors. Grayed-out tones that give a mature and sophisticated impression.",
+  aboutDarkTitle: "Dark",
+  aboutDarkDesc:
+    "Low-lightness, deep colors with visual weight. They sharpen structure and create a more grounded, refined impression.",
   aboutHowItWorks: "How the Test Works",
   aboutStep1: "View various colors in full-screen mode",
   aboutStep2: "Rate each color with like or dislike",

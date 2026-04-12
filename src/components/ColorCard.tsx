@@ -1,11 +1,13 @@
-import type { ColorWithSeason } from "../types";
+import { getChipName } from "../data/colorData";
+import type { DiagnosticChip, Lang } from "../types";
 
 interface ColorCardProps {
-  color: ColorWithSeason | null;
+  color: DiagnosticChip | null;
   isTransitioning: boolean;
+  lang: Lang;
 }
 
-export const ColorCard = ({ color, isTransitioning }: ColorCardProps) => {
+export const ColorCard = ({ color, isTransitioning, lang }: ColorCardProps) => {
   if (!color) {
     return null;
   }
@@ -18,7 +20,7 @@ export const ColorCard = ({ color, isTransitioning }: ColorCardProps) => {
       style={{ backgroundColor: color.hex }}
     >
       <div className="absolute bottom-8 left-8 text-white drop-shadow-lg">
-        <p className="text-2xl font-bold">{color.name}</p>
+        <p className="text-2xl font-bold">{getChipName(color, lang)}</p>
         <p className="text-lg">{color.hex}</p>
       </div>
     </div>

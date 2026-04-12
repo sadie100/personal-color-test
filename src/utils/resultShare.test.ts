@@ -1,37 +1,22 @@
 import { describe, expect, it } from "vitest";
 
+import { diagnosticChips } from "../data/colorData";
 import type { TestCompletePayload } from "../types";
 import { createResultsSearchParams, getPayloadFromResultsSearchParams } from "./resultShare";
 
+const getChip = (id: string) => {
+  const chip = diagnosticChips.find((entry) => entry.id === id);
+
+  if (!chip) {
+    throw new Error(`Missing test chip: ${id}`);
+  }
+
+  return chip;
+};
+
 const SAMPLE_PAYLOAD: TestCompletePayload = {
-  likedColors: [
-    {
-      hex: "#FFA07A",
-      name: "Light Salmon",
-      hsl: { h: 17, s: 100, l: 74 },
-      seasonTone: "Autumn Light",
-    },
-    {
-      hex: "#DEB887",
-      name: "Burlywood",
-      hsl: { h: 34, s: 57, l: 70 },
-      seasonTone: "Autumn Light",
-    },
-    {
-      hex: "#FFD700",
-      name: "Gold",
-      hsl: { h: 51, s: 100, l: 50 },
-      seasonTone: "Spring Bright",
-    },
-  ],
-  dislikedColors: [
-    {
-      hex: "#4682B4",
-      name: "Muted Blue",
-      hsl: { h: 207, s: 44, l: 49 },
-      seasonTone: "Summer Muted",
-    },
-  ],
+  likedChips: [getChip("base-warm-pink"), getChip("season-spring-green"), getChip("detail-spring-bright-red")],
+  dislikedChips: [getChip("detail-winter-dark-navy")],
 };
 
 describe("result share query serialization", () => {
@@ -47,18 +32,18 @@ describe("result share query serialization", () => {
 
   it("falls back to summary params when encoded data is missing", () => {
     const params = new URLSearchParams({
-      best: "autumn-light",
+      best: "spring-bright",
       second: "spring-bright",
-      third: "autumn-bright",
-      worst: "summer-muted",
+      third: "spring-light",
+      worst: "winter-dark",
     });
 
     const restored = getPayloadFromResultsSearchParams(params);
 
     expect(restored).not.toBeNull();
-    expect(restored?.likedColors.length).toBeGreaterThan(0);
-    expect(restored?.likedColors[0]?.seasonTone).toBe("Autumn Light");
-    expect(restored?.dislikedColors[0]?.seasonTone).toBe("Summer Muted");
+    expect(restored?.likedChips.length).toBeGreaterThan(0);
+    expect(restored?.likedChips[0]?.targetTypes).toContain("Spring Bright");
+    expect(restored?.dislikedChips[0]?.targetTypes).toContain("Winter Dark");
   });
 
   it("returns null for invalid summary and corrupted data", () => {

@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
 
 import { translations } from "../i18n/translations";
-import type { HueCategory, Lang, TestConfiguration, TestPreset, TranslationSchema } from "../types";
-import { allHueCategories, getDefaultCategoriesForPreset, getSelectedColorCount } from "../utils/testSet";
+import type { HueCategory, Lang, TestConfiguration, TranslationSchema } from "../types";
+import { allHueCategories, getSelectedColorCount } from "../utils/testSet";
 import { LangToggle } from "./LangToggle";
 
 interface TestSetupProps {
@@ -36,20 +36,12 @@ const getHueCategoryLabel = (category: HueCategory, translation: TranslationSche
 
 export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProps) => {
   const t = translations[lang];
-  const [preset, setPreset] = useState<TestPreset>("core");
-  const [selectedCategories, setSelectedCategories] = useState<HueCategory[]>(() =>
-    getDefaultCategoriesForPreset("core"),
-  );
+  const [selectedCategories, setSelectedCategories] = useState<HueCategory[]>([...allHueCategories]);
 
   const selectedColorCount = useMemo(
     () => getSelectedColorCount(selectedCategories),
     [selectedCategories],
   );
-
-  const handlePresetChange = (nextPreset: TestPreset) => {
-    setPreset(nextPreset);
-    setSelectedCategories(getDefaultCategoriesForPreset(nextPreset));
-  };
 
   const handleToggleCategory = (category: HueCategory) => {
     setSelectedCategories((currentCategories) => {
@@ -82,38 +74,9 @@ export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProp
           <div className="mb-8 text-center">
             <h1 className="text-3xl font-bold sm:text-4xl">{t.testSetupTitle}</h1>
             <p className="mt-3 text-sm text-white/90 sm:text-base">{t.testSetupDescription}</p>
-            <p className="mt-2 text-xs text-white/75 sm:text-sm">{t.testPresetHelper}</p>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
-            <button
-              type="button"
-              onClick={() => handlePresetChange("core")}
-              className={`rounded-2xl border px-5 py-5 text-left transition ${
-                preset === "core"
-                  ? "border-white bg-white/20 shadow-lg"
-                  : "border-white/25 bg-black/10 hover:bg-white/10"
-              }`}
-            >
-              <p className="text-lg font-semibold">{t.testPresetCore}</p>
-              <p className="mt-2 text-sm text-white/85">{t.testPresetCoreDescription}</p>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => handlePresetChange("full")}
-              className={`rounded-2xl border px-5 py-5 text-left transition ${
-                preset === "full"
-                  ? "border-white bg-white/20 shadow-lg"
-                  : "border-white/25 bg-black/10 hover:bg-white/10"
-              }`}
-            >
-              <p className="text-lg font-semibold">{t.testPresetFull}</p>
-              <p className="mt-2 text-sm text-white/85">{t.testPresetFullDescription}</p>
-            </button>
-          </div>
-
-          <div className="mt-8 rounded-2xl bg-black/10 p-5">
+          <div className="rounded-2xl bg-black/10 p-5">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <h2 className="text-xl font-semibold">{t.testCategoryTitle}</h2>
@@ -154,7 +117,6 @@ export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProp
             type="button"
             onClick={() =>
               onStart({
-                preset,
                 selectedCategories,
               })
             }

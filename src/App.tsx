@@ -6,81 +6,36 @@ import { ColorTest } from "./components/ColorTest";
 import { Header } from "./components/Header";
 import { Home } from "./components/Home";
 import { Results } from "./components/Results";
+import { diagnosticChips } from "./data/colorData";
 import "./index.css";
-import type { ColorWithSeason, Lang, Screen, TestCompletePayload, TestCompleteResult } from "./types";
+import type { DiagnosticChip, Lang, Screen, TestCompletePayload } from "./types";
 import { createResultsSearchParams, getPayloadFromResultsSearchParams } from "./utils/resultShare";
 
-const PREVIEW_RESULT: TestCompletePayload = {
-  likedColors: [
-    {
-      hex: "#FFA07A",
-      name: "Light Salmon",
-      hsl: { h: 17, s: 100, l: 74 },
-      seasonTone: "Autumn Light",
-    },
-    {
-      hex: "#DEB887",
-      name: "Burlywood",
-      hsl: { h: 34, s: 57, l: 70 },
-      seasonTone: "Autumn Light",
-    },
-    { hex: "#FFD700", name: "Gold", hsl: { h: 51, s: 100, l: 50 }, seasonTone: "Spring Bright" },
-    {
-      hex: "#FF8C00",
-      name: "Dark Orange",
-      hsl: { h: 33, s: 100, l: 50 },
-      seasonTone: "Autumn Bright",
-    },
-    {
-      hex: "#D2691E",
-      name: "Chocolate",
-      hsl: { h: 25, s: 75, l: 47 },
-      seasonTone: "Autumn Bright",
-    },
-    {
-      hex: "#FAFAD2",
-      name: "Light Goldenrod",
-      hsl: { h: 60, s: 100, l: 84 },
-      seasonTone: "Autumn Light",
-    },
-  ],
-  dislikedColors: [
-    {
-      hex: "#4682B4",
-      name: "Muted Blue",
-      hsl: { h: 207, s: 44, l: 49 },
-      seasonTone: "Summer Muted",
-    },
-    {
-      hex: "#4A7C7E",
-      name: "Muted Teal",
-      hsl: { h: 175, s: 24, l: 41 },
-      seasonTone: "Summer Muted",
-    },
-    {
-      hex: "#967BB6",
-      name: "Muted Purple",
-      hsl: { h: 280, s: 35, l: 63 },
-      seasonTone: "Summer Muted",
-    },
-    {
-      hex: "#0000FF",
-      name: "Pure Blue",
-      hsl: { h: 240, s: 100, l: 50 },
-      seasonTone: "Winter Bright",
-    },
-  ],
-};
+const getPreviewChip = (id: string): DiagnosticChip => {
+  const chip = diagnosticChips.find((entry) => entry.id === id);
 
-const getResultPayload = (result: TestCompleteResult): TestCompletePayload => {
-  if (Array.isArray(result)) {
-    return {
-      likedColors: result,
-      dislikedColors: [],
-    };
+  if (!chip) {
+    throw new Error(`Missing preview chip: ${id}`);
   }
 
-  return result;
+  return chip;
+};
+
+const PREVIEW_RESULT: TestCompletePayload = {
+  likedChips: [
+    getPreviewChip("base-warm-pink"),
+    getPreviewChip("season-spring-orange"),
+    getPreviewChip("detail-spring-bright-red"),
+    getPreviewChip("detail-spring-bright-orange"),
+    getPreviewChip("detail-bright-green"),
+    getPreviewChip("detail-spring-bright-blue"),
+  ],
+  dislikedChips: [
+    getPreviewChip("base-cool-blue"),
+    getPreviewChip("season-summer-purple"),
+    getPreviewChip("detail-summer-muted-blue"),
+    getPreviewChip("detail-winter-dark-navy"),
+  ],
 };
 
 const getScreenFromPathname = (pathname: string): Screen => {
@@ -102,8 +57,8 @@ const getScreenFromPathname = (pathname: string): Screen => {
 function App() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [likedColors, setLikedColors] = useState<ColorWithSeason[]>([]);
-  const [dislikedColors, setDislikedColors] = useState<ColorWithSeason[]>([]);
+  const [likedChips, setLikedChips] = useState<DiagnosticChip[]>([]);
+  const [dislikedChips, setDislikedChips] = useState<DiagnosticChip[]>([]);
   const [lang, setLang] = useState<Lang>("ko");
   const screen = getScreenFromPathname(location.pathname);
   const payloadFromQuery = useMemo(
@@ -114,8 +69,8 @@ function App() {
     [location.pathname, location.search],
   );
   const resolvedResultsPayload = useMemo(
-    () => payloadFromQuery ?? (likedColors.length > 0 ? { likedColors, dislikedColors } : null),
-    [dislikedColors, likedColors, payloadFromQuery],
+    () => payloadFromQuery ?? (likedChips.length > 0 ? { likedChips, dislikedChips } : null),
+    [dislikedChips, likedChips, payloadFromQuery],
   );
 
   useEffect(() => {
@@ -164,8 +119,8 @@ function App() {
       return;
     }
 
-    if (likedColors.length > 0) {
-      const currentPayload: TestCompletePayload = { likedColors, dislikedColors };
+    if (likedChips.length > 0) {
+      const currentPayload: TestCompletePayload = { likedChips, dislikedChips };
       const canonicalSearch = createResultsSearchParams(currentPayload).toString();
       if (canonicalSearch && canonicalSearch !== currentParams.toString()) {
         navigate(
@@ -180,7 +135,7 @@ function App() {
     }
 
     navigate("/test", { replace: true });
-  }, [dislikedColors, likedColors, location.pathname, location.search, navigate, payloadFromQuery]);
+  }, [dislikedChips, likedChips, location.pathname, location.search, navigate, payloadFromQuery]);
 
   const handleToggleLang = (newLang: Lang) => setLang(newLang);
 
@@ -200,18 +155,17 @@ function App() {
   }, [navigate]);
 
   const handleTestComplete = useCallback(
-    (result: TestCompleteResult) => {
-      const payload = getResultPayload(result);
-      setLikedColors(payload.likedColors);
-      setDislikedColors(payload.dislikedColors);
+    (payload: TestCompletePayload) => {
+      setLikedChips(payload.likedChips);
+      setDislikedChips(payload.dislikedChips);
       goToResults(payload);
     },
     [goToResults],
   );
 
   const resetSelections = useCallback(() => {
-    setLikedColors([]);
-    setDislikedColors([]);
+    setLikedChips([]);
+    setDislikedChips([]);
   }, []);
 
   const handleRetry = useCallback(() => {
@@ -242,15 +196,15 @@ function App() {
       }
 
       if (target === "results") {
-        const payload: TestCompletePayload = { likedColors, dislikedColors };
-        if (payload.likedColors.length > 0) {
+        const payload: TestCompletePayload = { likedChips, dislikedChips };
+        if (payload.likedChips.length > 0) {
           goToResults(payload);
         } else {
           navigate("/test");
         }
       }
     },
-    [dislikedColors, goToResults, handleGoHome, handleStartTest, likedColors, navigate],
+    [dislikedChips, goToResults, handleGoHome, handleStartTest, likedChips, navigate],
   );
 
   const shareUrl = useMemo(() => {
@@ -296,8 +250,8 @@ function App() {
           path="/results"
           element={
             <Results
-              likedColors={resolvedResultsPayload?.likedColors ?? []}
-              dislikedColors={resolvedResultsPayload?.dislikedColors ?? []}
+              likedChips={resolvedResultsPayload?.likedChips ?? []}
+              dislikedChips={resolvedResultsPayload?.dislikedChips ?? []}
               onRetry={handleRetry}
               lang={lang}
               shareUrl={shareUrl}

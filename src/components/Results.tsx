@@ -1,23 +1,17 @@
 import { useState } from "react";
 
-import { colorData } from "../data/colorData";
+import { colorData, getChipName, getPersonalColorTypeLabel, personalColorTypeMeta } from "../data/colorData";
 import { translations } from "../i18n/translations";
 import { analyzePersonalColor, getBestResults, getWorstResult } from "../utils/analyzer";
-import type {
-  Color,
-  ColorWithSeason,
-  Lang,
-  SeasonTone,
-  TranslationSchema,
-} from "../types";
+import type { ColorChip, DiagnosticChip, Lang, PersonalColorType, TranslationSchema } from "../types";
 
 type BadgeMode = "liked" | "disliked";
 type MetaTone = "default" | BadgeMode;
 type ToneCardVariant = "best" | "second" | "third" | "worst";
 
 interface ResultsProps {
-  likedColors: ColorWithSeason[];
-  dislikedColors?: ColorWithSeason[];
+  likedChips: DiagnosticChip[];
+  dislikedChips?: DiagnosticChip[];
   onRetry: () => void;
   lang: Lang;
   shareUrl?: string;
@@ -33,26 +27,28 @@ interface ToneCardStyle {
 
 interface ToneCardData extends ToneCardStyle {
   label: string;
-  tone: SeasonTone;
+  tone: PersonalColorType;
 }
 
 interface ResultToneCardProps {
   card: ToneCardData;
+  lang: Lang;
   className?: string;
   toneClassName?: string;
-  previewColors?: ReadonlyArray<Color>;
+  previewColors?: ReadonlyArray<ColorChip>;
 }
 
 interface PaletteSectionProps {
   title: string;
   description: string;
-  tone: SeasonTone;
+  tone: PersonalColorType;
   badgeClass: string;
   borderClass: string;
   likedSelectionSet: ReadonlySet<string>;
   dislikedSelectionSet: ReadonlySet<string>;
   badgeMode?: BadgeMode;
   t: TranslationSchema;
+  lang: Lang;
   muted?: boolean;
   insideCard?: boolean;
 }
@@ -67,10 +63,7 @@ interface StickerBadgeProps {
   tone: BadgeMode;
 }
 
-const getSelectionKey = (seasonTone: SeasonTone, hex: string) => `${seasonTone}::${hex}`;
-
-const buildSelectionSet = (colors: ReadonlyArray<ColorWithSeason>): Set<string> =>
-  new Set(colors.map((color) => getSelectionKey(color.seasonTone, color.hex)));
+const buildSelectionSet = (chips: ReadonlyArray<DiagnosticChip>): Set<string> => new Set(chips.map((chip) => chip.hex));
 
 const isToneCardData = (card: ToneCardData | null): card is ToneCardData => card !== null;
 
@@ -107,23 +100,21 @@ const toneCardStyles: Record<ToneCardVariant, ToneCardStyle> = {
 };
 
 export const Results = ({
-  likedColors,
-  dislikedColors = [],
+  likedChips,
+  dislikedChips = [],
   onRetry,
   lang,
   shareUrl,
 }: ResultsProps) => {
   const t = translations[lang];
-  const bestResults = getBestResults(likedColors);
-  const personalColorType = analyzePersonalColor(likedColors);
-  const worstColorType = getWorstResult(dislikedColors, personalColorType);
+  const bestResults = getBestResults(likedChips, dislikedChips, 3);
+  const personalColorType = analyzePersonalColor(likedChips, dislikedChips);
+  const worstColorType = getWorstResult(likedChips, dislikedChips);
   const secondaryBestResults = bestResults.slice(1, 3);
-  const [selectedPaletteTone, setSelectedPaletteTone] = useState<SeasonTone | null>(
-    personalColorType,
-  );
+  const [selectedPaletteTone, setSelectedPaletteTone] = useState<PersonalColorType | null>(personalColorType);
 
-  const likedSelectionSet = buildSelectionSet(likedColors);
-  const dislikedSelectionSet = buildSelectionSet(dislikedColors);
+  const likedSelectionSet = buildSelectionSet(likedChips);
+  const dislikedSelectionSet = buildSelectionSet(dislikedChips);
 
   const bestCard: ToneCardData | null = personalColorType
     ? {
@@ -169,6 +160,8 @@ export const Results = ({
     );
   }
 
+  const typeMeta = personalColorTypeMeta[personalColorType];
+
   return (
     <div className="min-h-screen w-full overflow-auto bg-gradient-to-br from-gray-50 to-gray-100 p-6 pt-20">
       <div className="mx-auto max-w-5xl">
@@ -183,6 +176,7 @@ export const Results = ({
               <div className="mx-auto mb-4 max-w-lg">
                 <ResultToneCard
                   card={bestCard}
+                  lang={lang}
                   className="min-h-[168px]"
                   toneClassName="text-3xl sm:text-4xl"
                   previewColors={colorData[bestCard.tone].slice(0, 5)}
@@ -195,6 +189,7 @@ export const Results = ({
                   <ResultToneCard
                     key={card.tone}
                     card={card}
+                    lang={lang}
                     className="min-h-[144px]"
                     previewColors={colorData[card.tone].slice(0, 5)}
                   />
@@ -228,9 +223,7 @@ export const Results = ({
               <PaletteSection
                 title={t.paletteTitle(activePaletteCard.label)}
                 description={
-                  activePaletteCard.label === t.bestColor
-                    ? t.bestPaletteDescription
-                    : t.comparisonPaletteDescription
+                  activePaletteCard.label === t.bestColor ? t.bestPaletteDescription : t.comparisonPaletteDescription
                 }
                 tone={activePaletteCard.tone}
                 badgeClass={activePaletteCard.badgeClass}
@@ -239,6 +232,7 @@ export const Results = ({
                 dislikedSelectionSet={dislikedSelectionSet}
                 badgeMode="liked"
                 t={t}
+                lang={lang}
                 insideCard
               />
             )}
@@ -248,7 +242,7 @@ export const Results = ({
         {worstCard && (
           <>
             <div className="mb-6">
-              <ResultToneCard card={worstCard} />
+              <ResultToneCard card={worstCard} lang={lang} />
             </div>
             <PaletteSection
               title={t.paletteTitle(t.worstColor)}
@@ -260,6 +254,7 @@ export const Results = ({
               dislikedSelectionSet={dislikedSelectionSet}
               badgeMode="disliked"
               t={t}
+              lang={lang}
               muted
             />
           </>
@@ -269,33 +264,15 @@ export const Results = ({
           <h3 className="mb-2 font-bold">{t.aboutColorType}</h3>
           <p className="mb-3 text-sm text-gray-700">{t.basedOn}</p>
           <ul className="space-y-1 text-sm text-gray-700">
-            {personalColorType.includes("Spring") && (
-              <>
-                <li>✓ {t.warmUndertone}</li>
-                <li>✓ {t.springTrait}</li>
-              </>
-            )}
-            {personalColorType.includes("Summer") && (
-              <>
-                <li>✓ {t.coolUndertone}</li>
-                <li>✓ {t.summerTrait}</li>
-              </>
-            )}
-            {personalColorType.includes("Autumn") && (
-              <>
-                <li>✓ {t.warmUndertone}</li>
-                <li>✓ {t.autumnTrait}</li>
-              </>
-            )}
-            {personalColorType.includes("Winter") && (
-              <>
-                <li>✓ {t.coolUndertone}</li>
-                <li>✓ {t.winterTrait}</li>
-              </>
-            )}
-            {personalColorType.includes("Light") && <li>✓ {t.lightTrait}</li>}
-            {personalColorType.includes("Bright") && <li>✓ {t.brightTrait}</li>}
-            {personalColorType.includes("Muted") && <li>✓ {t.mutedTrait}</li>}
+            <li>✓ {typeMeta.baseTone === "Warm" ? t.warmUndertone : t.coolUndertone}</li>
+            {typeMeta.season === "Spring" && <li>✓ {t.springTrait}</li>}
+            {typeMeta.season === "Summer" && <li>✓ {t.summerTrait}</li>}
+            {typeMeta.season === "Autumn" && <li>✓ {t.autumnTrait}</li>}
+            {typeMeta.season === "Winter" && <li>✓ {t.winterTrait}</li>}
+            {typeMeta.detailTone === "Light" && <li>✓ {t.lightTrait}</li>}
+            {typeMeta.detailTone === "Bright" && <li>✓ {t.brightTrait}</li>}
+            {typeMeta.detailTone === "Muted" && <li>✓ {t.mutedTrait}</li>}
+            {typeMeta.detailTone === "Dark" && <li>✓ {t.darkTrait}</li>}
           </ul>
         </div>
 
@@ -324,6 +301,7 @@ export const Results = ({
 
 const ResultToneCard = ({
   card,
+  lang,
   className = "",
   toneClassName = "",
   previewColors = [],
@@ -336,7 +314,7 @@ const ResultToneCard = ({
     >
       <p className={`mb-2 text-center text-sm font-semibold ${card.labelClass}`}>{card.label}</p>
       <p className={`text-center text-2xl font-bold ${card.valueClass} ${toneClassName}`}>
-        {card.tone}
+        {getPersonalColorTypeLabel(card.tone, lang)}
       </p>
       {previewColors.length > 0 && (
         <div className="mt-5 flex justify-center gap-2">
@@ -345,7 +323,7 @@ const ResultToneCard = ({
               key={`${card.tone}-${color.hex}`}
               className="h-8 w-8 rounded-full border-2 border-white shadow-sm"
               style={{ backgroundColor: color.hex }}
-              title={color.name}
+              title={getChipName(color, lang)}
             />
           ))}
         </div>
@@ -364,16 +342,13 @@ const PaletteSection = ({
   dislikedSelectionSet,
   badgeMode = "liked",
   t,
+  lang,
   muted = false,
   insideCard = false,
 }: PaletteSectionProps) => {
   const paletteColors = colorData[tone];
-  const likedCount = paletteColors.filter((color) =>
-    likedSelectionSet.has(getSelectionKey(tone, color.hex)),
-  ).length;
-  const dislikedCount = paletteColors.filter((color) =>
-    dislikedSelectionSet.has(getSelectionKey(tone, color.hex)),
-  ).length;
+  const likedCount = paletteColors.filter((color) => likedSelectionSet.has(color.hex)).length;
+  const dislikedCount = paletteColors.filter((color) => dislikedSelectionSet.has(color.hex)).length;
 
   return (
     <div
@@ -386,15 +361,13 @@ const PaletteSection = ({
         <div className="flex flex-wrap items-center gap-2">
           <h2 className="text-2xl font-bold text-slate-900">{title}</h2>
           <span className={`rounded-full px-3 py-1 text-xs font-semibold ${badgeClass}`}>
-            {tone}
+            {getPersonalColorTypeLabel(tone, lang)}
           </span>
         </div>
         <p className="text-sm text-slate-600">{description}</p>
         <div className="flex flex-wrap gap-2">
           <MetaPill text={t.paletteContainsCount(paletteColors.length)} />
-          {badgeMode === "liked" && likedCount > 0 && (
-            <MetaPill text={t.likedMatchesCount(likedCount)} tone="liked" />
-          )}
+          {badgeMode === "liked" && likedCount > 0 && <MetaPill text={t.likedMatchesCount(likedCount)} tone="liked" />}
           {badgeMode === "disliked" && dislikedCount > 0 && (
             <MetaPill text={t.dislikedMatchesCount(dislikedCount)} tone="disliked" />
           )}
@@ -403,12 +376,12 @@ const PaletteSection = ({
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
         {paletteColors.map((color) => {
-          const isLiked = likedSelectionSet.has(getSelectionKey(tone, color.hex));
-          const isDisliked = dislikedSelectionSet.has(getSelectionKey(tone, color.hex));
+          const isLiked = likedSelectionSet.has(color.hex);
+          const isDisliked = dislikedSelectionSet.has(color.hex);
 
           return (
             <div
-              key={`${tone}-${color.name}-${color.hex}`}
+              key={`${tone}-${color.id}`}
               className={["rounded-2xl border bg-white p-3 transition-shadow", borderClass, muted ? "opacity-75" : ""]
                 .filter(Boolean)
                 .join(" ")}
@@ -417,17 +390,13 @@ const PaletteSection = ({
                 <div
                   className="h-24 w-full rounded-xl border border-white/60 shadow-sm"
                   style={{ backgroundColor: color.hex }}
-                  title={color.name}
+                  title={getChipName(color, lang)}
                 />
-                {badgeMode === "liked" && isLiked && (
-                  <StickerBadge label={t.likedSticker} tone="liked" />
-                )}
-                {badgeMode === "disliked" && isDisliked && (
-                  <StickerBadge label={t.dislikedSticker} tone="disliked" />
-                )}
+                {badgeMode === "liked" && isLiked && <StickerBadge label={t.likedSticker} tone="liked" />}
+                {badgeMode === "disliked" && isDisliked && <StickerBadge label={t.dislikedSticker} tone="disliked" />}
               </div>
               <div className="pt-3">
-                <p className="truncate text-sm font-semibold text-slate-800">{color.name}</p>
+                <p className="truncate text-sm font-semibold text-slate-800">{getChipName(color, lang)}</p>
                 <p className="text-xs text-slate-500">{color.hex}</p>
               </div>
             </div>

@@ -5,6 +5,7 @@ import { MemoryRouter } from "react-router-dom";
 import { cleanup } from "@testing-library/react";
 
 import App from "./App";
+import { diagnosticChips } from "./data/colorData";
 import type { TestCompletePayload } from "./types";
 import { createResultsSearchParams } from "./utils/resultShare";
 
@@ -28,21 +29,31 @@ vi.mock("./components/ColorTest", () => ({
 
 vi.mock("./components/Results", () => ({
   Results: ({
-    likedColors,
-    dislikedColors,
+    likedChips,
+    dislikedChips,
     shareUrl,
   }: {
-    likedColors: Array<{ name: string }>;
-    dislikedColors: Array<{ name: string }>;
+    likedChips: Array<{ name: string }>;
+    dislikedChips: Array<{ name: string }>;
     shareUrl?: string;
   }) => (
     <div data-testid="results-screen">
-      <span data-testid="liked-count">{likedColors.length}</span>
-      <span data-testid="disliked-count">{dislikedColors.length}</span>
+      <span data-testid="liked-count">{likedChips.length}</span>
+      <span data-testid="disliked-count">{dislikedChips.length}</span>
       <span data-testid="share-url">{shareUrl ?? ""}</span>
     </div>
   ),
 }));
+
+const getChip = (id: string) => {
+  const chip = diagnosticChips.find((entry) => entry.id === id);
+
+  if (!chip) {
+    throw new Error(`Missing test chip: ${id}`);
+  }
+
+  return chip;
+};
 
 afterEach(() => {
   cleanup();
@@ -78,28 +89,11 @@ describe("App routing", () => {
 
   it("hydrates result payload from query params on /results", async () => {
     const payload: TestCompletePayload = {
-      likedColors: [
-        {
-          hex: "#FFA07A",
-          name: "Light Salmon",
-          hsl: { h: 17, s: 100, l: 74 },
-          seasonTone: "Autumn Light",
-        },
-        {
-          hex: "#DEB887",
-          name: "Burlywood",
-          hsl: { h: 34, s: 57, l: 70 },
-          seasonTone: "Autumn Light",
-        },
+      likedChips: [
+        getChip("base-warm-pink"),
+        getChip("detail-spring-bright-red"),
       ],
-      dislikedColors: [
-        {
-          hex: "#4682B4",
-          name: "Muted Blue",
-          hsl: { h: 207, s: 44, l: 49 },
-          seasonTone: "Summer Muted",
-        },
-      ],
+      dislikedChips: [getChip("detail-winter-dark-navy")],
     };
     const search = createResultsSearchParams(payload).toString();
 

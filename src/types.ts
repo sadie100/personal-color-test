@@ -2,51 +2,59 @@ export type Lang = "ko" | "en";
 
 export type Screen = "home" | "test" | "results" | "about";
 
-export type TestPreset = "full" | "core";
-
 export type HueCategory = "red" | "orange" | "yellow" | "green" | "blue" | "purplePink" | "neutral";
 
-export type SeasonTone =
+export type BaseTone = "Warm" | "Cool";
+
+export type Season = "Spring" | "Summer" | "Autumn" | "Winter";
+
+export type DetailTone = "Light" | "Bright" | "Muted" | "Dark";
+
+export type PersonalColorType =
   | "Spring Light"
   | "Spring Bright"
-  | "Spring Muted"
   | "Summer Light"
-  | "Summer Bright"
   | "Summer Muted"
-  | "Autumn Light"
-  | "Autumn Bright"
   | "Autumn Muted"
-  | "Winter Light"
+  | "Autumn Dark"
   | "Winter Bright"
-  | "Winter Muted";
+  | "Winter Dark";
 
-export interface Hsl {
-  h: number;
-  s: number;
+export type DiagnosticPhase = "base" | "season" | "detail";
+
+export interface Oklch {
   l: number;
+  c: number;
+  h: number;
 }
 
-export interface Color {
+export interface ColorChip {
+  id: string;
   name: string;
+  nameKo: string;
+  nameEn: string;
   hex: string;
-  hsl: Hsl;
+  oklch: Oklch;
+  hueCategory: HueCategory;
 }
 
-export interface ColorWithSeason extends Color {
-  seasonTone: SeasonTone;
+export interface DiagnosticChip extends ColorChip {
+  diagnosticPhase: DiagnosticPhase;
+  targetTypes: PersonalColorType[];
 }
 
-export type ColorDataMap = Record<SeasonTone, Color[]>;
+export type Color = ColorChip;
+
+export type ColorDataMap = Record<PersonalColorType, ColorChip[]>;
 
 export interface TestCompletePayload {
-  likedColors: ColorWithSeason[];
-  dislikedColors: ColorWithSeason[];
+  likedChips: DiagnosticChip[];
+  dislikedChips: DiagnosticChip[];
 }
 
-export type TestCompleteResult = TestCompletePayload | ColorWithSeason[];
+export type TestCompleteResult = TestCompletePayload;
 
 export interface TestConfiguration {
-  preset: TestPreset;
   selectedCategories: HueCategory[];
 }
 
@@ -62,9 +70,17 @@ export type AboutSeasonDescKey =
   | "aboutAutumnDesc"
   | "aboutWinterDesc";
 
-export type AboutToneTitleKey = "aboutLightTitle" | "aboutBrightTitle" | "aboutMutedTitle";
+export type AboutToneTitleKey =
+  | "aboutLightTitle"
+  | "aboutBrightTitle"
+  | "aboutMutedTitle"
+  | "aboutDarkTitle";
 
-export type AboutToneDescKey = "aboutLightDesc" | "aboutBrightDesc" | "aboutMutedDesc";
+export type AboutToneDescKey =
+  | "aboutLightDesc"
+  | "aboutBrightDesc"
+  | "aboutMutedDesc"
+  | "aboutDarkDesc";
 
 export interface TranslationSchema {
   navAbout: string;
@@ -85,11 +101,6 @@ export interface TranslationSchema {
   earlyExit: string;
   testSetupTitle: string;
   testSetupDescription: string;
-  testPresetHelper: string;
-  testPresetFull: string;
-  testPresetFullDescription: string;
-  testPresetCore: string;
-  testPresetCoreDescription: string;
   testCategoryTitle: string;
   testCategoryDescription: string;
   testCategoryRequired: string;
@@ -128,9 +139,9 @@ export interface TranslationSchema {
   shareResult: string;
   copied: string;
   shareText: (
-    bestType: SeasonTone,
-    secondaryTypes?: SeasonTone[],
-    worstType?: SeasonTone | null,
+    bestType: PersonalColorType,
+    secondaryTypes?: PersonalColorType[],
+    worstType?: PersonalColorType | null,
   ) => string;
   noLikes: string;
   warmUndertone: string;
@@ -142,6 +153,7 @@ export interface TranslationSchema {
   lightTrait: string;
   brightTrait: string;
   mutedTrait: string;
+  darkTrait: string;
   aboutTitle: string;
   aboutIntro: string;
   aboutWhatIsPC: string;
@@ -165,6 +177,8 @@ export interface TranslationSchema {
   aboutBrightDesc: string;
   aboutMutedTitle: string;
   aboutMutedDesc: string;
+  aboutDarkTitle: string;
+  aboutDarkDesc: string;
   aboutHowItWorks: string;
   aboutStep1: string;
   aboutStep2: string;

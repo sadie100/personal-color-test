@@ -1,39 +1,37 @@
-import { colorData, seasonTones } from "../data/colorData";
-import type { ColorWithSeason, SeasonTone, TestCompletePayload } from "../types";
+import { diagnosticChips, personalColorTypeMeta, personalColorTypes } from "../data/colorData";
+import type { DiagnosticChip, PersonalColorType, TestCompletePayload } from "../types";
 import { getBestResults, getWorstResult } from "./analyzer";
 
 type SummaryKey = "best" | "second" | "third" | "worst";
 
 interface EncodedSelections {
-  v: 1;
+  v: 2;
   l: number[];
   d: number[];
 }
 
 const SUMMARY_KEYS: ReadonlyArray<SummaryKey> = ["best", "second", "third", "worst"];
 
-const toneToSlugMap: Record<SeasonTone, string> = seasonTones.reduce(
-  (accumulator, tone) => ({
+const toneToSlugMap: Record<PersonalColorType, string> = personalColorTypes.reduce(
+  (accumulator, type) => ({
     ...accumulator,
-    [tone]: tone.toLowerCase().replace(/\s+/g, "-"),
+    [type]: personalColorTypeMeta[type].slug,
   }),
-  {} as Record<SeasonTone, string>,
+  {} as Record<PersonalColorType, string>,
 );
 
-const slugToToneMap: Record<string, SeasonTone> = Object.entries(toneToSlugMap).reduce(
-  (accumulator, [tone, slug]) => ({
+const slugToToneMap: Record<string, PersonalColorType> = Object.entries(toneToSlugMap).reduce(
+  (accumulator, [type, slug]) => ({
     ...accumulator,
-    [slug]: tone as SeasonTone,
+    [slug]: type as PersonalColorType,
   }),
-  {} as Record<string, SeasonTone>,
+  {} as Record<string, PersonalColorType>,
 );
 
-const colorCatalog: ColorWithSeason[] = seasonTones.flatMap((seasonTone) =>
-  colorData[seasonTone].map((color) => ({ ...color, seasonTone })),
-);
+const colorCatalog: DiagnosticChip[] = diagnosticChips;
 
 const colorToCatalogIndex = new Map(
-  colorCatalog.map((color, index) => [`${color.seasonTone}::${color.hex}::${color.name}`, index]),
+  colorCatalog.map((chip, index) => [chip.id, index]),
 );
 
 const safeJsonParse = <T>(value: string): T | null => {
@@ -58,11 +56,11 @@ const fromBase64Url = (value: string): string | null => {
 };
 
 const encodeSelections = (payload: TestCompletePayload): string | null => {
-  const likedIndexes = payload.likedColors
-    .map((color) => colorToCatalogIndex.get(`${color.seasonTone}::${color.hex}::${color.name}`))
+  const likedIndexes = payload.likedChips
+    .map((chip) => colorToCatalogIndex.get(chip.id))
     .filter((index): index is number => typeof index === "number");
-  const dislikedIndexes = payload.dislikedColors
-    .map((color) => colorToCatalogIndex.get(`${color.seasonTone}::${color.hex}::${color.name}`))
+  const dislikedIndexes = payload.dislikedChips
+    .map((chip) => colorToCatalogIndex.get(chip.id))
     .filter((index): index is number => typeof index === "number");
 
   if (likedIndexes.length === 0 && dislikedIndexes.length === 0) {
@@ -70,7 +68,7 @@ const encodeSelections = (payload: TestCompletePayload): string | null => {
   }
 
   const encoded: EncodedSelections = {
-    v: 1,
+    v: 2,
     l: likedIndexes,
     d: dislikedIndexes,
   };
@@ -85,26 +83,28 @@ const decodeSelections = (encodedValue: string): TestCompletePayload | null => {
   }
 
   const parsed = safeJsonParse<EncodedSelections>(decoded);
-  if (!parsed || parsed.v !== 1 || !Array.isArray(parsed.l) || !Array.isArray(parsed.d)) {
+  if (!parsed || parsed.v !== 2 || !Array.isArray(parsed.l) || !Array.isArray(parsed.d)) {
     return null;
   }
 
-  const likedColors = parsed.l
+  const likedChips = parsed.l
     .map((index) => colorCatalog[index])
-    .filter((color): color is ColorWithSeason => color !== undefined);
-  const dislikedColors = parsed.d
+    .filter((chip): chip is DiagnosticChip => chip !== undefined);
+  const dislikedChips = parsed.d
     .map((index) => colorCatalog[index])
-    .filter((color): color is ColorWithSeason => color !== undefined);
+    .filter((chip): chip is DiagnosticChip => chip !== undefined);
 
-  if (likedColors.length === 0 && dislikedColors.length === 0) {
+  if (likedChips.length === 0 && dislikedChips.length === 0) {
     return null;
   }
 
-  return { likedColors, dislikedColors };
+  return { likedChips, dislikedChips };
 };
 
-const getSummaryFromParams = (searchParams: URLSearchParams): Partial<Record<SummaryKey, SeasonTone>> =>
-  SUMMARY_KEYS.reduce<Partial<Record<SummaryKey, SeasonTone>>>((accumulator, key) => {
+const getSummaryFromParams = (
+  searchParams: URLSearchParams,
+): Partial<Record<SummaryKey, PersonalColorType>> =>
+  SUMMARY_KEYS.reduce<Partial<Record<SummaryKey, PersonalColorType>>>((accumulator, key) => {
     const value = searchParams.get(key);
     if (!value) {
       return accumulator;
@@ -117,8 +117,13 @@ const getSummaryFromParams = (searchParams: URLSearchParams): Partial<Record<Sum
     return accumulator;
   }, {});
 
+const getRepresentativeChip = (type: PersonalColorType): DiagnosticChip | null =>
+  diagnosticChips.find(
+    (chip) => chip.diagnosticPhase === "detail" && chip.targetTypes.includes(type),
+  ) ?? diagnosticChips.find((chip) => chip.targetTypes.includes(type)) ?? null;
+
 const createFallbackPayloadFromSummary = (
-  summary: Partial<Record<SummaryKey, SeasonTone>>,
+  summary: Partial<Record<SummaryKey, PersonalColorType>>,
 ): TestCompletePayload | null => {
   const best = summary.best;
   if (!best) {
@@ -129,41 +134,32 @@ const createFallbackPayloadFromSummary = (
   const third = summary.third;
   const worst = summary.worst;
 
-  const likedTones: SeasonTone[] = [best, best, best];
+  const likedTypes: PersonalColorType[] = [best, best, best];
   if (second) {
-    likedTones.push(second, second);
+    likedTypes.push(second, second);
   }
   if (third) {
-    likedTones.push(third);
+    likedTypes.push(third);
   }
 
-  const likedColors = likedTones
-    .map((tone) => {
-      const color = colorData[tone][0];
-      if (!color) {
-        return null;
-      }
-      return { ...color, seasonTone: tone } satisfies ColorWithSeason;
-    })
-    .filter((color): color is ColorWithSeason => color !== null);
+  const likedChips = likedTypes
+    .map((type) => getRepresentativeChip(type))
+    .filter((chip): chip is DiagnosticChip => chip !== null);
 
-  const dislikedColors = worst
-    ? colorData[worst][0]
-      ? [{ ...colorData[worst][0], seasonTone: worst } satisfies ColorWithSeason]
-      : []
-    : [];
+  const worstChip = worst ? getRepresentativeChip(worst) : null;
+  const dislikedChips = worstChip ? [worstChip] : [];
 
-  if (likedColors.length === 0 && dislikedColors.length === 0) {
+  if (likedChips.length === 0 && dislikedChips.length === 0) {
     return null;
   }
 
-  return { likedColors, dislikedColors };
+  return { likedChips, dislikedChips };
 };
 
 export const createResultsSearchParams = (payload: TestCompletePayload): URLSearchParams => {
   const params = new URLSearchParams();
-  const bestResults = getBestResults(payload.likedColors, 3);
-  const worst = getWorstResult(payload.dislikedColors, bestResults[0] ?? null);
+  const bestResults = getBestResults(payload.likedChips, payload.dislikedChips, 3);
+  const worst = getWorstResult(payload.likedChips, payload.dislikedChips);
 
   const [best, second, third] = bestResults;
 

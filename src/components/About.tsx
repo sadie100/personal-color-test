@@ -8,7 +8,7 @@ import type {
   AboutToneTitleKey,
   Color,
   Lang,
-  SeasonTone,
+  PersonalColorType,
 } from "../types";
 
 interface AboutProps {
@@ -23,13 +23,13 @@ interface SeasonConfigItem {
   gradient: string;
   borderColor: string;
   bgColor: string;
-  sampleKey: SeasonTone;
+  sampleKey: PersonalColorType;
 }
 
 interface ToneConfigItem {
   titleKey: AboutToneTitleKey;
   descKey: AboutToneDescKey;
-  sampleKey: SeasonTone;
+  sampleKey: PersonalColorType;
   icon: string;
   bgColor: string;
   borderColor: string;
@@ -104,6 +104,14 @@ const toneConfig: ReadonlyArray<ToneConfigItem> = [
     bgColor: "bg-stone-50",
     borderColor: "border-stone-300",
   },
+  {
+    titleKey: "aboutDarkTitle",
+    descKey: "aboutDarkDesc",
+    sampleKey: "Winter Dark",
+    icon: "◼",
+    bgColor: "bg-slate-50",
+    borderColor: "border-slate-400",
+  },
 ];
 
 const ColorSwatches = ({ colors, count = 5 }: ColorSwatchesProps) => (
@@ -177,7 +185,7 @@ export const About = ({ lang, onStart }: AboutProps) => {
           <h2 className="mb-8 text-center text-2xl font-bold text-gray-800 md:text-3xl">
             {t.aboutTonesTitle}
           </h2>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {toneConfig.map((tone) => (
               <div
                 key={tone.titleKey}

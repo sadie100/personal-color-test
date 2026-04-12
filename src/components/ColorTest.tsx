@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { translations } from "../i18n/translations";
-import type { ColorWithSeason, HueCategory, Lang, TestCompletePayload, TestConfiguration, TranslationSchema } from "../types";
-import { getHueCategoryForHsl, getSelectedTestColors } from "../utils/testSet";
+import type { DiagnosticChip, HueCategory, Lang, TestCompletePayload, TestConfiguration, TranslationSchema } from "../types";
+import { getSelectedDiagnosticChips } from "../utils/testSet";
 import { ColorCard } from "./ColorCard";
 import { LangToggle } from "./LangToggle";
 import { ProgressBar } from "./ProgressBar";
@@ -52,22 +52,24 @@ const ActiveColorTest = ({
   onToggleLang,
 }: ActiveColorTestProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [likedColors, setLikedColors] = useState<ColorWithSeason[]>([]);
-  const [dislikedColors, setDislikedColors] = useState<ColorWithSeason[]>([]);
+  const [likedChips, setLikedChips] = useState<DiagnosticChip[]>([]);
+  const [dislikedChips, setDislikedChips] = useState<DiagnosticChip[]>([]);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const orderedColors = useMemo(
-    () => getSelectedTestColors(configuration.selectedCategories),
+    () => getSelectedDiagnosticChips(configuration.selectedCategories),
     [configuration.selectedCategories],
   );
 
   const t = translations[lang];
   const currentColor = orderedColors[currentIndex] ?? null;
-  const currentCategory = currentColor ? getHueCategoryForHsl(currentColor.hsl) : null;
+  const currentCategory = currentColor?.hueCategory ?? null;
   const remainingColors = Math.max(orderedColors.length - currentIndex - 1, 0);
   const remainingInCurrentCategory =
     currentCategory === null
       ? 0
-      : orderedColors.slice(currentIndex + 1).filter((color) => getHueCategoryForHsl(color.hsl) === currentCategory)
+      : orderedColors
+          .slice(currentIndex + 1)
+          .filter((color) => color.hueCategory === currentCategory)
           .length;
 
   const handleNext = useCallback(
@@ -78,13 +80,13 @@ const ActiveColorTest = ({
 
       setIsTransitioning(true);
 
-      const nextLikedColors = liked ? [...likedColors, currentColor] : likedColors;
-      const nextDislikedColors = liked ? dislikedColors : [...dislikedColors, currentColor];
+      const nextLikedChips = liked ? [...likedChips, currentColor] : likedChips;
+      const nextDislikedChips = liked ? dislikedChips : [...dislikedChips, currentColor];
 
       if (liked) {
-        setLikedColors(nextLikedColors);
+        setLikedChips(nextLikedChips);
       } else {
-        setDislikedColors(nextDislikedColors);
+        setDislikedChips(nextDislikedChips);
       }
 
       window.setTimeout(() => {
@@ -96,8 +98,8 @@ const ActiveColorTest = ({
           });
         } else {
           onComplete({
-            likedColors: nextLikedColors,
-            dislikedColors: nextDislikedColors,
+            likedChips: nextLikedChips,
+            dislikedChips: nextDislikedChips,
           });
         }
       }, CARD_TRANSITION_MS);
@@ -105,9 +107,9 @@ const ActiveColorTest = ({
     [
       currentIndex,
       currentColor,
-      dislikedColors,
+      dislikedChips,
       isTransitioning,
-      likedColors,
+      likedChips,
       onComplete,
       orderedColors.length,
     ],
@@ -139,7 +141,7 @@ const ActiveColorTest = ({
   return (
     <div className="relative h-screen w-full overflow-hidden bg-white">
       <ProgressBar current={currentIndex + 1} total={orderedColors.length} />
-      <ColorCard color={currentColor} isTransitioning={isTransitioning} />
+      <ColorCard color={currentColor} isTransitioning={isTransitioning} lang={lang} />
       <SwipeButtons onDislike={() => handleNext(false)} onLike={() => handleNext(true)} />
 
       <div className="absolute top-4 left-4 max-w-[min(22rem,calc(100vw-8rem))] rounded-2xl bg-black/25 p-4 text-white shadow-lg backdrop-blur-sm">
@@ -147,7 +149,7 @@ const ActiveColorTest = ({
           {currentIndex + 1} / {orderedColors.length}
         </p>
         <p className="text-sm">
-          {t.liked}: {likedColors.length}
+          {t.liked}: {likedChips.length}
         </p>
         {currentCategory && (
           <>
@@ -191,8 +193,8 @@ const ActiveColorTest = ({
         <button
           onClick={() =>
             onComplete({
-              likedColors,
-              dislikedColors,
+              likedChips,
+              dislikedChips,
             })
           }
           className="absolute right-6 bottom-6 rounded-full border border-white/50 bg-white/90 px-4 py-2.5 text-sm font-semibold text-gray-800 shadow-lg backdrop-blur-sm transition-all hover:scale-105 hover:bg-white active:scale-95"

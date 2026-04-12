@@ -1,111 +1,102 @@
-import type { ColorDataMap, ColorWithSeason, Hsl, SeasonTone } from "../types";
+import { personalColorTypes } from "../data/colorData";
+import type { ColorDataMap, ColorChip, DiagnosticChip, PersonalColorType } from "../types";
 
-interface SeasonToneRanking {
-  seasonTone: SeasonTone;
-  count: number;
-  firstSeenAt: number;
-  occurrenceIndexes: number[];
+export interface TypeScoreEntry {
+  type: PersonalColorType;
+  score: number;
 }
 
-const isColorWithSeason = (
-  color: ColorWithSeason | null | undefined,
-): color is ColorWithSeason => color !== null && color !== undefined;
+const personalColorTypeOrder = new Map(personalColorTypes.map((type, index) => [type, index]));
 
-const getSeasonToneRankings = (colors: ReadonlyArray<ColorWithSeason>): SeasonToneRanking[] => {
-  const rankingsMap = colors.reduce<Partial<Record<SeasonTone, SeasonToneRanking>>>(
-    (accumulator, color, index) => {
-      if (!isColorWithSeason(color)) {
-        return accumulator;
-      }
-
-      const existing = accumulator[color.seasonTone];
-
-      if (!existing) {
-        accumulator[color.seasonTone] = {
-          seasonTone: color.seasonTone,
-          count: 1,
-          firstSeenAt: index,
-          occurrenceIndexes: [index],
-        };
-        return accumulator;
-      }
-
-      existing.count += 1;
-      existing.occurrenceIndexes.push(index);
-      return accumulator;
-    },
-    {},
+const createInitialScores = (): Record<PersonalColorType, number> =>
+  personalColorTypes.reduce<Record<PersonalColorType, number>>(
+    (accumulator, type) => ({
+      ...accumulator,
+      [type]: 0,
+    }),
+    {} as Record<PersonalColorType, number>,
   );
 
-  return Object.values(rankingsMap)
-    .filter((ranking): ranking is SeasonToneRanking => ranking !== undefined)
+export const getPersonalColorScores = (
+  likedChips: ReadonlyArray<DiagnosticChip>,
+  dislikedChips: ReadonlyArray<DiagnosticChip>,
+): Record<PersonalColorType, number> => {
+  const scores = createInitialScores();
+
+  likedChips.forEach((chip) => {
+    chip.targetTypes.forEach((type) => {
+      scores[type] += 1;
+    });
+  });
+
+  dislikedChips.forEach((chip) => {
+    chip.targetTypes.forEach((type) => {
+      scores[type] -= 1;
+    });
+  });
+
+  return scores;
+};
+
+export const getRankedTypeScores = (
+  likedChips: ReadonlyArray<DiagnosticChip>,
+  dislikedChips: ReadonlyArray<DiagnosticChip>,
+): TypeScoreEntry[] => {
+  const scores = getPersonalColorScores(likedChips, dislikedChips);
+
+  return personalColorTypes
+    .map((type) => ({
+      type,
+      score: scores[type],
+    }))
     .sort((left, right) => {
-      if (right.count !== left.count) {
-        return right.count - left.count;
+      if (right.score !== left.score) {
+        return right.score - left.score;
       }
 
-      const leftReachedAt =
-        left.occurrenceIndexes[left.count - 1] ?? Number.MAX_SAFE_INTEGER;
-      const rightReachedAt =
-        right.occurrenceIndexes[right.count - 1] ?? Number.MAX_SAFE_INTEGER;
-
-      if (leftReachedAt !== rightReachedAt) {
-        return leftReachedAt - rightReachedAt;
-      }
-
-      if (left.firstSeenAt !== right.firstSeenAt) {
-        return left.firstSeenAt - right.firstSeenAt;
-      }
-
-      return left.seasonTone.localeCompare(right.seasonTone);
+      return (personalColorTypeOrder.get(left.type) ?? 0) - (personalColorTypeOrder.get(right.type) ?? 0);
     });
 };
 
 export const getBestResults = (
-  likedColors: ReadonlyArray<ColorWithSeason>,
+  likedChips: ReadonlyArray<DiagnosticChip>,
+  dislikedChips: ReadonlyArray<DiagnosticChip>,
   limit = 3,
-): SeasonTone[] =>
-  getSeasonToneRankings(likedColors)
+): PersonalColorType[] =>
+  getRankedTypeScores(likedChips, dislikedChips)
     .slice(0, limit)
-    .map(({ seasonTone }) => seasonTone);
+    .map(({ type }) => type);
 
 export const analyzePersonalColor = (
-  likedColors: ReadonlyArray<ColorWithSeason>,
-): SeasonTone | null => getBestResults(likedColors, 1)[0] ?? null;
+  likedChips: ReadonlyArray<DiagnosticChip>,
+  dislikedChips: ReadonlyArray<DiagnosticChip>,
+): PersonalColorType | null => getBestResults(likedChips, dislikedChips, 1)[0] ?? null;
 
 export const getWorstResult = (
-  dislikedColors: ReadonlyArray<ColorWithSeason>,
-  bestResult: SeasonTone | null,
-): SeasonTone | null => {
-  const rankedWorstResults = getSeasonToneRankings(dislikedColors);
-  const worstMatch = rankedWorstResults.find(({ seasonTone }) => seasonTone !== bestResult);
+  likedChips: ReadonlyArray<DiagnosticChip>,
+  dislikedChips: ReadonlyArray<DiagnosticChip>,
+): PersonalColorType | null => {
+  const rankedTypes = getRankedTypeScores(likedChips, dislikedChips);
 
-  return worstMatch?.seasonTone ?? null;
+  if (rankedTypes.length === 0) {
+    return null;
+  }
+
+  return [...rankedTypes].sort((left, right) => {
+    if (left.score !== right.score) {
+      return left.score - right.score;
+    }
+
+    return (personalColorTypeOrder.get(left.type) ?? 0) - (personalColorTypeOrder.get(right.type) ?? 0);
+  })[0]?.type ?? null;
 };
 
 export const getRecommendedColors = (
-  personalColorType: SeasonTone,
+  personalColorType: PersonalColorType,
   allColors: ColorDataMap,
-): ColorWithSeason[] =>
-  allColors[personalColorType].map((color) => ({
-    ...color,
-    seasonTone: personalColorType,
-  }));
+): ColorChip[] => allColors[personalColorType];
 
 export const getAvoidColors = (
-  worstColorType: SeasonTone,
+  worstColorType: PersonalColorType,
   allColors: ColorDataMap,
-): ColorWithSeason[] =>
-  allColors[worstColorType].map((color) => ({
-    ...color,
-    seasonTone: worstColorType,
-  }));
-
-export const calculateChromaFromHsl = ({ s, l }: Hsl): number => {
-  const saturation = s / 100;
-  const lightness = l / 100;
-  return saturation * (1 - Math.abs(2 * lightness - 1));
-};
-
-export const calculateTurbidityFromHsl = (hsl: Hsl): number =>
-  (1 - calculateChromaFromHsl(hsl)) * 100;
+): ColorChip[] => allColors[worstColorType];
