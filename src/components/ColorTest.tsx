@@ -1,12 +1,13 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { colorData, seasonTones } from "../data/colorData";
 import { translations } from "../i18n/translations";
-import type { ColorWithSeason, Lang, TestCompletePayload } from "../types";
+import type { ColorWithSeason, HueCategory, Lang, TestCompletePayload, TestConfiguration, TranslationSchema } from "../types";
+import { getHueCategoryForHsl, getSelectedTestColors } from "../utils/testSet";
 import { ColorCard } from "./ColorCard";
 import { LangToggle } from "./LangToggle";
 import { ProgressBar } from "./ProgressBar";
 import { SwipeButtons } from "./SwipeButtons";
+import { TestSetup } from "./TestSetup";
 
 const CARD_TRANSITION_MS = 300;
 
@@ -17,21 +18,57 @@ interface ColorTestProps {
   onToggleLang: (newLang: Lang) => void;
 }
 
-const allColors: ColorWithSeason[] = seasonTones.flatMap((seasonTone) =>
-  colorData[seasonTone].map((color) => ({ ...color, seasonTone })),
-);
+interface ActiveColorTestProps extends ColorTestProps {
+  configuration: TestConfiguration;
+}
 
-export const ColorTest = ({ onComplete, onHome, lang, onToggleLang }: ColorTestProps) => {
+const hueCategoryTranslationKeyMap: Record<
+  HueCategory,
+  | "hueCategoryRed"
+  | "hueCategoryOrange"
+  | "hueCategoryYellow"
+  | "hueCategoryGreen"
+  | "hueCategoryBlue"
+  | "hueCategoryPurplePink"
+  | "hueCategoryNeutral"
+> = {
+  red: "hueCategoryRed",
+  orange: "hueCategoryOrange",
+  yellow: "hueCategoryYellow",
+  green: "hueCategoryGreen",
+  blue: "hueCategoryBlue",
+  purplePink: "hueCategoryPurplePink",
+  neutral: "hueCategoryNeutral",
+};
+
+const getHueCategoryLabel = (category: HueCategory, translation: TranslationSchema): string =>
+  translation[hueCategoryTranslationKeyMap[category]];
+
+const ActiveColorTest = ({
+  configuration,
+  onComplete,
+  onHome,
+  lang,
+  onToggleLang,
+}: ActiveColorTestProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [likedColors, setLikedColors] = useState<ColorWithSeason[]>([]);
   const [dislikedColors, setDislikedColors] = useState<ColorWithSeason[]>([]);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [shuffledColors] = useState<ColorWithSeason[]>(() =>
-    [...allColors].sort(() => Math.random() - 0.5),
+  const orderedColors = useMemo(
+    () => getSelectedTestColors(configuration.selectedCategories),
+    [configuration.selectedCategories],
   );
 
   const t = translations[lang];
-  const currentColor = shuffledColors[currentIndex] ?? null;
+  const currentColor = orderedColors[currentIndex] ?? null;
+  const currentCategory = currentColor ? getHueCategoryForHsl(currentColor.hsl) : null;
+  const remainingColors = Math.max(orderedColors.length - currentIndex - 1, 0);
+  const remainingInCurrentCategory =
+    currentCategory === null
+      ? 0
+      : orderedColors.slice(currentIndex + 1).filter((color) => getHueCategoryForHsl(color.hsl) === currentCategory)
+          .length;
 
   const handleNext = useCallback(
     (liked: boolean) => {
@@ -51,7 +88,7 @@ export const ColorTest = ({ onComplete, onHome, lang, onToggleLang }: ColorTestP
       }
 
       window.setTimeout(() => {
-        if (currentIndex < shuffledColors.length - 1) {
+        if (currentIndex < orderedColors.length - 1) {
           setCurrentIndex(currentIndex + 1);
           // Let the new color render at opacity 0 first, then fade it in.
           window.requestAnimationFrame(() => {
@@ -72,7 +109,7 @@ export const ColorTest = ({ onComplete, onHome, lang, onToggleLang }: ColorTestP
       isTransitioning,
       likedColors,
       onComplete,
-      shuffledColors.length,
+      orderedColors.length,
     ],
   );
 
@@ -101,17 +138,43 @@ export const ColorTest = ({ onComplete, onHome, lang, onToggleLang }: ColorTestP
 
   return (
     <div className="relative h-screen w-full overflow-hidden bg-white">
-      <ProgressBar current={currentIndex + 1} total={shuffledColors.length} />
+      <ProgressBar current={currentIndex + 1} total={orderedColors.length} />
       <ColorCard color={currentColor} isTransitioning={isTransitioning} />
       <SwipeButtons onDislike={() => handleNext(false)} onLike={() => handleNext(true)} />
 
-      <div className="absolute top-4 left-4 text-white drop-shadow-lg">
+      <div className="absolute top-4 left-4 max-w-[min(22rem,calc(100vw-8rem))] rounded-2xl bg-black/25 p-4 text-white shadow-lg backdrop-blur-sm">
         <p className="text-sm">
-          {currentIndex + 1} / {shuffledColors.length}
+          {currentIndex + 1} / {orderedColors.length}
         </p>
         <p className="text-sm">
           {t.liked}: {likedColors.length}
         </p>
+        {currentCategory && (
+          <>
+            <p className="mt-2 text-sm font-semibold">{t.testCurrentCategory(getHueCategoryLabel(currentCategory, t))}</p>
+            <p className="text-sm">{t.testRemainingColors(remainingColors)}</p>
+            <p className="text-sm">{t.testRemainingInCategory(remainingInCurrentCategory)}</p>
+            <div className="mt-3">
+              <p className="mb-2 text-xs uppercase tracking-wide text-white/70">{t.testCategoryOrderTitle}</p>
+              <div className="flex flex-wrap gap-2">
+                {configuration.selectedCategories.map((category) => {
+                  const isCurrentCategory = category === currentCategory;
+
+                  return (
+                    <span
+                      key={category}
+                      className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                        isCurrentCategory ? "bg-white text-gray-900" : "bg-white/20 text-white"
+                      }`}
+                    >
+                      {getHueCategoryLabel(category, t)}
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+          </>
+        )}
       </div>
 
       <div className="absolute top-4 right-4 flex items-center gap-2">
@@ -138,5 +201,30 @@ export const ColorTest = ({ onComplete, onHome, lang, onToggleLang }: ColorTestP
         </button>
       )}
     </div>
+  );
+};
+
+export const ColorTest = ({ onComplete, onHome, lang, onToggleLang }: ColorTestProps) => {
+  const [configuration, setConfiguration] = useState<TestConfiguration | null>(null);
+
+  if (!configuration) {
+    return (
+      <TestSetup
+        lang={lang}
+        onToggleLang={onToggleLang}
+        onHome={onHome}
+        onStart={setConfiguration}
+      />
+    );
+  }
+
+  return (
+    <ActiveColorTest
+      configuration={configuration}
+      onComplete={onComplete}
+      onHome={onHome}
+      lang={lang}
+      onToggleLang={onToggleLang}
+    />
   );
 };

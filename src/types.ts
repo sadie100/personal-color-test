@@ -2,6 +2,10 @@ export type Lang = "ko" | "en";
 
 export type Screen = "home" | "test" | "results" | "about";
 
+export type TestPreset = "full" | "core";
+
+export type HueCategory = "red" | "orange" | "yellow" | "green" | "blue" | "purplePink" | "neutral";
+
 export type SeasonTone =
   | "Spring Light"
   | "Spring Bright"
@@ -41,6 +45,11 @@ export interface TestCompletePayload {
 
 export type TestCompleteResult = TestCompletePayload | ColorWithSeason[];
 
+export interface TestConfiguration {
+  preset: TestPreset;
+  selectedCategories: HueCategory[];
+}
+
 export type AboutSeasonTitleKey =
   | "aboutSpringTitle"
   | "aboutSummerTitle"
@@ -74,6 +83,30 @@ export interface TranslationSchema {
   loading: string;
   homeButton: string;
   earlyExit: string;
+  testSetupTitle: string;
+  testSetupDescription: string;
+  testPresetHelper: string;
+  testPresetFull: string;
+  testPresetFullDescription: string;
+  testPresetCore: string;
+  testPresetCoreDescription: string;
+  testCategoryTitle: string;
+  testCategoryDescription: string;
+  testCategoryRequired: string;
+  testSelectedColorCount: (count: number) => string;
+  testSelectedCategoryCount: (count: number) => string;
+  testStartSelected: string;
+  testCurrentCategory: (label: string) => string;
+  testRemainingColors: (count: number) => string;
+  testRemainingInCategory: (count: number) => string;
+  testCategoryOrderTitle: string;
+  hueCategoryRed: string;
+  hueCategoryOrange: string;
+  hueCategoryYellow: string;
+  hueCategoryGreen: string;
+  hueCategoryBlue: string;
+  hueCategoryPurplePink: string;
+  hueCategoryNeutral: string;
   yourPersonalColor: string;
   bestColor: string;
   secondBestColor: string;
