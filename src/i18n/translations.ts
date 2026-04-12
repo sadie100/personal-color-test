@@ -1,4 +1,4 @@
-import type { PersonalColorType, TranslationSchema, Translations } from "../types";
+import type { ResultTone, TranslationSchema, Translations } from "../types";
 
 const ko: TranslationSchema = {
   navAbout: "퍼스널 컬러란?",
@@ -18,19 +18,21 @@ const ko: TranslationSchema = {
   loading: "색상 불러오는 중...",
   homeButton: "← 처음으로",
   earlyExit: "중간 결과 보기 →",
-  testSetupTitle: "진단에 사용할 색조를 골라보세요",
+  testSetupTitle: "원하는 테스트 모드를 골라보세요",
   testSetupDescription:
-    "공식 이론문서 기반 진단 컬러칩을 한 번에 테스트합니다. 보고 싶은 색조 카테고리만 선택해서 흐름을 가볍게 조절할 수 있어요.",
-  testCategoryTitle: "탐색할 색조 카테고리",
-  testCategoryDescription: "원하는 색조만 체크해서 테스트 범위를 직접 조정하세요.",
-  testCategoryRequired: "색조 카테고리는 최소 1개 이상 선택해야 합니다.",
-  testSelectedColorCount: (count: number) => `선택된 색상 ${count}개`,
-  testSelectedCategoryCount: (count: number) => `선택된 카테고리 ${count}개`,
-  testStartSelected: "이 설정으로 테스트 시작",
-  testCurrentCategory: (label: string) => `현재 카테고리 ${label}`,
+    "간략하게 4계절 방향만 볼지, 세부톤까지 모두 진단할지 먼저 선택하세요. 선택한 모드에 맞는 진단 컬러칩만 순서대로 보여드립니다.",
+  testModeTitle: "테스트 모드",
+  testModeDescription: "원하는 진단 깊이에 맞춰 테스트 범위를 선택하세요.",
+  testModeSimple: "간략 테스트",
+  testModeSimpleDescription: "베이스와 계절 단계만 테스트해서 봄 웜 / 여름 쿨 같은 큰 방향을 빠르게 확인합니다.",
+  testModeSimpleCount: (count: number) => `문항 ${count}개 · 베이스 + 계절`,
+  testModeDetailed: "세부 테스트",
+  testModeDetailedDescription: "현재의 전체 진단처럼 베이스, 계절, 세부톤까지 모두 테스트합니다.",
+  testModeDetailedCount: (count: number) => `문항 ${count}개 · 베이스 + 계절 + 세부톤`,
+  testStartSelected: "선택한 모드로 테스트 시작",
+  testCurrentMode: (label: string) => `현재 테스트 ${label}`,
   testRemainingColors: (count: number) => `남은 색상 ${count}개`,
-  testRemainingInCategory: (count: number) => `현재 카테고리 남은 색상 ${count}개`,
-  testCategoryOrderTitle: "카테고리 진행 순서",
+  testIncludedPhases: "포함 단계",
   hueCategoryRed: "빨강",
   hueCategoryOrange: "주황",
   hueCategoryYellow: "노랑",
@@ -60,9 +62,9 @@ const ko: TranslationSchema = {
   shareResult: "결과 공유",
   copied: "클립보드에 복사되었습니다!",
   shareText: (
-    bestType: PersonalColorType,
-    secondaryTypes: PersonalColorType[] = [],
-    worstType: PersonalColorType | null = null,
+    bestType: ResultTone,
+    secondaryTypes: ResultTone[] = [],
+    worstType: ResultTone | null = null,
   ) => {
     const secondaryText =
       secondaryTypes.length > 0 ? ` 차순위 후보는 ${secondaryTypes.join(", ")}입니다.` : "";
@@ -141,19 +143,21 @@ const en: TranslationSchema = {
   loading: "Loading colors...",
   homeButton: "← Home",
   earlyExit: "See Results →",
-  testSetupTitle: "Choose the hue groups to explore",
+  testSetupTitle: "Choose your test mode",
   testSetupDescription:
-    "This test uses theory-based diagnostic chips in a single flow. You can narrow the run by selecting only the hue categories you want to review.",
-  testCategoryTitle: "Hue categories to explore",
-  testCategoryDescription: "Pick only the hue groups you want to include in this run.",
-  testCategoryRequired: "Choose at least one hue category to start the test.",
-  testSelectedColorCount: (count: number) => `${count} colors selected`,
-  testSelectedCategoryCount: (count: number) => `${count} categories selected`,
-  testStartSelected: "Start test with this setup",
-  testCurrentCategory: (label: string) => `Current category: ${label}`,
+    "Choose whether you want a quicker seasonal read or the full detailed diagnosis. We'll show only the diagnostic chips needed for the selected mode.",
+  testModeTitle: "Test mode",
+  testModeDescription: "Pick the depth of diagnosis you want for this run.",
+  testModeSimple: "Quick test",
+  testModeSimpleDescription: "Tests only the base and season stages for a faster Spring Warm / Winter Cool style result.",
+  testModeSimpleCount: (count: number) => `${count} chips · base + season`,
+  testModeDetailed: "Detailed test",
+  testModeDetailedDescription: "Runs the full diagnosis including base, season, and detail tones.",
+  testModeDetailedCount: (count: number) => `${count} chips · base + season + detail`,
+  testStartSelected: "Start with this mode",
+  testCurrentMode: (label: string) => `Current test: ${label}`,
   testRemainingColors: (count: number) => `${count} colors remaining`,
-  testRemainingInCategory: (count: number) => `${count} left in this category`,
-  testCategoryOrderTitle: "Category order",
+  testIncludedPhases: "Included stages",
   hueCategoryRed: "Red",
   hueCategoryOrange: "Orange",
   hueCategoryYellow: "Yellow",
@@ -183,9 +187,9 @@ const en: TranslationSchema = {
   shareResult: "Share Result",
   copied: "Copied to clipboard!",
   shareText: (
-    bestType: PersonalColorType,
-    secondaryTypes: PersonalColorType[] = [],
-    worstType: PersonalColorType | null = null,
+    bestType: ResultTone,
+    secondaryTypes: ResultTone[] = [],
+    worstType: ResultTone | null = null,
   ) => {
     const secondaryText =
       secondaryTypes.length > 0 ? ` Runner-up matches: ${secondaryTypes.join(", ")}.` : "";

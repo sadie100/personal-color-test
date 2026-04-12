@@ -1,22 +1,16 @@
 import { diagnosticChips } from "../data/colorData";
-import type { DiagnosticChip, HueCategory } from "../types";
+import type { DiagnosticChip, DiagnosticPhase, TestMode } from "../types";
 
-export const allHueCategories = [
-  "red",
-  "orange",
-  "yellow",
-  "green",
-  "blue",
-  "purplePink",
-  "neutral",
-] as const satisfies readonly HueCategory[];
+const diagnosticPhasesByMode: Record<TestMode, readonly DiagnosticPhase[]> = {
+  simple: ["base", "season"],
+  detailed: ["base", "season", "detail"],
+};
 
-export const getSelectedDiagnosticChips = (
-  selectedCategories: readonly HueCategory[],
-): DiagnosticChip[] =>
-  selectedCategories.flatMap((selectedCategory) =>
-    diagnosticChips.filter((chip) => chip.hueCategory === selectedCategory),
-  );
+export const getIncludedPhasesForMode = (mode: TestMode): readonly DiagnosticPhase[] => diagnosticPhasesByMode[mode];
 
-export const getSelectedColorCount = (selectedCategories: readonly HueCategory[]): number =>
-  getSelectedDiagnosticChips(selectedCategories).length;
+export const getSelectedDiagnosticChips = (mode: TestMode): DiagnosticChip[] => {
+  const includedPhases = new Set(getIncludedPhasesForMode(mode));
+  return diagnosticChips.filter((chip) => includedPhases.has(chip.diagnosticPhase));
+};
+
+export const getSelectedColorCount = (mode: TestMode): number => getSelectedDiagnosticChips(mode).length;

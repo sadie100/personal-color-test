@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { translations } from "../i18n/translations";
-import type { DiagnosticChip, HueCategory, Lang, TestCompletePayload, TestConfiguration, TranslationSchema } from "../types";
-import { getSelectedDiagnosticChips } from "../utils/testSet";
+import type { DiagnosticChip, DiagnosticPhase, Lang, TestCompletePayload, TestConfiguration, TestMode } from "../types";
+import { getIncludedPhasesForMode, getSelectedDiagnosticChips } from "../utils/testSet";
 import { ColorCard } from "./ColorCard";
 import { LangToggle } from "./LangToggle";
 import { ProgressBar } from "./ProgressBar";
@@ -22,27 +22,23 @@ interface ActiveColorTestProps extends ColorTestProps {
   configuration: TestConfiguration;
 }
 
-const hueCategoryTranslationKeyMap: Record<
-  HueCategory,
-  | "hueCategoryRed"
-  | "hueCategoryOrange"
-  | "hueCategoryYellow"
-  | "hueCategoryGreen"
-  | "hueCategoryBlue"
-  | "hueCategoryPurplePink"
-  | "hueCategoryNeutral"
-> = {
-  red: "hueCategoryRed",
-  orange: "hueCategoryOrange",
-  yellow: "hueCategoryYellow",
-  green: "hueCategoryGreen",
-  blue: "hueCategoryBlue",
-  purplePink: "hueCategoryPurplePink",
-  neutral: "hueCategoryNeutral",
+const phaseLabelMap: Record<Lang, Record<DiagnosticPhase, string>> = {
+  ko: {
+    base: "베이스",
+    season: "계절",
+    detail: "세부톤",
+  },
+  en: {
+    base: "Base",
+    season: "Season",
+    detail: "Detail",
+  },
 };
 
-const getHueCategoryLabel = (category: HueCategory, translation: TranslationSchema): string =>
-  translation[hueCategoryTranslationKeyMap[category]];
+const modeLabelMap: Record<TestMode, "testModeSimple" | "testModeDetailed"> = {
+  simple: "testModeSimple",
+  detailed: "testModeDetailed",
+};
 
 const ActiveColorTest = ({
   configuration,
@@ -55,22 +51,15 @@ const ActiveColorTest = ({
   const [likedChips, setLikedChips] = useState<DiagnosticChip[]>([]);
   const [dislikedChips, setDislikedChips] = useState<DiagnosticChip[]>([]);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const orderedColors = useMemo(
-    () => getSelectedDiagnosticChips(configuration.selectedCategories),
-    [configuration.selectedCategories],
-  );
+  const orderedColors = useMemo(() => getSelectedDiagnosticChips(configuration.mode), [configuration.mode]);
 
   const t = translations[lang];
   const currentColor = orderedColors[currentIndex] ?? null;
-  const currentCategory = currentColor?.hueCategory ?? null;
   const remainingColors = Math.max(orderedColors.length - currentIndex - 1, 0);
-  const remainingInCurrentCategory =
-    currentCategory === null
-      ? 0
-      : orderedColors
-          .slice(currentIndex + 1)
-          .filter((color) => color.hueCategory === currentCategory)
-          .length;
+  const modeLabel = t[modeLabelMap[configuration.mode]];
+  const includedPhasesLabel = getIncludedPhasesForMode(configuration.mode)
+    .map((phase) => phaseLabelMap[lang][phase])
+    .join(" / ");
 
   const handleNext = useCallback(
     (liked: boolean) => {
@@ -98,6 +87,7 @@ const ActiveColorTest = ({
           });
         } else {
           onComplete({
+            mode: configuration.mode,
             likedChips: nextLikedChips,
             dislikedChips: nextDislikedChips,
           });
@@ -108,6 +98,7 @@ const ActiveColorTest = ({
       currentIndex,
       currentColor,
       dislikedChips,
+      configuration.mode,
       isTransitioning,
       likedChips,
       onComplete,
@@ -151,31 +142,15 @@ const ActiveColorTest = ({
         <p className="text-sm">
           {t.liked}: {likedChips.length}
         </p>
-        {currentCategory && (
-          <>
-            <p className="mt-2 text-sm font-semibold">{t.testCurrentCategory(getHueCategoryLabel(currentCategory, t))}</p>
-            <p className="text-sm">{t.testRemainingColors(remainingColors)}</p>
-            <p className="text-sm">{t.testRemainingInCategory(remainingInCurrentCategory)}</p>
-            <div className="mt-3">
-              <p className="mb-2 text-xs uppercase tracking-wide text-white/70">{t.testCategoryOrderTitle}</p>
-              <div className="flex flex-wrap gap-2">
-                {configuration.selectedCategories.map((category) => {
-                  const isCurrentCategory = category === currentCategory;
-
-                  return (
-                    <span
-                      key={category}
-                      className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                        isCurrentCategory ? "bg-white text-gray-900" : "bg-white/20 text-white"
-                      }`}
-                    >
-                      {getHueCategoryLabel(category, t)}
-                    </span>
-                  );
-                })}
-              </div>
-            </div>
-          </>
+        <p className="mt-2 text-sm font-semibold">{t.testCurrentMode(modeLabel)}</p>
+        <p className="text-sm">{t.testRemainingColors(remainingColors)}</p>
+        <p className="text-sm">
+          {t.testIncludedPhases}: {includedPhasesLabel}
+        </p>
+        {currentColor && (
+          <p className="text-sm">
+            {phaseLabelMap[lang][currentColor.diagnosticPhase]}
+          </p>
         )}
       </div>
 
@@ -193,6 +168,7 @@ const ActiveColorTest = ({
         <button
           onClick={() =>
             onComplete({
+              mode: configuration.mode,
               likedChips,
               dislikedChips,
             })

@@ -7,6 +7,7 @@ import type {
   HueCategory,
   Lang,
   PersonalColorType,
+  SimpleResultType,
   Season,
 } from "../types";
 
@@ -17,6 +18,15 @@ interface PersonalColorTypeMeta {
   season: Season;
   baseTone: BaseTone;
   detailTone: DetailTone;
+}
+
+interface SimpleResultTypeMeta {
+  slug: string;
+  labelKo: string;
+  labelEn: string;
+  season: Season;
+  baseTone: BaseTone;
+  paletteTypes: readonly PersonalColorType[];
 }
 
 const createChip = (
@@ -124,8 +134,48 @@ export const personalColorTypeMeta: Record<PersonalColorType, PersonalColorTypeM
   },
 };
 
+export const simpleResultTypes = ["Spring Warm", "Summer Cool", "Autumn Warm", "Winter Cool"] as const satisfies readonly SimpleResultType[];
+
+export const simpleResultTypeMeta: Record<SimpleResultType, SimpleResultTypeMeta> = {
+  "Spring Warm": {
+    slug: "spring-warm",
+    labelKo: "봄 웜",
+    labelEn: "Spring Warm",
+    season: "Spring",
+    baseTone: "Warm",
+    paletteTypes: ["Spring Light", "Spring Bright"],
+  },
+  "Summer Cool": {
+    slug: "summer-cool",
+    labelKo: "여름 쿨",
+    labelEn: "Summer Cool",
+    season: "Summer",
+    baseTone: "Cool",
+    paletteTypes: ["Summer Light", "Summer Muted"],
+  },
+  "Autumn Warm": {
+    slug: "autumn-warm",
+    labelKo: "가을 웜",
+    labelEn: "Autumn Warm",
+    season: "Autumn",
+    baseTone: "Warm",
+    paletteTypes: ["Autumn Muted", "Autumn Dark"],
+  },
+  "Winter Cool": {
+    slug: "winter-cool",
+    labelKo: "겨울 쿨",
+    labelEn: "Winter Cool",
+    season: "Winter",
+    baseTone: "Cool",
+    paletteTypes: ["Winter Bright", "Winter Dark"],
+  },
+};
+
 export const getPersonalColorTypeLabel = (type: PersonalColorType, lang: Lang): string =>
   lang === "ko" ? personalColorTypeMeta[type].labelKo : personalColorTypeMeta[type].labelEn;
+
+export const getSimpleResultTypeLabel = (type: SimpleResultType, lang: Lang): string =>
+  lang === "ko" ? simpleResultTypeMeta[type].labelKo : simpleResultTypeMeta[type].labelEn;
 
 export const getChipName = (chip: ColorChip, lang: Lang): string => (lang === "ko" ? chip.nameKo : chip.nameEn);
 
@@ -326,6 +376,9 @@ export const colorData: ColorDataMap = {
     chips.winterDarkMagenta,
   ],
 };
+
+export const getSimpleResultPalette = (type: SimpleResultType): ColorChip[] =>
+  simpleResultTypeMeta[type].paletteTypes.flatMap((paletteType) => colorData[paletteType]);
 
 const oppositeTypeMap: Record<PersonalColorType, PersonalColorType> = {
   "Spring Light": "Autumn Dark",

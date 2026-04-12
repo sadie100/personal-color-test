@@ -8,7 +8,7 @@ import { Home } from "./components/Home";
 import { Results } from "./components/Results";
 import { diagnosticChips } from "./data/colorData";
 import "./index.css";
-import type { DiagnosticChip, Lang, Screen, TestCompletePayload } from "./types";
+import type { DiagnosticChip, Lang, Screen, TestCompletePayload, TestMode } from "./types";
 import { createResultsSearchParams, getPayloadFromResultsSearchParams } from "./utils/resultShare";
 
 const getPreviewChip = (id: string): DiagnosticChip => {
@@ -22,6 +22,7 @@ const getPreviewChip = (id: string): DiagnosticChip => {
 };
 
 const PREVIEW_RESULT: TestCompletePayload = {
+  mode: "detailed",
   likedChips: [
     getPreviewChip("base-warm-pink"),
     getPreviewChip("season-spring-orange"),
@@ -59,6 +60,7 @@ function App() {
   const navigate = useNavigate();
   const [likedChips, setLikedChips] = useState<DiagnosticChip[]>([]);
   const [dislikedChips, setDislikedChips] = useState<DiagnosticChip[]>([]);
+  const [testMode, setTestMode] = useState<TestMode | null>(null);
   const [lang, setLang] = useState<Lang>("ko");
   const screen = getScreenFromPathname(location.pathname);
   const payloadFromQuery = useMemo(
@@ -69,8 +71,8 @@ function App() {
     [location.pathname, location.search],
   );
   const resolvedResultsPayload = useMemo(
-    () => payloadFromQuery ?? (likedChips.length > 0 ? { likedChips, dislikedChips } : null),
-    [dislikedChips, likedChips, payloadFromQuery],
+    () => payloadFromQuery ?? (likedChips.length > 0 && testMode ? { mode: testMode, likedChips, dislikedChips } : null),
+    [dislikedChips, likedChips, payloadFromQuery, testMode],
   );
 
   useEffect(() => {
@@ -120,7 +122,12 @@ function App() {
     }
 
     if (likedChips.length > 0) {
-      const currentPayload: TestCompletePayload = { likedChips, dislikedChips };
+      if (!testMode) {
+        navigate("/test", { replace: true });
+        return;
+      }
+
+      const currentPayload: TestCompletePayload = { mode: testMode, likedChips, dislikedChips };
       const canonicalSearch = createResultsSearchParams(currentPayload).toString();
       if (canonicalSearch && canonicalSearch !== currentParams.toString()) {
         navigate(
@@ -135,7 +142,7 @@ function App() {
     }
 
     navigate("/test", { replace: true });
-  }, [dislikedChips, likedChips, location.pathname, location.search, navigate, payloadFromQuery]);
+  }, [dislikedChips, likedChips, location.pathname, location.search, navigate, payloadFromQuery, testMode]);
 
   const handleToggleLang = (newLang: Lang) => setLang(newLang);
 
@@ -156,6 +163,7 @@ function App() {
 
   const handleTestComplete = useCallback(
     (payload: TestCompletePayload) => {
+      setTestMode(payload.mode);
       setLikedChips(payload.likedChips);
       setDislikedChips(payload.dislikedChips);
       goToResults(payload);
@@ -164,6 +172,7 @@ function App() {
   );
 
   const resetSelections = useCallback(() => {
+    setTestMode(null);
     setLikedChips([]);
     setDislikedChips([]);
   }, []);
@@ -196,7 +205,12 @@ function App() {
       }
 
       if (target === "results") {
-        const payload: TestCompletePayload = { likedChips, dislikedChips };
+        if (!testMode) {
+          navigate("/test");
+          return;
+        }
+
+        const payload: TestCompletePayload = { mode: testMode, likedChips, dislikedChips };
         if (payload.likedChips.length > 0) {
           goToResults(payload);
         } else {
@@ -204,7 +218,7 @@ function App() {
         }
       }
     },
-    [dislikedChips, goToResults, handleGoHome, handleStartTest, likedChips, navigate],
+    [dislikedChips, goToResults, handleGoHome, handleStartTest, likedChips, navigate, testMode],
   );
 
   const shareUrl = useMemo(() => {
@@ -250,6 +264,7 @@ function App() {
           path="/results"
           element={
             <Results
+              mode={resolvedResultsPayload?.mode ?? "detailed"}
               likedChips={resolvedResultsPayload?.likedChips ?? []}
               dislikedChips={resolvedResultsPayload?.dislikedChips ?? []}
               onRetry={handleRetry}

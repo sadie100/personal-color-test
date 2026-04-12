@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
 
 import { translations } from "../i18n/translations";
-import type { HueCategory, Lang, TestConfiguration, TranslationSchema } from "../types";
-import { allHueCategories, getSelectedColorCount } from "../utils/testSet";
+import type { Lang, TestConfiguration, TestMode } from "../types";
+import { getSelectedColorCount } from "../utils/testSet";
 import { LangToggle } from "./LangToggle";
 
 interface TestSetupProps {
@@ -12,50 +12,32 @@ interface TestSetupProps {
   onStart: (configuration: TestConfiguration) => void;
 }
 
-const hueCategoryTranslationKeyMap: Record<
-  HueCategory,
-  | "hueCategoryRed"
-  | "hueCategoryOrange"
-  | "hueCategoryYellow"
-  | "hueCategoryGreen"
-  | "hueCategoryBlue"
-  | "hueCategoryPurplePink"
-  | "hueCategoryNeutral"
-> = {
-  red: "hueCategoryRed",
-  orange: "hueCategoryOrange",
-  yellow: "hueCategoryYellow",
-  green: "hueCategoryGreen",
-  blue: "hueCategoryBlue",
-  purplePink: "hueCategoryPurplePink",
-  neutral: "hueCategoryNeutral",
-};
-
-const getHueCategoryLabel = (category: HueCategory, translation: TranslationSchema): string =>
-  translation[hueCategoryTranslationKeyMap[category]];
-
 export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProps) => {
   const t = translations[lang];
-  const [selectedCategories, setSelectedCategories] = useState<HueCategory[]>([...allHueCategories]);
+  const [selectedMode, setSelectedMode] = useState<TestMode>("simple");
 
-  const selectedColorCount = useMemo(
-    () => getSelectedColorCount(selectedCategories),
-    [selectedCategories],
-  );
+  const simpleColorCount = useMemo(() => getSelectedColorCount("simple"), []);
+  const detailedColorCount = useMemo(() => getSelectedColorCount("detailed"), []);
 
-  const handleToggleCategory = (category: HueCategory) => {
-    setSelectedCategories((currentCategories) => {
-      if (currentCategories.includes(category)) {
-        if (currentCategories.length === 1) {
-          return currentCategories;
-        }
-
-        return currentCategories.filter((currentCategory) => currentCategory !== category);
-      }
-
-      return [...currentCategories, category];
-    });
-  };
+  const modeCards: Array<{
+    mode: TestMode;
+    title: string;
+    description: string;
+    countLabel: string;
+  }> = [
+    {
+      mode: "simple",
+      title: t.testModeSimple,
+      description: t.testModeSimpleDescription,
+      countLabel: t.testModeSimpleCount(simpleColorCount),
+    },
+    {
+      mode: "detailed",
+      title: t.testModeDetailed,
+      description: t.testModeDetailedDescription,
+      countLabel: t.testModeDetailedCount(detailedColorCount),
+    },
+  ];
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-linear-to-br from-indigo-500 via-purple-500 to-pink-500 px-4 py-6 text-white sm:px-6">
@@ -79,48 +61,45 @@ export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProp
           <div className="rounded-2xl bg-black/10 p-5">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <h2 className="text-xl font-semibold">{t.testCategoryTitle}</h2>
-                <p className="mt-1 text-sm text-white/85">{t.testCategoryDescription}</p>
-              </div>
-              <div className="text-sm text-white/90 sm:text-right">
-                <p>{t.testSelectedCategoryCount(selectedCategories.length)}</p>
-                <p>{t.testSelectedColorCount(selectedColorCount)}</p>
+                <h2 className="text-xl font-semibold">{t.testModeTitle}</h2>
+                <p className="mt-1 text-sm text-white/85">{t.testModeDescription}</p>
               </div>
             </div>
 
-            <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {allHueCategories.map((category) => {
-                const isSelected = selectedCategories.includes(category);
+            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+              {modeCards.map((card) => {
+                const isSelected = selectedMode === card.mode;
 
                 return (
                   <button
-                    key={category}
+                    key={card.mode}
                     type="button"
                     aria-pressed={isSelected}
-                    onClick={() => handleToggleCategory(category)}
+                    onClick={() => setSelectedMode(card.mode)}
                     className={`rounded-2xl border px-4 py-4 text-left transition ${
                       isSelected
                         ? "border-white bg-white/20 shadow-md"
                         : "border-white/20 bg-black/10 text-white/75 hover:bg-white/10"
                     }`}
                   >
-                    <span className="block text-sm font-semibold">{getHueCategoryLabel(category, t)}</span>
+                    <span className="block text-lg font-semibold">{card.title}</span>
+                    <span className="mt-2 block text-sm text-white/85">{card.description}</span>
+                    <span className="mt-4 inline-flex rounded-full bg-white/15 px-3 py-1 text-xs font-semibold text-white/95">
+                      {card.countLabel}
+                    </span>
                   </button>
                 );
               })}
             </div>
-
-            {selectedCategories.length === 0 && <p className="mt-4 text-sm text-red-100">{t.testCategoryRequired}</p>}
           </div>
 
           <button
             type="button"
             onClick={() =>
               onStart({
-                selectedCategories,
+                mode: selectedMode,
               })
             }
-            disabled={selectedCategories.length === 0}
             className="mt-8 w-full rounded-full bg-white px-6 py-4 text-base font-bold text-purple-700 shadow-lg transition hover:scale-[1.01] hover:bg-purple-50 disabled:cursor-not-allowed disabled:bg-white/60 disabled:text-purple-300 disabled:hover:scale-100"
           >
             {t.testStartSelected}

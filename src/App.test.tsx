@@ -29,15 +29,18 @@ vi.mock("./components/ColorTest", () => ({
 
 vi.mock("./components/Results", () => ({
   Results: ({
+    mode,
     likedChips,
     dislikedChips,
     shareUrl,
   }: {
+    mode: string;
     likedChips: Array<{ name: string }>;
     dislikedChips: Array<{ name: string }>;
     shareUrl?: string;
   }) => (
     <div data-testid="results-screen">
+      <span data-testid="result-mode">{mode}</span>
       <span data-testid="liked-count">{likedChips.length}</span>
       <span data-testid="disliked-count">{dislikedChips.length}</span>
       <span data-testid="share-url">{shareUrl ?? ""}</span>
@@ -89,6 +92,7 @@ describe("App routing", () => {
 
   it("hydrates result payload from query params on /results", async () => {
     const payload: TestCompletePayload = {
+      mode: "detailed",
       likedChips: [
         getChip("base-warm-pink"),
         getChip("detail-spring-bright-red"),
@@ -104,9 +108,31 @@ describe("App routing", () => {
     );
 
     expect(await screen.findByTestId("results-screen")).toBeTruthy();
+    expect(screen.getByTestId("result-mode").textContent).toBe("detailed");
     expect(screen.getByTestId("liked-count").textContent).toBe("2");
     expect(screen.getByTestId("disliked-count").textContent).toBe("1");
     expect(screen.getByTestId("share-url").textContent).toContain("/results?");
     expect(screen.getByTestId("share-url").textContent).toContain("data=");
+  });
+
+  it("hydrates simple mode result payload from query params on /results", async () => {
+    const payload: TestCompletePayload = {
+      mode: "simple",
+      likedChips: [getChip("base-cool-blue"), getChip("season-winter-blue")],
+      dislikedChips: [getChip("base-warm-pink")],
+    };
+    const search = createResultsSearchParams(payload).toString();
+
+    render(
+      <MemoryRouter initialEntries={[`/results?${search}`]}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(await screen.findByTestId("results-screen")).toBeTruthy();
+    expect(screen.getByTestId("result-mode").textContent).toBe("simple");
+    expect(screen.getByTestId("liked-count").textContent).toBe("2");
+    expect(screen.getByTestId("disliked-count").textContent).toBe("1");
+    expect(screen.getByTestId("share-url").textContent).toContain("mode=simple");
   });
 });

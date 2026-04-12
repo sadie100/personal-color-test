@@ -1,11 +1,18 @@
-import { diagnosticChips, personalColorTypeMeta, personalColorTypes } from "../data/colorData";
-import type { DiagnosticChip, PersonalColorType, TestCompletePayload } from "../types";
-import { getBestResults, getWorstResult } from "./analyzer";
+import {
+  diagnosticChips,
+  personalColorTypeMeta,
+  personalColorTypes,
+  simpleResultTypeMeta,
+  simpleResultTypes,
+} from "../data/colorData";
+import type { DiagnosticChip, PersonalColorType, SimpleResultType, TestCompletePayload, TestMode } from "../types";
+import { getBestResults, getBestSimpleResults, getWorstResult, getWorstSimpleResult } from "./analyzer";
 
 type SummaryKey = "best" | "second" | "third" | "worst";
 
 interface EncodedSelections {
-  v: 2;
+  v: 3;
+  m: TestMode;
   l: number[];
   d: number[];
 }
@@ -26,6 +33,22 @@ const slugToToneMap: Record<string, PersonalColorType> = Object.entries(toneToSl
     [slug]: type as PersonalColorType,
   }),
   {} as Record<string, PersonalColorType>,
+);
+
+const simpleToneToSlugMap: Record<SimpleResultType, string> = simpleResultTypes.reduce(
+  (accumulator, type) => ({
+    ...accumulator,
+    [type]: simpleResultTypeMeta[type].slug,
+  }),
+  {} as Record<SimpleResultType, string>,
+);
+
+const slugToSimpleToneMap: Record<string, SimpleResultType> = Object.entries(simpleToneToSlugMap).reduce(
+  (accumulator, [type, slug]) => ({
+    ...accumulator,
+    [slug]: type as SimpleResultType,
+  }),
+  {} as Record<string, SimpleResultType>,
 );
 
 const colorCatalog: DiagnosticChip[] = diagnosticChips;
@@ -68,7 +91,8 @@ const encodeSelections = (payload: TestCompletePayload): string | null => {
   }
 
   const encoded: EncodedSelections = {
-    v: 2,
+    v: 3,
+    m: payload.mode,
     l: likedIndexes,
     d: dislikedIndexes,
   };
@@ -83,9 +107,12 @@ const decodeSelections = (encodedValue: string): TestCompletePayload | null => {
   }
 
   const parsed = safeJsonParse<EncodedSelections>(decoded);
-  if (!parsed || parsed.v !== 2 || !Array.isArray(parsed.l) || !Array.isArray(parsed.d)) {
+  if (!parsed || !Array.isArray(parsed.l) || !Array.isArray(parsed.d)) {
     return null;
   }
+
+  const mode: TestMode =
+    parsed.v === 3 && (parsed.m === "simple" || parsed.m === "detailed") ? parsed.m : "detailed";
 
   const likedChips = parsed.l
     .map((index) => colorCatalog[index])
@@ -98,31 +125,34 @@ const decodeSelections = (encodedValue: string): TestCompletePayload | null => {
     return null;
   }
 
-  return { likedChips, dislikedChips };
+  return { mode, likedChips, dislikedChips };
 };
 
-const getSummaryFromParams = (
-  searchParams: URLSearchParams,
-): Partial<Record<SummaryKey, PersonalColorType>> =>
-  SUMMARY_KEYS.reduce<Partial<Record<SummaryKey, PersonalColorType>>>((accumulator, key) => {
-    const value = searchParams.get(key);
-    if (!value) {
-      return accumulator;
-    }
-
-    const mappedTone = slugToToneMap[value];
-    if (mappedTone) {
-      accumulator[key] = mappedTone;
-    }
-    return accumulator;
-  }, {});
+const getModeFromParams = (searchParams: URLSearchParams): TestMode =>
+  searchParams.get("mode") === "simple" ? "simple" : "detailed";
 
 const getRepresentativeChip = (type: PersonalColorType): DiagnosticChip | null =>
   diagnosticChips.find(
     (chip) => chip.diagnosticPhase === "detail" && chip.targetTypes.includes(type),
   ) ?? diagnosticChips.find((chip) => chip.targetTypes.includes(type)) ?? null;
 
-const createFallbackPayloadFromSummary = (
+const getRepresentativeChipsForSimpleTone = (type: SimpleResultType): DiagnosticChip[] => {
+  const { paletteTypes } = simpleResultTypeMeta[type];
+  const chips = [
+    diagnosticChips.find(
+      (chip) =>
+        chip.diagnosticPhase === "base" && paletteTypes.every((paletteType) => chip.targetTypes.includes(paletteType)),
+    ) ?? null,
+    diagnosticChips.find(
+      (chip) =>
+        chip.diagnosticPhase === "season" && paletteTypes.every((paletteType) => chip.targetTypes.includes(paletteType)),
+    ) ?? null,
+  ];
+
+  return chips.filter((chip): chip is DiagnosticChip => chip !== null);
+};
+
+const createDetailedFallbackPayloadFromSummary = (
   summary: Partial<Record<SummaryKey, PersonalColorType>>,
 ): TestCompletePayload | null => {
   const best = summary.best;
@@ -153,27 +183,99 @@ const createFallbackPayloadFromSummary = (
     return null;
   }
 
-  return { likedChips, dislikedChips };
+  return { mode: "detailed", likedChips, dislikedChips };
 };
+
+const createSimpleFallbackPayloadFromSummary = (
+  summary: Partial<Record<SummaryKey, SimpleResultType>>,
+): TestCompletePayload | null => {
+  const best = summary.best;
+  if (!best) {
+    return null;
+  }
+
+  const worst = summary.worst;
+  const bestChips = getRepresentativeChipsForSimpleTone(best);
+  const likedChips = [...bestChips, ...bestChips];
+  const dislikedChips = worst ? getRepresentativeChipsForSimpleTone(worst) : [];
+
+  if (likedChips.length === 0 && dislikedChips.length === 0) {
+    return null;
+  }
+
+  return {
+    mode: "simple",
+    likedChips,
+    dislikedChips,
+  };
+};
+
+const getDetailedSummaryFromParams = (
+  searchParams: URLSearchParams,
+): Partial<Record<SummaryKey, PersonalColorType>> =>
+  SUMMARY_KEYS.reduce<Partial<Record<SummaryKey, PersonalColorType>>>((accumulator, key) => {
+    const value = searchParams.get(key);
+    if (!value) {
+      return accumulator;
+    }
+
+    const mappedTone = slugToToneMap[value];
+    if (mappedTone) {
+      accumulator[key] = mappedTone;
+    }
+
+    return accumulator;
+  }, {});
+
+const getSimpleSummaryFromParams = (
+  searchParams: URLSearchParams,
+): Partial<Record<SummaryKey, SimpleResultType>> =>
+  ["best", "worst"].reduce<Partial<Record<SummaryKey, SimpleResultType>>>((accumulator, key) => {
+    const value = searchParams.get(key);
+    if (!value) {
+      return accumulator;
+    }
+
+    const mappedTone = slugToSimpleToneMap[value];
+    if (mappedTone) {
+      accumulator[key as SummaryKey] = mappedTone;
+    }
+
+    return accumulator;
+  }, {});
 
 export const createResultsSearchParams = (payload: TestCompletePayload): URLSearchParams => {
   const params = new URLSearchParams();
-  const bestResults = getBestResults(payload.likedChips, payload.dislikedChips, 3);
-  const worst = getWorstResult(payload.likedChips, payload.dislikedChips);
+  params.set("mode", payload.mode);
 
-  const [best, second, third] = bestResults;
+  if (payload.mode === "simple") {
+    const best = getBestSimpleResults(payload.likedChips, payload.dislikedChips, 1)[0];
+    const worst = getWorstSimpleResult(payload.likedChips, payload.dislikedChips);
 
-  if (best) {
-    params.set("best", toneToSlugMap[best]);
-  }
-  if (second) {
-    params.set("second", toneToSlugMap[second]);
-  }
-  if (third) {
-    params.set("third", toneToSlugMap[third]);
-  }
-  if (worst) {
-    params.set("worst", toneToSlugMap[worst]);
+    if (best) {
+      params.set("best", simpleToneToSlugMap[best]);
+    }
+
+    if (worst) {
+      params.set("worst", simpleToneToSlugMap[worst]);
+    }
+  } else {
+    const bestResults = getBestResults(payload.likedChips, payload.dislikedChips, 3);
+    const worst = getWorstResult(payload.likedChips, payload.dislikedChips);
+    const [best, second, third] = bestResults;
+
+    if (best) {
+      params.set("best", toneToSlugMap[best]);
+    }
+    if (second) {
+      params.set("second", toneToSlugMap[second]);
+    }
+    if (third) {
+      params.set("third", toneToSlugMap[third]);
+    }
+    if (worst) {
+      params.set("worst", toneToSlugMap[worst]);
+    }
   }
 
   const encodedSelections = encodeSelections(payload);
@@ -195,6 +297,13 @@ export const getPayloadFromResultsSearchParams = (
     }
   }
 
-  const summary = getSummaryFromParams(searchParams);
-  return createFallbackPayloadFromSummary(summary);
+  const mode = getModeFromParams(searchParams);
+
+  if (mode === "simple") {
+    const summary = getSimpleSummaryFromParams(searchParams);
+    return createSimpleFallbackPayloadFromSummary(summary);
+  }
+
+  const summary = getDetailedSummaryFromParams(searchParams);
+  return createDetailedFallbackPayloadFromSummary(summary);
 };

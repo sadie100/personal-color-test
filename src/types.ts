@@ -20,6 +20,12 @@ export type PersonalColorType =
   | "Winter Bright"
   | "Winter Dark";
 
+export type SimpleResultType = "Spring Warm" | "Summer Cool" | "Autumn Warm" | "Winter Cool";
+
+export type ResultTone = PersonalColorType | SimpleResultType;
+
+export type TestMode = "simple" | "detailed";
+
 export type DiagnosticPhase = "base" | "season" | "detail";
 
 export interface Oklch {
@@ -48,6 +54,7 @@ export type Color = ColorChip;
 export type ColorDataMap = Record<PersonalColorType, ColorChip[]>;
 
 export interface TestCompletePayload {
+  mode: TestMode;
   likedChips: DiagnosticChip[];
   dislikedChips: DiagnosticChip[];
 }
@@ -55,7 +62,7 @@ export interface TestCompletePayload {
 export type TestCompleteResult = TestCompletePayload;
 
 export interface TestConfiguration {
-  selectedCategories: HueCategory[];
+  mode: TestMode;
 }
 
 export type AboutSeasonTitleKey =
@@ -101,16 +108,18 @@ export interface TranslationSchema {
   earlyExit: string;
   testSetupTitle: string;
   testSetupDescription: string;
-  testCategoryTitle: string;
-  testCategoryDescription: string;
-  testCategoryRequired: string;
-  testSelectedColorCount: (count: number) => string;
-  testSelectedCategoryCount: (count: number) => string;
+  testModeTitle: string;
+  testModeDescription: string;
+  testModeSimple: string;
+  testModeSimpleDescription: string;
+  testModeSimpleCount: (count: number) => string;
+  testModeDetailed: string;
+  testModeDetailedDescription: string;
+  testModeDetailedCount: (count: number) => string;
   testStartSelected: string;
-  testCurrentCategory: (label: string) => string;
+  testCurrentMode: (label: string) => string;
   testRemainingColors: (count: number) => string;
-  testRemainingInCategory: (count: number) => string;
-  testCategoryOrderTitle: string;
+  testIncludedPhases: string;
   hueCategoryRed: string;
   hueCategoryOrange: string;
   hueCategoryYellow: string;
@@ -139,9 +148,9 @@ export interface TranslationSchema {
   shareResult: string;
   copied: string;
   shareText: (
-    bestType: PersonalColorType,
-    secondaryTypes?: PersonalColorType[],
-    worstType?: PersonalColorType | null,
+    bestType: ResultTone,
+    secondaryTypes?: ResultTone[],
+    worstType?: ResultTone | null,
   ) => string;
   noLikes: string;
   warmUndertone: string;

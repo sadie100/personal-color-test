@@ -1,15 +1,33 @@
 import { useState } from "react";
 
-import { colorData, getChipName, getPersonalColorTypeLabel, personalColorTypeMeta } from "../data/colorData";
+import { colorData, getChipName, getPersonalColorTypeLabel, getSimpleResultPalette, getSimpleResultTypeLabel, personalColorTypeMeta, simpleResultTypeMeta } from "../data/colorData";
 import { translations } from "../i18n/translations";
-import { analyzePersonalColor, getBestResults, getWorstResult } from "../utils/analyzer";
-import type { ColorChip, DiagnosticChip, Lang, PersonalColorType, TranslationSchema } from "../types";
+import {
+  analyzePersonalColor,
+  analyzeSimplePersonalColor,
+  getBestResults,
+  getWorstResult,
+  getWorstSimpleResult,
+} from "../utils/analyzer";
+import type {
+  BaseTone,
+  ColorChip,
+  DetailTone,
+  DiagnosticChip,
+  Lang,
+  PersonalColorType,
+  Season,
+  SimpleResultType,
+  TestMode,
+  TranslationSchema,
+} from "../types";
 
 type BadgeMode = "liked" | "disliked";
 type MetaTone = "default" | BadgeMode;
 type ToneCardVariant = "best" | "second" | "third" | "worst";
 
 interface ResultsProps {
+  mode: TestMode;
   likedChips: DiagnosticChip[];
   dislikedChips?: DiagnosticChip[];
   onRetry: () => void;
@@ -26,8 +44,14 @@ interface ToneCardStyle {
 }
 
 interface ToneCardData extends ToneCardStyle {
+  id: string;
   label: string;
-  tone: PersonalColorType;
+  displayName: string;
+  paletteColors: ReadonlyArray<ColorChip>;
+  previewColors: ReadonlyArray<ColorChip>;
+  season: Season;
+  baseTone: BaseTone;
+  detailTone?: DetailTone;
 }
 
 interface ResultToneCardProps {
@@ -35,13 +59,13 @@ interface ResultToneCardProps {
   lang: Lang;
   className?: string;
   toneClassName?: string;
-  previewColors?: ReadonlyArray<ColorChip>;
 }
 
 interface PaletteSectionProps {
   title: string;
   description: string;
-  tone: PersonalColorType;
+  badgeText: string;
+  paletteColors: ReadonlyArray<ColorChip>;
   badgeClass: string;
   borderClass: string;
   likedSelectionSet: ReadonlySet<string>;
@@ -100,6 +124,7 @@ const toneCardStyles: Record<ToneCardVariant, ToneCardStyle> = {
 };
 
 export const Results = ({
+  mode,
   likedChips,
   dislikedChips = [],
   onRetry,
@@ -107,48 +132,86 @@ export const Results = ({
   shareUrl,
 }: ResultsProps) => {
   const t = translations[lang];
-  const bestResults = getBestResults(likedChips, dislikedChips, 3);
-  const personalColorType = analyzePersonalColor(likedChips, dislikedChips);
-  const worstColorType = getWorstResult(likedChips, dislikedChips);
-  const secondaryBestResults = bestResults.slice(1, 3);
-  const [selectedPaletteTone, setSelectedPaletteTone] = useState<PersonalColorType | null>(personalColorType);
+  const [selectedPaletteToneId, setSelectedPaletteToneId] = useState<string | null>(null);
 
   const likedSelectionSet = buildSelectionSet(likedChips);
   const dislikedSelectionSet = buildSelectionSet(dislikedChips);
 
-  const bestCard: ToneCardData | null = personalColorType
-    ? {
-        label: t.bestColor,
-        tone: personalColorType,
-        ...toneCardStyles.best,
-      }
-    : null;
+  const buildDetailedCard = (tone: PersonalColorType, label: string, variant: ToneCardVariant): ToneCardData => {
+    const meta = personalColorTypeMeta[tone];
+    const paletteColors = colorData[tone];
 
-  const comparisonCards: ToneCardData[] = secondaryBestResults.map((tone, index) => ({
-    label: index === 0 ? t.secondBestColor : t.thirdBestColor,
-    tone,
-    ...(index === 0 ? toneCardStyles.second : toneCardStyles.third),
-  }));
+    return {
+      id: tone,
+      label,
+      displayName: getPersonalColorTypeLabel(tone, lang),
+      paletteColors,
+      previewColors: paletteColors.slice(0, 5),
+      season: meta.season,
+      baseTone: meta.baseTone,
+      detailTone: meta.detailTone,
+      ...toneCardStyles[variant],
+    };
+  };
 
-  const topCards = [bestCard, ...comparisonCards].filter(isToneCardData);
-  const activePaletteTone =
-    selectedPaletteTone && topCards.some((card) => card.tone === selectedPaletteTone)
-      ? selectedPaletteTone
-      : (topCards[0]?.tone ?? null);
+  const buildSimpleCard = (tone: SimpleResultType, label: string, variant: ToneCardVariant): ToneCardData => {
+    const meta = simpleResultTypeMeta[tone];
+    const paletteColors = getSimpleResultPalette(tone);
+
+    return {
+      id: tone,
+      label,
+      displayName: getSimpleResultTypeLabel(tone, lang),
+      paletteColors,
+      previewColors: paletteColors.slice(0, 5),
+      season: meta.season,
+      baseTone: meta.baseTone,
+      ...toneCardStyles[variant],
+    };
+  };
+
+  const resultState =
+    mode === "simple"
+      ? {
+          bestCard: (() => {
+            const bestTone = analyzeSimplePersonalColor(likedChips, dislikedChips);
+            return bestTone ? buildSimpleCard(bestTone, t.bestColor, "best") : null;
+          })(),
+          comparisonCards: [] as ToneCardData[],
+          worstCard: (() => {
+            const worstTone = getWorstSimpleResult(likedChips, dislikedChips);
+            return worstTone ? buildSimpleCard(worstTone, t.worstColor, "worst") : null;
+          })(),
+        }
+      : (() => {
+          const bestResults = getBestResults(likedChips, dislikedChips, 3);
+          const personalColorType = analyzePersonalColor(likedChips, dislikedChips);
+          const secondaryBestResults = bestResults.slice(1, 3);
+          const bestCard = personalColorType ? buildDetailedCard(personalColorType, t.bestColor, "best") : null;
+          const comparisonCards = secondaryBestResults.map((tone, index) =>
+            buildDetailedCard(
+              tone,
+              index === 0 ? t.secondBestColor : t.thirdBestColor,
+              index === 0 ? "second" : "third",
+            ),
+          );
+          const worstTone = getWorstResult(likedChips, dislikedChips);
+          const worstCard = worstTone ? buildDetailedCard(worstTone, t.worstColor, "worst") : null;
+
+          return {
+            bestCard,
+            comparisonCards,
+            worstCard,
+          };
+        })();
+
+  const topCards = [resultState.bestCard, ...resultState.comparisonCards].filter(isToneCardData);
   const activePaletteCard =
-    topCards.find((card) => card.tone === activePaletteTone) ?? null;
+    (selectedPaletteToneId ? topCards.find((card) => card.id === selectedPaletteToneId) : null) ?? topCards[0] ?? null;
 
-  const worstCard: ToneCardData | null = worstColorType
-    ? {
-        label: t.worstColor,
-        tone: worstColorType,
-        ...toneCardStyles.worst,
-      }
-    : null;
-
-  if (!personalColorType) {
+  if (!resultState.bestCard) {
     return (
-      <div className="flex h-screen w-full flex-col items-center justify-center gap-4 bg-gradient-to-br from-gray-50 to-gray-100">
+      <div className="flex h-screen w-full flex-col items-center justify-center gap-4 bg-linear-to-br from-gray-50 to-gray-100">
         <p className="text-xl font-semibold text-gray-700">{t.noLikes}</p>
         <button
           onClick={onRetry}
@@ -160,10 +223,8 @@ export const Results = ({
     );
   }
 
-  const typeMeta = personalColorTypeMeta[personalColorType];
-
   return (
-    <div className="min-h-screen w-full overflow-auto bg-gradient-to-br from-gray-50 to-gray-100 p-6 pt-20">
+    <div className="min-h-screen w-full overflow-auto bg-linear-to-br from-gray-50 to-gray-100 p-6 pt-20">
       <div className="mx-auto max-w-5xl">
         <div className="mb-8 text-center">
           <h1 className="mb-2 text-4xl font-bold">{t.yourPersonalColor}</h1>
@@ -172,26 +233,24 @@ export const Results = ({
 
         {topCards.length > 0 && (
           <div className="mb-6">
-            {bestCard && (
+            {resultState.bestCard && (
               <div className="mx-auto mb-4 max-w-lg">
                 <ResultToneCard
-                  card={bestCard}
+                  card={resultState.bestCard}
                   lang={lang}
                   className="min-h-[168px]"
                   toneClassName="text-3xl sm:text-4xl"
-                  previewColors={colorData[bestCard.tone].slice(0, 5)}
                 />
               </div>
             )}
-            {comparisonCards.length > 0 && (
+            {resultState.comparisonCards.length > 0 && (
               <div className="mx-auto grid max-w-3xl gap-4 md:grid-cols-2">
-                {comparisonCards.map((card) => (
+                {resultState.comparisonCards.map((card) => (
                   <ResultToneCard
-                    key={card.tone}
+                    key={card.id}
                     card={card}
                     lang={lang}
                     className="min-h-[144px]"
-                    previewColors={colorData[card.tone].slice(0, 5)}
                   />
                 ))}
               </div>
@@ -201,23 +260,25 @@ export const Results = ({
 
         {topCards.length > 0 && (
           <div className="mb-6 rounded-3xl border border-slate-100 bg-white p-6 shadow-md">
-            <div className="flex flex-wrap gap-3">
-              {topCards.map((card) => (
-                <button
-                  key={card.tone}
-                  type="button"
-                  onClick={() => setSelectedPaletteTone(card.tone)}
-                  className={[
-                    "rounded-full border px-4 py-2 text-sm font-semibold transition-colors",
-                    card.tone === activePaletteTone
-                      ? `${card.badgeClass} border-transparent`
-                      : "border-slate-200 bg-white text-slate-600 hover:border-slate-300",
-                  ].join(" ")}
-                >
-                  {card.label}
-                </button>
-              ))}
-            </div>
+            {topCards.length > 1 && (
+              <div className="flex flex-wrap gap-3">
+                {topCards.map((card) => (
+                  <button
+                    key={card.id}
+                    type="button"
+                    onClick={() => setSelectedPaletteToneId(card.id)}
+                    className={[
+                      "rounded-full border px-4 py-2 text-sm font-semibold transition-colors",
+                      card.id === activePaletteCard?.id
+                        ? `${card.badgeClass} border-transparent`
+                        : "border-slate-200 bg-white text-slate-600 hover:border-slate-300",
+                    ].join(" ")}
+                  >
+                    {card.label}
+                  </button>
+                ))}
+              </div>
+            )}
 
             {activePaletteCard && (
               <PaletteSection
@@ -225,7 +286,8 @@ export const Results = ({
                 description={
                   activePaletteCard.label === t.bestColor ? t.bestPaletteDescription : t.comparisonPaletteDescription
                 }
-                tone={activePaletteCard.tone}
+                badgeText={activePaletteCard.displayName}
+                paletteColors={activePaletteCard.paletteColors}
                 badgeClass={activePaletteCard.badgeClass}
                 borderClass={activePaletteCard.borderClass}
                 likedSelectionSet={likedSelectionSet}
@@ -239,17 +301,18 @@ export const Results = ({
           </div>
         )}
 
-        {worstCard && (
+        {resultState.worstCard && (
           <>
             <div className="mb-6">
-              <ResultToneCard card={worstCard} lang={lang} />
+              <ResultToneCard card={resultState.worstCard} lang={lang} />
             </div>
             <PaletteSection
               title={t.paletteTitle(t.worstColor)}
               description={t.worstPaletteDescription}
-              tone={worstCard.tone}
-              badgeClass={worstCard.badgeClass}
-              borderClass={worstCard.borderClass}
+              badgeText={resultState.worstCard.displayName}
+              paletteColors={resultState.worstCard.paletteColors}
+              badgeClass={resultState.worstCard.badgeClass}
+              borderClass={resultState.worstCard.borderClass}
               likedSelectionSet={likedSelectionSet}
               dislikedSelectionSet={dislikedSelectionSet}
               badgeMode="disliked"
@@ -264,15 +327,15 @@ export const Results = ({
           <h3 className="mb-2 font-bold">{t.aboutColorType}</h3>
           <p className="mb-3 text-sm text-gray-700">{t.basedOn}</p>
           <ul className="space-y-1 text-sm text-gray-700">
-            <li>✓ {typeMeta.baseTone === "Warm" ? t.warmUndertone : t.coolUndertone}</li>
-            {typeMeta.season === "Spring" && <li>✓ {t.springTrait}</li>}
-            {typeMeta.season === "Summer" && <li>✓ {t.summerTrait}</li>}
-            {typeMeta.season === "Autumn" && <li>✓ {t.autumnTrait}</li>}
-            {typeMeta.season === "Winter" && <li>✓ {t.winterTrait}</li>}
-            {typeMeta.detailTone === "Light" && <li>✓ {t.lightTrait}</li>}
-            {typeMeta.detailTone === "Bright" && <li>✓ {t.brightTrait}</li>}
-            {typeMeta.detailTone === "Muted" && <li>✓ {t.mutedTrait}</li>}
-            {typeMeta.detailTone === "Dark" && <li>✓ {t.darkTrait}</li>}
+            <li>✓ {resultState.bestCard.baseTone === "Warm" ? t.warmUndertone : t.coolUndertone}</li>
+            {resultState.bestCard.season === "Spring" && <li>✓ {t.springTrait}</li>}
+            {resultState.bestCard.season === "Summer" && <li>✓ {t.summerTrait}</li>}
+            {resultState.bestCard.season === "Autumn" && <li>✓ {t.autumnTrait}</li>}
+            {resultState.bestCard.season === "Winter" && <li>✓ {t.winterTrait}</li>}
+            {resultState.bestCard.detailTone === "Light" && <li>✓ {t.lightTrait}</li>}
+            {resultState.bestCard.detailTone === "Bright" && <li>✓ {t.brightTrait}</li>}
+            {resultState.bestCard.detailTone === "Muted" && <li>✓ {t.mutedTrait}</li>}
+            {resultState.bestCard.detailTone === "Dark" && <li>✓ {t.darkTrait}</li>}
           </ul>
         </div>
 
@@ -304,7 +367,6 @@ const ResultToneCard = ({
   lang,
   className = "",
   toneClassName = "",
-  previewColors = [],
 }: ResultToneCardProps) => {
   return (
     <div
@@ -313,14 +375,12 @@ const ResultToneCard = ({
         .join(" ")}
     >
       <p className={`mb-2 text-center text-sm font-semibold ${card.labelClass}`}>{card.label}</p>
-      <p className={`text-center text-2xl font-bold ${card.valueClass} ${toneClassName}`}>
-        {getPersonalColorTypeLabel(card.tone, lang)}
-      </p>
-      {previewColors.length > 0 && (
+      <p className={`text-center text-2xl font-bold ${card.valueClass} ${toneClassName}`}>{card.displayName}</p>
+      {card.previewColors.length > 0 && (
         <div className="mt-5 flex justify-center gap-2">
-          {previewColors.map((color) => (
+          {card.previewColors.map((color) => (
             <span
-              key={`${card.tone}-${color.hex}`}
+              key={`${card.id}-${color.hex}`}
               className="h-8 w-8 rounded-full border-2 border-white shadow-sm"
               style={{ backgroundColor: color.hex }}
               title={getChipName(color, lang)}
@@ -335,7 +395,8 @@ const ResultToneCard = ({
 const PaletteSection = ({
   title,
   description,
-  tone,
+  badgeText,
+  paletteColors,
   badgeClass,
   borderClass,
   likedSelectionSet,
@@ -346,7 +407,6 @@ const PaletteSection = ({
   muted = false,
   insideCard = false,
 }: PaletteSectionProps) => {
-  const paletteColors = colorData[tone];
   const likedCount = paletteColors.filter((color) => likedSelectionSet.has(color.hex)).length;
   const dislikedCount = paletteColors.filter((color) => dislikedSelectionSet.has(color.hex)).length;
 
@@ -361,7 +421,7 @@ const PaletteSection = ({
         <div className="flex flex-wrap items-center gap-2">
           <h2 className="text-2xl font-bold text-slate-900">{title}</h2>
           <span className={`rounded-full px-3 py-1 text-xs font-semibold ${badgeClass}`}>
-            {getPersonalColorTypeLabel(tone, lang)}
+            {badgeText}
           </span>
         </div>
         <p className="text-sm text-slate-600">{description}</p>
@@ -381,7 +441,7 @@ const PaletteSection = ({
 
           return (
             <div
-              key={`${tone}-${color.id}`}
+              key={`${badgeText}-${color.id}`}
               className={["rounded-2xl border bg-white p-3 transition-shadow", borderClass, muted ? "opacity-75" : ""]
                 .filter(Boolean)
                 .join(" ")}

@@ -1,27 +1,25 @@
 import { describe, expect, it } from "vitest";
 
 import { diagnosticChips } from "../data/colorData";
-import { allHueCategories, getSelectedDiagnosticChips } from "./testSet";
+import { getIncludedPhasesForMode, getSelectedDiagnosticChips } from "./testSet";
 
 describe("testSet utilities", () => {
-  it("returns all diagnostic chips when every category is selected", () => {
-    expect(getSelectedDiagnosticChips(allHueCategories).length).toBe(diagnosticChips.length);
-  });
-
-  it("filters colors only from the selected categories", () => {
-    const selectedColors = getSelectedDiagnosticChips(["red", "neutral"]);
+  it("returns only base and season chips for simple mode", () => {
+    const selectedColors = getSelectedDiagnosticChips("simple");
 
     expect(selectedColors.length).toBeGreaterThan(0);
-    expect(selectedColors.every((color) => color.hueCategory === "red" || color.hueCategory === "neutral")).toBe(true);
-    expect(selectedColors.some((color) => color.hex === "#FDF5E0")).toBe(true);
+    expect(selectedColors.every((color) => color.diagnosticPhase !== "detail")).toBe(true);
+    expect(selectedColors.every((color) => color.diagnosticPhase === "base" || color.diagnosticPhase === "season")).toBe(
+      true,
+    );
   });
 
-  it("returns chips grouped by the selected category order", () => {
-    const selectedColors = getSelectedDiagnosticChips(["neutral", "red"]);
-    const firstRedIndex = selectedColors.findIndex((color) => color.hueCategory === "red");
+  it("returns every diagnostic chip for detailed mode", () => {
+    expect(getSelectedDiagnosticChips("detailed").length).toBe(diagnosticChips.length);
+  });
 
-    expect(firstRedIndex).toBeGreaterThan(0);
-    expect(selectedColors[0]!.hueCategory).toBe("neutral");
-    expect(selectedColors.slice(0, firstRedIndex).every((color) => color.hueCategory === "neutral")).toBe(true);
+  it("returns included phases in order for each mode", () => {
+    expect(getIncludedPhasesForMode("simple")).toEqual(["base", "season"]);
+    expect(getIncludedPhasesForMode("detailed")).toEqual(["base", "season", "detail"]);
   });
 });

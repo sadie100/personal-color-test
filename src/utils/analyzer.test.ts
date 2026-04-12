@@ -1,7 +1,16 @@
 import { describe, expect, it } from "vitest";
 
 import { diagnosticChips } from "../data/colorData";
-import { analyzePersonalColor, getBestResults, getPersonalColorScores, getWorstResult } from "./analyzer";
+import {
+  analyzePersonalColor,
+  analyzeSimplePersonalColor,
+  getBestResults,
+  getBestSimpleResults,
+  getPersonalColorScores,
+  getSimpleResultScores,
+  getWorstResult,
+  getWorstSimpleResult,
+} from "./analyzer";
 
 const getChip = (id: string) => {
   const chip = diagnosticChips.find((entry) => entry.id === id);
@@ -46,5 +55,25 @@ describe("8-type score analysis", () => {
     expect(analyzePersonalColor(liked, disliked)).toBe("Spring Bright");
     expect(getBestResults(liked, disliked, 3)).toEqual(["Spring Bright", "Spring Light", "Autumn Muted"]);
     expect(getWorstResult(liked, disliked)).toBe("Summer Light");
+  });
+});
+
+describe("simple mode seasonal analysis", () => {
+  it("aggregates detailed type targets into seasonal results", () => {
+    const scores = getSimpleResultScores([getChip("base-warm-pink"), getChip("season-spring-green")], []);
+
+    expect(scores["Spring Warm"]).toBe(4);
+    expect(scores["Autumn Warm"]).toBe(2);
+    expect(scores["Summer Cool"]).toBe(0);
+    expect(scores["Winter Cool"]).toBe(0);
+  });
+
+  it("returns best and worst seasonal result from base and season chips", () => {
+    const liked = [getChip("base-cool-blue"), getChip("season-winter-blue"), getChip("season-winter-purple")];
+    const disliked = [getChip("base-warm-pink"), getChip("season-spring-red")];
+
+    expect(analyzeSimplePersonalColor(liked, disliked)).toBe("Winter Cool");
+    expect(getBestSimpleResults(liked, disliked, 1)).toEqual(["Winter Cool"]);
+    expect(getWorstSimpleResult(liked, disliked)).toBe("Spring Warm");
   });
 });
