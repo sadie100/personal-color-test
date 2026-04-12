@@ -20,6 +20,7 @@ interface ResultsProps {
   dislikedColors?: ColorWithSeason[];
   onRetry: () => void;
   lang: Lang;
+  shareUrl?: string;
 }
 
 interface ToneCardStyle {
@@ -110,6 +111,7 @@ export const Results = ({
   dislikedColors = [],
   onRetry,
   lang,
+  shareUrl,
 }: ResultsProps) => {
   const t = translations[lang];
   const bestResults = getBestResults(likedColors);
@@ -306,9 +308,8 @@ export const Results = ({
           </button>
           <button
             onClick={() => {
-              void navigator.clipboard.writeText(
-                t.shareText(personalColorType, secondaryBestResults, worstColorType),
-              );
+              const urlToShare = shareUrl || window.location.href;
+              void navigator.clipboard.writeText(urlToShare);
               window.alert(t.copied);
             }}
             className="flex-1 rounded-lg bg-gray-500 py-3 font-bold text-white transition-colors hover:bg-gray-600"
