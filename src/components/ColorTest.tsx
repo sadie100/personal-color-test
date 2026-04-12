@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { translations } from "../i18n/translations";
-import type { DiagnosticChip, DiagnosticPhase, Lang, TestCompletePayload, TestConfiguration, TestMode } from "../types";
-import { getIncludedPhasesForMode, getSelectedDiagnosticChips } from "../utils/testSet";
+import type { DiagnosticChip, Lang, TestCompletePayload, TestConfiguration } from "../types";
+import { getSelectedDiagnosticChips } from "../utils/testSet";
 import { ColorCard } from "./ColorCard";
 import { LangToggle } from "./LangToggle";
 import { ProgressBar } from "./ProgressBar";
@@ -22,24 +22,6 @@ interface ActiveColorTestProps extends ColorTestProps {
   configuration: TestConfiguration;
 }
 
-const phaseLabelMap: Record<Lang, Record<DiagnosticPhase, string>> = {
-  ko: {
-    base: "베이스",
-    season: "계절",
-    detail: "세부톤",
-  },
-  en: {
-    base: "Base",
-    season: "Season",
-    detail: "Detail",
-  },
-};
-
-const modeLabelMap: Record<TestMode, "testModeSimple" | "testModeDetailed"> = {
-  simple: "testModeSimple",
-  detailed: "testModeDetailed",
-};
-
 const ActiveColorTest = ({
   configuration,
   onComplete,
@@ -55,11 +37,6 @@ const ActiveColorTest = ({
 
   const t = translations[lang];
   const currentColor = orderedColors[currentIndex] ?? null;
-  const remainingColors = Math.max(orderedColors.length - currentIndex - 1, 0);
-  const modeLabel = t[modeLabelMap[configuration.mode]];
-  const includedPhasesLabel = getIncludedPhasesForMode(configuration.mode)
-    .map((phase) => phaseLabelMap[lang][phase])
-    .join(" / ");
 
   const handleNext = useCallback(
     (liked: boolean) => {
@@ -142,16 +119,6 @@ const ActiveColorTest = ({
         <p className="text-sm">
           {t.liked}: {likedChips.length}
         </p>
-        <p className="mt-2 text-sm font-semibold">{t.testCurrentMode(modeLabel)}</p>
-        <p className="text-sm">{t.testRemainingColors(remainingColors)}</p>
-        <p className="text-sm">
-          {t.testIncludedPhases}: {includedPhasesLabel}
-        </p>
-        {currentColor && (
-          <p className="text-sm">
-            {phaseLabelMap[lang][currentColor.diagnosticPhase]}
-          </p>
-        )}
       </div>
 
       <div className="absolute top-4 right-4 flex items-center gap-2">
