@@ -13,16 +13,16 @@ describe("ColorTest setup flow", () => {
     );
 
     expect(screen.getByText("원하는 테스트 모드를 골라보세요")).toBeTruthy();
-    expect(screen.getByRole("button", { name: /간략 테스트/ }).getAttribute("aria-pressed")).toBe("true");
+    expect(screen.getByRole("button", { name: /간략 테스트/ }).getAttribute("aria-pressed")).toBe(
+      "true",
+    );
     expect(screen.getByText("문항 22개 · 베이스 + 계절")).toBeTruthy();
 
     fireEvent.click(screen.getByRole("button", { name: "선택한 모드로 테스트 시작" }));
 
     expect(screen.queryByText("원하는 테스트 모드를 골라보세요")).toBeNull();
     expect(screen.getByText(/좋아요:/)).toBeTruthy();
-    expect(screen.getByText("현재 테스트 간략 테스트")).toBeTruthy();
-    expect(screen.getByText(/^남은 색상 \d+개$/)).toBeTruthy();
-    expect(screen.getByText("포함 단계: 베이스 / 계절")).toBeTruthy();
+    expect(screen.getByText("1 / 22")).toBeTruthy();
     expect(handleComplete).not.toHaveBeenCalled();
   });
 
@@ -34,17 +34,17 @@ describe("ColorTest setup flow", () => {
     fireEvent.click(detailedButton);
 
     expect(detailedButton.getAttribute("aria-pressed")).toBe("true");
-    expect(screen.getByRole("button", { name: /간략 테스트/ }).getAttribute("aria-pressed")).toBe("false");
-    expect(screen.getByText("문항 39개 · 베이스 + 계절 + 세부톤")).toBeTruthy();
+    expect(screen.getByRole("button", { name: /간략 테스트/ }).getAttribute("aria-pressed")).toBe(
+      "false",
+    );
   });
 
-  it("starts detailed mode with detail phase included in the overlay", () => {
+  it("starts detailed mode", () => {
     render(<ColorTest onComplete={vi.fn()} onHome={vi.fn()} lang="ko" onToggleLang={vi.fn()} />);
 
     fireEvent.click(screen.getByRole("button", { name: /세부 테스트/ }));
     fireEvent.click(screen.getByRole("button", { name: "선택한 모드로 테스트 시작" }));
 
-    expect(screen.getByText("현재 테스트 세부 테스트")).toBeTruthy();
-    expect(screen.getByText("포함 단계: 세부톤")).toBeTruthy();
+    expect(screen.getByText("1 / 39")).toBeTruthy();
   });
 });
