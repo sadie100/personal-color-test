@@ -24,16 +24,12 @@ const getPreviewChip = (id: string): DiagnosticChip => {
 const PREVIEW_RESULT: TestCompletePayload = {
   mode: "detailed",
   likedChips: [
-    getPreviewChip("base-warm-pink"),
-    getPreviewChip("season-spring-orange"),
     getPreviewChip("detail-spring-bright-red"),
     getPreviewChip("detail-spring-bright-orange"),
     getPreviewChip("detail-bright-green"),
     getPreviewChip("detail-spring-bright-blue"),
   ],
   dislikedChips: [
-    getPreviewChip("base-cool-blue"),
-    getPreviewChip("season-summer-purple"),
     getPreviewChip("detail-summer-muted-blue"),
     getPreviewChip("detail-winter-dark-navy"),
   ],

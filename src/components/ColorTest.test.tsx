@@ -35,7 +35,7 @@ describe("ColorTest setup flow", () => {
 
     expect(detailedButton.getAttribute("aria-pressed")).toBe("true");
     expect(screen.getByRole("button", { name: /간략 테스트/ }).getAttribute("aria-pressed")).toBe("false");
-    expect(screen.getByText("문항 61개 · 베이스 + 계절 + 세부톤")).toBeTruthy();
+    expect(screen.getByText("문항 39개 · 베이스 + 계절 + 세부톤")).toBeTruthy();
   });
 
   it("starts detailed mode with detail phase included in the overlay", () => {
@@ -45,6 +45,6 @@ describe("ColorTest setup flow", () => {
     fireEvent.click(screen.getByRole("button", { name: "선택한 모드로 테스트 시작" }));
 
     expect(screen.getByText("현재 테스트 세부 테스트")).toBeTruthy();
-    expect(screen.getByText("포함 단계: 베이스 / 계절 / 세부톤")).toBeTruthy();
+    expect(screen.getByText("포함 단계: 세부톤")).toBeTruthy();
   });
 });

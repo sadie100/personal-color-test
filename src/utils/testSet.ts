@@ -3,7 +3,7 @@ import type { DiagnosticChip, DiagnosticPhase, TestMode } from "../types";
 
 const diagnosticPhasesByMode: Record<TestMode, readonly DiagnosticPhase[]> = {
   simple: ["base", "season"],
-  detailed: ["base", "season", "detail"],
+  detailed: ["detail"],
 };
 
 export const getIncludedPhasesForMode = (mode: TestMode): readonly DiagnosticPhase[] => diagnosticPhasesByMode[mode];

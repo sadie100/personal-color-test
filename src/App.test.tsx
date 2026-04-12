@@ -93,10 +93,7 @@ describe("App routing", () => {
   it("hydrates result payload from query params on /results", async () => {
     const payload: TestCompletePayload = {
       mode: "detailed",
-      likedChips: [
-        getChip("base-warm-pink"),
-        getChip("detail-spring-bright-red"),
-      ],
+      likedChips: [getChip("detail-spring-bright-red"), getChip("detail-spring-bright-orange")],
       dislikedChips: [getChip("detail-winter-dark-navy")],
     };
     const search = createResultsSearchParams(payload).toString();

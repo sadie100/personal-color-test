@@ -16,7 +16,7 @@ const getChip = (id: string) => {
 
 const SAMPLE_PAYLOAD: TestCompletePayload = {
   mode: "detailed",
-  likedChips: [getChip("base-warm-pink"), getChip("season-spring-green"), getChip("detail-spring-bright-red")],
+  likedChips: [getChip("detail-spring-bright-red"), getChip("detail-spring-bright-orange")],
   dislikedChips: [getChip("detail-winter-dark-navy")],
 };
 

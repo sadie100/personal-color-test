@@ -133,10 +133,14 @@ export interface TranslationSchema {
   thirdBestColor: string;
   worstColor: string;
   resultPaletteIntro: string;
+  simpleResultIntro: string;
   paletteTitle: (label: string) => string;
+  diagnosticChipTitle: (label: string) => string;
   bestPaletteDescription: string;
   comparisonPaletteDescription: string;
   worstPaletteDescription: string;
+  simpleBestDiagnosticDescription: string;
+  simpleWorstDiagnosticDescription: string;
   paletteContainsCount: (count: number) => string;
   likedMatchesCount: (count: number) => string;
   dislikedMatchesCount: (count: number) => string;

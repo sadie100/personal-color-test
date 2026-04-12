@@ -14,12 +14,16 @@ describe("testSet utilities", () => {
     );
   });
 
-  it("returns every diagnostic chip for detailed mode", () => {
-    expect(getSelectedDiagnosticChips("detailed").length).toBe(diagnosticChips.length);
+  it("returns only detail chips for detailed mode", () => {
+    const selectedColors = getSelectedDiagnosticChips("detailed");
+
+    expect(selectedColors.length).toBeGreaterThan(0);
+    expect(selectedColors.every((color) => color.diagnosticPhase === "detail")).toBe(true);
+    expect(selectedColors.length).toBe(diagnosticChips.filter((chip) => chip.diagnosticPhase === "detail").length);
   });
 
   it("returns included phases in order for each mode", () => {
     expect(getIncludedPhasesForMode("simple")).toEqual(["base", "season"]);
-    expect(getIncludedPhasesForMode("detailed")).toEqual(["base", "season", "detail"]);
+    expect(getIncludedPhasesForMode("detailed")).toEqual(["detail"]);
   });
 });

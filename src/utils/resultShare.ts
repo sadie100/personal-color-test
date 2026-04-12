@@ -1,5 +1,6 @@
 import {
   diagnosticChips,
+  getSimpleResultDiagnosticChips,
   personalColorTypeMeta,
   personalColorTypes,
   simpleResultTypeMeta,
@@ -137,19 +138,12 @@ const getRepresentativeChip = (type: PersonalColorType): DiagnosticChip | null =
   ) ?? diagnosticChips.find((chip) => chip.targetTypes.includes(type)) ?? null;
 
 const getRepresentativeChipsForSimpleTone = (type: SimpleResultType): DiagnosticChip[] => {
-  const { paletteTypes } = simpleResultTypeMeta[type];
-  const chips = [
-    diagnosticChips.find(
-      (chip) =>
-        chip.diagnosticPhase === "base" && paletteTypes.every((paletteType) => chip.targetTypes.includes(paletteType)),
-    ) ?? null,
-    diagnosticChips.find(
-      (chip) =>
-        chip.diagnosticPhase === "season" && paletteTypes.every((paletteType) => chip.targetTypes.includes(paletteType)),
-    ) ?? null,
-  ];
+  const chips = getSimpleResultDiagnosticChips(type);
 
-  return chips.filter((chip): chip is DiagnosticChip => chip !== null);
+  return [
+    chips.find((chip) => chip.diagnosticPhase === "base") ?? null,
+    chips.find((chip) => chip.diagnosticPhase === "season") ?? null,
+  ].filter((chip): chip is DiagnosticChip => chip !== null);
 };
 
 const createDetailedFallbackPayloadFromSummary = (

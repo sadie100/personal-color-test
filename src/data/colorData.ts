@@ -179,6 +179,12 @@ export const getSimpleResultTypeLabel = (type: SimpleResultType, lang: Lang): st
 
 export const getChipName = (chip: ColorChip, lang: Lang): string => (lang === "ko" ? chip.nameKo : chip.nameEn);
 
+const hasMatchingBaseTone = (chip: DiagnosticChip, baseTone: BaseTone): boolean =>
+  chip.targetTypes.every((type) => personalColorTypeMeta[type].baseTone === baseTone);
+
+const hasMatchingSeason = (chip: DiagnosticChip, season: Season): boolean =>
+  chip.targetTypes.every((type) => personalColorTypeMeta[type].season === season);
+
 const chips = {
   warmPink: createChip("base-warm-pink", "웜 핑크", "Warm Pink", "#E8B4A0", { l: 0.82, c: 0.06, h: 45 }, "red"),
   coolPink: createChip("base-cool-pink", "쿨 핑크", "Cool Pink", "#F4B4C8", { l: 0.82, c: 0.08, h: 350 }, "purplePink"),
@@ -379,6 +385,22 @@ export const colorData: ColorDataMap = {
 
 export const getSimpleResultPalette = (type: SimpleResultType): ColorChip[] =>
   simpleResultTypeMeta[type].paletteTypes.flatMap((paletteType) => colorData[paletteType]);
+
+export const getSimpleResultDiagnosticChips = (type: SimpleResultType): DiagnosticChip[] => {
+  const { baseTone, season } = simpleResultTypeMeta[type];
+
+  return diagnosticChips.filter((chip) => {
+    if (chip.diagnosticPhase === "base") {
+      return hasMatchingBaseTone(chip, baseTone);
+    }
+
+    if (chip.diagnosticPhase === "season") {
+      return hasMatchingSeason(chip, season);
+    }
+
+    return false;
+  });
+};
 
 const oppositeTypeMap: Record<PersonalColorType, PersonalColorType> = {
   "Spring Light": "Autumn Dark",

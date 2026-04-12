@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { colorData, getChipName, getPersonalColorTypeLabel, getSimpleResultPalette, getSimpleResultTypeLabel, personalColorTypeMeta, simpleResultTypeMeta } from "../data/colorData";
+import { colorData, getChipName, getPersonalColorTypeLabel, getSimpleResultDiagnosticChips, getSimpleResultTypeLabel, personalColorTypeMeta, simpleResultTypeMeta } from "../data/colorData";
 import { translations } from "../i18n/translations";
 import {
   analyzePersonalColor,
@@ -156,7 +156,7 @@ export const Results = ({
 
   const buildSimpleCard = (tone: SimpleResultType, label: string, variant: ToneCardVariant): ToneCardData => {
     const meta = simpleResultTypeMeta[tone];
-    const paletteColors = getSimpleResultPalette(tone);
+    const paletteColors = getSimpleResultDiagnosticChips(tone);
 
     return {
       id: tone,
@@ -228,7 +228,7 @@ export const Results = ({
       <div className="mx-auto max-w-5xl">
         <div className="mb-8 text-center">
           <h1 className="mb-2 text-4xl font-bold">{t.yourPersonalColor}</h1>
-          <p className="mx-auto max-w-2xl text-gray-600">{t.resultPaletteIntro}</p>
+          <p className="mx-auto max-w-2xl text-gray-600">{mode === "simple" ? t.simpleResultIntro : t.resultPaletteIntro}</p>
         </div>
 
         {topCards.length > 0 && (
@@ -282,9 +282,13 @@ export const Results = ({
 
             {activePaletteCard && (
               <PaletteSection
-                title={t.paletteTitle(activePaletteCard.label)}
+                title={mode === "simple" ? t.diagnosticChipTitle(activePaletteCard.label) : t.paletteTitle(activePaletteCard.label)}
                 description={
-                  activePaletteCard.label === t.bestColor ? t.bestPaletteDescription : t.comparisonPaletteDescription
+                  mode === "simple"
+                    ? t.simpleBestDiagnosticDescription
+                    : activePaletteCard.label === t.bestColor
+                      ? t.bestPaletteDescription
+                      : t.comparisonPaletteDescription
                 }
                 badgeText={activePaletteCard.displayName}
                 paletteColors={activePaletteCard.paletteColors}
@@ -307,8 +311,8 @@ export const Results = ({
               <ResultToneCard card={resultState.worstCard} lang={lang} />
             </div>
             <PaletteSection
-              title={t.paletteTitle(t.worstColor)}
-              description={t.worstPaletteDescription}
+              title={mode === "simple" ? t.diagnosticChipTitle(t.worstColor) : t.paletteTitle(t.worstColor)}
+              description={mode === "simple" ? t.simpleWorstDiagnosticDescription : t.worstPaletteDescription}
               badgeText={resultState.worstCard.displayName}
               paletteColors={resultState.worstCard.paletteColors}
               badgeClass={resultState.worstCard.badgeClass}

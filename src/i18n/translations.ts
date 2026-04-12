@@ -19,15 +19,16 @@ const ko: TranslationSchema = {
   homeButton: "← 처음으로",
   earlyExit: "중간 결과 보기 →",
   testSetupTitle: "원하는 테스트 모드를 골라보세요",
-  testSetupDescription:
-    "간략하게 4계절 방향만 볼지, 세부톤까지 모두 진단할지 먼저 선택하세요. 선택한 모드에 맞는 진단 컬러칩만 순서대로 보여드립니다.",
+  testSetupDescription: "테스트 모드에 따라 보여드리는 컬러칩 구성이 달라집니다.",
   testModeTitle: "테스트 모드",
   testModeDescription: "원하는 진단 깊이에 맞춰 테스트 범위를 선택하세요.",
   testModeSimple: "간략 테스트",
-  testModeSimpleDescription: "베이스와 계절 단계만 테스트해서 봄 웜 / 여름 쿨 같은 큰 방향을 빠르게 확인합니다.",
+  testModeSimpleDescription:
+    "베이스와 계절 단계만 테스트해서 봄 웜 / 여름 쿨 같은 큰 방향을 빠르게 확인합니다.",
   testModeSimpleCount: (count: number) => `문항 ${count}개 · 베이스 + 계절`,
   testModeDetailed: "세부 테스트",
-  testModeDetailedDescription: "현재의 전체 진단처럼 베이스, 계절, 세부톤까지 모두 테스트합니다.",
+  testModeDetailedDescription:
+    "베이스와 계절에 더해, 브라이트·뮤트·다크 같은 세부톤까지 자세히 확인합니다.",
   testModeDetailedCount: (count: number) => `문항 ${count}개 · 베이스 + 계절 + 세부톤`,
   testStartSelected: "선택한 모드로 테스트 시작",
   testCurrentMode: (label: string) => `현재 테스트 ${label}`,
@@ -47,10 +48,14 @@ const ko: TranslationSchema = {
   worstColor: "Worst Color",
   resultPaletteIntro:
     "가장 잘 맞는 타입부터 차순위 타입, 그리고 피하면 좋은 타입까지 팔레트로 비교해보세요.",
+  simpleResultIntro: "베스트/워스트 결과를 만든 베이스와 계절 진단 컬러칩을 직접 비교해보세요.",
   paletteTitle: (label: string) => `${label} 팔레트`,
+  diagnosticChipTitle: (label: string) => `${label} 진단칩`,
   bestPaletteDescription: "당신의 베스트 타입에 속한 전체 컬러셋입니다.",
   comparisonPaletteDescription: "선택한 차순위 타입에 속한 전체 컬러셋입니다.",
   worstPaletteDescription: "상대적으로 피하는 편이 좋은 타입의 전체 컬러셋입니다.",
+  simpleBestDiagnosticDescription: "베스트 결과를 만든 베이스/계절 진단 컬러칩입니다.",
+  simpleWorstDiagnosticDescription: "워스트 결과와 반대 경향을 보인 베이스/계절 진단 컬러칩입니다.",
   paletteContainsCount: (count: number) => `포함 색상 ${count}개`,
   likedMatchesCount: (count: number) => `Like ${count}개`,
   dislikedMatchesCount: (count: number) => `Dislike ${count}개`,
@@ -144,15 +149,16 @@ const en: TranslationSchema = {
   homeButton: "← Home",
   earlyExit: "See Results →",
   testSetupTitle: "Choose your test mode",
-  testSetupDescription:
-    "Choose whether you want a quicker seasonal read or the full detailed diagnosis. We'll show only the diagnostic chips needed for the selected mode.",
+  testSetupDescription: "The set of color chips shown will vary depending on the test mode.",
   testModeTitle: "Test mode",
   testModeDescription: "Pick the depth of diagnosis you want for this run.",
   testModeSimple: "Quick test",
-  testModeSimpleDescription: "Tests only the base and season stages for a faster Spring Warm / Winter Cool style result.",
+  testModeSimpleDescription:
+    "Tests only the base and season stages for a faster Spring Warm / Winter Cool style result.",
   testModeSimpleCount: (count: number) => `${count} chips · base + season`,
   testModeDetailed: "Detailed test",
-  testModeDetailedDescription: "Runs the full diagnosis including base, season, and detail tones.",
+  testModeDetailedDescription:
+    "In addition to base and season, this mode lets you look more closely at detail tones like bright, muted, and dark.",
   testModeDetailedCount: (count: number) => `${count} chips · base + season + detail`,
   testStartSelected: "Start with this mode",
   testCurrentMode: (label: string) => `Current test: ${label}`,
@@ -172,10 +178,17 @@ const en: TranslationSchema = {
   worstColor: "Worst Color",
   resultPaletteIntro:
     "Compare your best match, runner-up palettes, and the palette that tends to work against you.",
+  simpleResultIntro:
+    "Compare the base and season diagnostic chips behind your best and worst results directly.",
   paletteTitle: (label: string) => `${label} Palette`,
+  diagnosticChipTitle: (label: string) => `${label} Diagnostic Chips`,
   bestPaletteDescription: "This is the full palette for your strongest personal color match.",
   comparisonPaletteDescription: "This is the full palette for the selected runner-up match.",
   worstPaletteDescription: "This is the palette that is relatively better to avoid.",
+  simpleBestDiagnosticDescription:
+    "These are the base and season diagnostic chips behind your strongest result.",
+  simpleWorstDiagnosticDescription:
+    "These are the base and season diagnostic chips that ran opposite to your result.",
   paletteContainsCount: (count: number) => `${count} colors`,
   likedMatchesCount: (count: number) => `${count} liked`,
   dislikedMatchesCount: (count: number) => `${count} disliked`,

@@ -56,6 +56,19 @@ describe("8-type score analysis", () => {
     expect(getBestResults(liked, disliked, 3)).toEqual(["Spring Bright", "Spring Light", "Autumn Muted"]);
     expect(getWorstResult(liked, disliked)).toBe("Summer Light");
   });
+
+  it("supports detail-only detailed mode inputs", () => {
+    const liked = [
+      getChip("detail-spring-bright-red"),
+      getChip("detail-spring-bright-orange"),
+      getChip("detail-bright-green"),
+    ];
+    const disliked = [getChip("detail-winter-dark-navy")];
+
+    expect(analyzePersonalColor(liked, disliked)).toBe("Spring Bright");
+    expect(getBestResults(liked, disliked, 2)).toEqual(["Spring Bright", "Winter Bright"]);
+    expect(getWorstResult(liked, disliked)).toBe("Winter Dark");
+  });
 });
 
 describe("simple mode seasonal analysis", () => {
