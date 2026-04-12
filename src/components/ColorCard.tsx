@@ -12,7 +12,7 @@ export const ColorCard = ({ color, isTransitioning }: ColorCardProps) => {
 
   return (
     <div
-      className={`absolute inset-0 transition-all duration-500 ${
+      className={`absolute inset-0 transition-opacity duration-300 ${
         isTransitioning ? "opacity-0" : "opacity-100"
       }`}
       style={{ backgroundColor: color.hex }}

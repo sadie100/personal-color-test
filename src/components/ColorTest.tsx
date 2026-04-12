@@ -8,6 +8,8 @@ import { LangToggle } from "./LangToggle";
 import { ProgressBar } from "./ProgressBar";
 import { SwipeButtons } from "./SwipeButtons";
 
+const CARD_TRANSITION_MS = 300;
+
 interface ColorTestProps {
   onComplete: (result: TestCompletePayload) => void;
   onHome: () => void;
@@ -51,14 +53,17 @@ export const ColorTest = ({ onComplete, onHome, lang, onToggleLang }: ColorTestP
       window.setTimeout(() => {
         if (currentIndex < shuffledColors.length - 1) {
           setCurrentIndex(currentIndex + 1);
-          setIsTransitioning(false);
+          // Let the new color render at opacity 0 first, then fade it in.
+          window.requestAnimationFrame(() => {
+            setIsTransitioning(false);
+          });
         } else {
           onComplete({
             likedColors: nextLikedColors,
             dislikedColors: nextDislikedColors,
           });
         }
-      }, 300);
+      }, CARD_TRANSITION_MS);
     },
     [
       currentIndex,
@@ -95,7 +100,7 @@ export const ColorTest = ({ onComplete, onHome, lang, onToggleLang }: ColorTestP
   }
 
   return (
-    <div className="relative h-screen w-full overflow-hidden">
+    <div className="relative h-screen w-full overflow-hidden bg-white">
       <ProgressBar current={currentIndex + 1} total={shuffledColors.length} />
       <ColorCard color={currentColor} isTransitioning={isTransitioning} />
       <SwipeButtons onDislike={() => handleNext(false)} onLike={() => handleNext(true)} />
