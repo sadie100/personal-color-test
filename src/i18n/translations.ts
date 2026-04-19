@@ -142,6 +142,162 @@ const ko: TranslationSchema = {
   stylingMetalLabel: "메탈",
   stylingAccessorySizeLabel: "디자인",
   stylingSourceNote: "※ 참고: 한국분장예술인협회 퍼스널 컬러 컨설턴트 이론",
+  nav: {
+    types: "컬러 타입 유형",
+  },
+  types: {
+    pageTitle: "퍼스널 컬러 8타입",
+    pageSubtitle: "웜/쿨 × 라이트·브라이트·뮤트·다크로 나뉘는 8가지 세부 타입",
+    pageIntro:
+      "색의 베이스(웜/쿨), 명도, 채도·청탁을 기준으로 분류한 8개 세부 타입입니다. 각 타입을 눌러 이론적 특징과 어울리는 스타일링 가이드를 확인해보세요.",
+    warmGroupTitle: "웜톤 (Warm)",
+    warmGroupDesc: "옐로우 베이스. 따뜻함과 생기가 살아나는 계열 — 봄·가을",
+    coolGroupTitle: "쿨톤 (Cool)",
+    coolGroupDesc: "블루 베이스. 시원함과 투명감이 돋보이는 계열 — 여름·겨울",
+    cardViewDetail: "자세히 보기 →",
+    detail: {
+      baseLabel: "색상 베이스",
+      brightnessLabel: "명도",
+      chromaLabel: "채도",
+      clarityLabel: "청탁",
+      keywordsLabel: "키워드",
+      pccsLabel: "PCCS 톤 범위",
+      paletteLabel: "대표 팔레트",
+      beautyTitle: "뷰티 · 패션 가이드",
+      fashionTitle: "패션 스타일링",
+      prev: "이전 타입",
+      next: "다음 타입",
+      backToList: "← 타입 목록으로",
+      heroMetaSeason: (season: string) => `계절 · ${season}`,
+      heroMetaBase: (base: string) => `베이스 · ${base}`,
+      heroMetaTone: (tone: string) => `세부톤 · ${tone}`,
+    },
+    "spring-light": {
+      title: "봄 라이트",
+      tagline: "Spring Light · 밝고 가벼운 파스텔의 봄",
+      summary:
+        "옐로우 베이스의 밝고 화사한 타입입니다. 피부에 은은한 노란빛이 감돌며, 높은 명도와 맑은 청탁감 덕분에 투명하고 생기 있는 인상을 줍니다. 파스텔톤처럼 가벼운 색에서 가장 큰 매력이 발휘됩니다.",
+      quote:
+        "봄 라이트는 옐로우 베이스 위의 부드럽고 화사한 이미지로, 파스텔톤의 맑은 색에서 가장 큰 매력을 발휘합니다.",
+      attributes: {
+        base: "옐로우 베이스 (웜톤)",
+        brightness: "고명도 (밝음)",
+        chroma: "중채도",
+        clarity: "맑은색 계열 (윤기 · 광택)",
+      },
+      keywords: ["밝음", "가벼움", "산뜻함", "경쾌함", "생기"],
+    },
+    "spring-bright": {
+      title: "봄 브라이트",
+      tagline: "Spring Bright · 선명하고 화려한 봄",
+      summary:
+        "옐로우 베이스에 높은 채도가 더해진 타입입니다. 따뜻하면서도 선명한 색이 피부를 또렷하게 만들어 주며, 화려한 색에 밀리지 않고 오히려 존재감을 살려냅니다. 투명감과 광택이 돋보이는 인상을 줍니다.",
+      quote:
+        "봄 브라이트는 옐로우 베이스의 따뜻하고 밝은 이미지에 선명함이 더해져, 화사하고 에너지 넘치는 색에서 가장 큰 매력을 발휘합니다.",
+      attributes: {
+        base: "옐로우 베이스 (웜톤)",
+        brightness: "중~고명도",
+        chroma: "고채도 (선명함)",
+        clarity: "맑은색 계열 (윤기 · 광택)",
+      },
+      keywords: ["선명함", "화려함", "생동감", "에너지", "입체감"],
+    },
+    "summer-light": {
+      title: "여름 라이트",
+      tagline: "Summer Light · 맑고 투명한 파스텔의 여름",
+      summary:
+        "블루 베이스의 밝고 부드러운 타입입니다. 피부에 푸른 기운이 감돌아 깔끔하고 청초한 인상을 주며, 옅고 온화한 파스텔이 잘 어울립니다. 화려한 색보다는 은은하고 투명한 색에서 매력이 살아납니다.",
+      quote:
+        "여름 라이트는 블루 베이스의 밝고 부드러운 이미지로, 은은하고 투명한 파스텔에서 가장 큰 매력을 발휘합니다.",
+      attributes: {
+        base: "블루 베이스 (쿨톤)",
+        brightness: "고명도 (밝음)",
+        chroma: "중~저채도 (부드러움)",
+        clarity: "중간 청탁감 (라이트 계열의 맑음)",
+      },
+      keywords: ["밝음", "가벼움", "산뜻함", "경쾌함", "생기"],
+    },
+    "summer-muted": {
+      title: "여름 뮤트",
+      tagline: "Summer Muted · 은은하고 우아한 여름",
+      summary:
+        "블루 베이스에 탁한 청탁감이 더해진 타입입니다. 피부가 매끈하고 균일하게 표현되며, 은은한 회색빛이 감도는 색에서 고급스럽고 엘레강스한 인상이 완성됩니다. 강렬한 색보다 차분한 톤다운 색이 잘 어울립니다.",
+      quote:
+        "여름 뮤트는 블루 베이스의 부드러운 이미지에 차분함이 더해져, 은은하고 우아한 색에서 가장 큰 매력을 발휘합니다.",
+      attributes: {
+        base: "블루 베이스 (쿨톤)",
+        brightness: "중명도",
+        chroma: "저채도 (부드러움)",
+        clarity: "탁한색 계열 (매트)",
+      },
+      keywords: ["은은함", "부드러움", "차분함", "자연스러움", "안정감"],
+    },
+    "autumn-muted": {
+      title: "가을 뮤트",
+      tagline: "Autumn Muted · 자연스러운 어스톤의 가을",
+      summary:
+        "옐로우 베이스에 낮은 채도가 결합된 타입입니다. 피부가 매트하고 균일하게 표현되며, 자연에서 볼 수 있는 어스톤 · 세이지 · 모카 같은 색에서 따뜻하고 성숙한 인상을 줍니다.",
+      quote:
+        "가을 뮤트는 옐로우 베이스의 부드럽고 차분한 이미지로, 자연스러운 어스톤 색에서 가장 큰 매력을 발휘합니다.",
+      attributes: {
+        base: "옐로우 베이스 (웜톤)",
+        brightness: "중명도",
+        chroma: "저채도 (차분함)",
+        clarity: "탁한색 계열 (매트)",
+      },
+      keywords: ["은은함", "부드러움", "차분함", "자연스러움", "안정감"],
+    },
+    "autumn-dark": {
+      title: "가을 다크",
+      tagline: "Autumn Dark · 깊이감 있는 우드톤의 가을",
+      summary:
+        "옐로우 베이스 위에 낮은 명도가 얹힌 타입입니다. 피부가 짙고 깊이감 있게 표현되며, 다크 브라운 · 와인 · 올리브 등 묵직한 색에서 고급스럽고 성숙한 분위기가 극대화됩니다.",
+      quote:
+        "가을 다크는 옐로우 베이스의 따뜻하고 성숙한 이미지로, 깊이 있고 묵직한 색에서 가장 큰 매력을 발휘합니다.",
+      attributes: {
+        base: "옐로우 베이스 (웜톤)",
+        brightness: "저명도 (어두움)",
+        chroma: "중~저채도",
+        clarity: "탁한색 계열 (매트 · 깊이감)",
+      },
+      keywords: ["무게감", "안정감", "고급스러움", "강렬함", "성숙함"],
+    },
+    "winter-bright": {
+      title: "겨울 브라이트",
+      tagline: "Winter Bright · 쨍하고 선명한 겨울",
+      summary:
+        "블루 베이스에 높은 채도가 결합된 타입입니다. 피부가 맑고 투명하게 보이며, 마젠타 · 코발트 블루 · 에메랄드 그린처럼 쨍한 비비드 컬러에서 강렬하고 세련된 이미지가 살아납니다.",
+      quote:
+        "겨울 브라이트는 블루 베이스 위의 선명한 채도로, 강렬하고 샤프한 색에서 가장 큰 매력을 발휘합니다.",
+      attributes: {
+        base: "블루 베이스 (쿨톤)",
+        brightness: "중~고명도",
+        chroma: "고채도 (선명함)",
+        clarity: "맑은색 계열 (윤기 · 광택)",
+      },
+      keywords: ["선명함", "화려함", "생동감", "에너지", "입체감"],
+    },
+    "winter-dark": {
+      title: "겨울 다크",
+      tagline: "Winter Dark · 강렬한 콘트라스트의 겨울",
+      summary:
+        "블루 베이스에 낮은 명도가 더해진 타입입니다. 얼굴 윤곽이 수축되어 샤프하게 보이며, 네이비 · 차콜 · 블랙처럼 깊고 무게감 있는 색에서 대비감 있는 세련된 인상이 완성됩니다.",
+      quote:
+        "겨울 다크는 블루 베이스의 강렬하고 세련된 이미지로, 깊고 샤프한 색에서 가장 큰 매력을 발휘합니다.",
+      attributes: {
+        base: "블루 베이스 (쿨톤)",
+        brightness: "저명도 (깊이감)",
+        chroma: "중~저채도 (강한 콘트라스트)",
+        clarity: "맑은색 계열 (윤기 · 광택)",
+      },
+      keywords: ["무게감", "안정감", "고급스러움", "강렬함", "성숙함"],
+    },
+  },
+  attribution: {
+    heading: "이론 근거",
+    line: "본 테스트는 대한민국 퍼스널 컬러 컨설턴트 2급 (한국분장예술인협회) 이론을 기반으로 설계되었습니다.",
+    source: "출처 · 한국분장예술인협회 퍼스널 컬러 컨설턴트 교육과정",
+  },
 };
 
 const en: TranslationSchema = {
@@ -290,6 +446,162 @@ const en: TranslationSchema = {
   stylingMetalLabel: "Metals",
   stylingAccessorySizeLabel: "Design",
   stylingSourceNote: "※ Reference: Korean Personal Color Consultant theory (KMUA)",
+  nav: {
+    types: "Color Types",
+  },
+  types: {
+    pageTitle: "The 8 Personal Color Types",
+    pageSubtitle: "Warm / Cool × Light · Bright · Muted · Dark",
+    pageIntro:
+      "Eight detailed types classified by undertone (warm / cool), brightness, and chroma. Tap any card to explore its theoretical traits and curated styling guide.",
+    warmGroupTitle: "Warm undertone",
+    warmGroupDesc: "Yellow base — warmth and vitality. Spring · Autumn family.",
+    coolGroupTitle: "Cool undertone",
+    coolGroupDesc: "Blue base — coolness and clarity. Summer · Winter family.",
+    cardViewDetail: "View details →",
+    detail: {
+      baseLabel: "Undertone",
+      brightnessLabel: "Brightness",
+      chromaLabel: "Chroma",
+      clarityLabel: "Clarity",
+      keywordsLabel: "Keywords",
+      pccsLabel: "PCCS tone range",
+      paletteLabel: "Representative palette",
+      beautyTitle: "Beauty & fashion guide",
+      fashionTitle: "Fashion styling",
+      prev: "Previous type",
+      next: "Next type",
+      backToList: "← Back to all types",
+      heroMetaSeason: (season: string) => `Season · ${season}`,
+      heroMetaBase: (base: string) => `Undertone · ${base}`,
+      heroMetaTone: (tone: string) => `Detail tone · ${tone}`,
+    },
+    "spring-light": {
+      title: "Spring Light",
+      tagline: "Bright, airy pastels of spring",
+      summary:
+        "A warm, luminous type with a yellow undertone. Skin reads softly golden, and the high brightness combined with a clear clarity gives a translucent, lively impression. Pastel and pale shades bring out the most charm.",
+      quote:
+        "Spring Light radiates a warm, airy image — soft pastels reveal the type's most radiant charm.",
+      attributes: {
+        base: "Yellow base (warm)",
+        brightness: "High (bright)",
+        chroma: "Medium",
+        clarity: "Clear — glossy, luminous",
+      },
+      keywords: ["Bright", "Light", "Fresh", "Airy", "Lively"],
+    },
+    "spring-bright": {
+      title: "Spring Bright",
+      tagline: "Vivid, radiant spring",
+      summary:
+        "A warm type supercharged with high chroma. Bold, saturated colors sharpen the features and let vivid hues amplify presence rather than overwhelm. Skin reads luminous with a healthy glow.",
+      quote:
+        "Spring Bright carries warmth with sharpness — vivid, energized colors let this type shine.",
+      attributes: {
+        base: "Yellow base (warm)",
+        brightness: "Medium–high",
+        chroma: "High (vivid)",
+        clarity: "Clear — glossy, luminous",
+      },
+      keywords: ["Vivid", "Radiant", "Dynamic", "Energy", "Dimension"],
+    },
+    "summer-light": {
+      title: "Summer Light",
+      tagline: "Clear, transparent pastels of summer",
+      summary:
+        "A cool, soft type with a blue undertone. Skin reads clean and crystalline, and pale, tender pastels feel most harmonious. Elegance comes from quiet, transparent colors rather than saturated ones.",
+      quote:
+        "Summer Light is a blue-based, soft, and airy image — gentle pastels reveal its most refined charm.",
+      attributes: {
+        base: "Blue base (cool)",
+        brightness: "High (bright)",
+        chroma: "Medium–low (soft)",
+        clarity: "Balanced — light, fresh",
+      },
+      keywords: ["Bright", "Light", "Fresh", "Airy", "Lively"],
+    },
+    "summer-muted": {
+      title: "Summer Muted",
+      tagline: "Elegant, subdued summer",
+      summary:
+        "A cool type with a muted, matte clarity. Skin reads smooth and even, and grayed, dusty tones create a refined, elegant impression. Calm, desaturated colors flatter far more than loud ones.",
+      quote:
+        "Summer Muted layers blue-based softness with calm — subtle, dusty tones reveal its most graceful charm.",
+      attributes: {
+        base: "Blue base (cool)",
+        brightness: "Medium",
+        chroma: "Low (soft)",
+        clarity: "Muted — matte, smooth",
+      },
+      keywords: ["Subtle", "Soft", "Calm", "Natural", "Stable"],
+    },
+    "autumn-muted": {
+      title: "Autumn Muted",
+      tagline: "Earthy, natural autumn",
+      summary:
+        "A warm type paired with low chroma. Skin reads matte and even, and earthy tones — sage, mocha, soft mustard — bring out a warm, mature feeling best.",
+      quote:
+        "Autumn Muted is warmth wrapped in calm — natural, earthy tones reveal its richest charm.",
+      attributes: {
+        base: "Yellow base (warm)",
+        brightness: "Medium",
+        chroma: "Low (subdued)",
+        clarity: "Muted — matte",
+      },
+      keywords: ["Subtle", "Soft", "Calm", "Natural", "Stable"],
+    },
+    "autumn-dark": {
+      title: "Autumn Dark",
+      tagline: "Deep, grounded autumn",
+      summary:
+        "A warm type weighted with low brightness. Skin reads rich and dimensional, and dense woodsy colors — dark brown, wine, olive — push the mature, luxurious atmosphere to its peak.",
+      quote:
+        "Autumn Dark is warm richness with depth — dense, grounded colors reveal its most sophisticated charm.",
+      attributes: {
+        base: "Yellow base (warm)",
+        brightness: "Low (deep)",
+        chroma: "Medium–low",
+        clarity: "Muted — matte with depth",
+      },
+      keywords: ["Weight", "Stability", "Luxe", "Intensity", "Maturity"],
+    },
+    "winter-bright": {
+      title: "Winter Bright",
+      tagline: "Sharp, saturated winter",
+      summary:
+        "A cool type pushed into high chroma. Skin reads clear and crystalline, and vivid colors — magenta, cobalt, emerald — create a bold, sharp, polished presence.",
+      quote:
+        "Winter Bright is cool-based vividness — saturated, sharp colors reveal its most striking charm.",
+      attributes: {
+        base: "Blue base (cool)",
+        brightness: "Medium–high",
+        chroma: "High (vivid)",
+        clarity: "Clear — glossy, luminous",
+      },
+      keywords: ["Vivid", "Radiant", "Dynamic", "Energy", "Dimension"],
+    },
+    "winter-dark": {
+      title: "Winter Dark",
+      tagline: "High-contrast, refined winter",
+      summary:
+        "A cool type shadowed with low brightness. Features sharpen, and deep, heavy colors — navy, charcoal, black — complete a refined, high-contrast impression.",
+      quote:
+        "Winter Dark is cool depth with sharpness — bold, contrasting colors reveal its most polished charm.",
+      attributes: {
+        base: "Blue base (cool)",
+        brightness: "Low (deep)",
+        chroma: "Medium–low (high contrast)",
+        clarity: "Clear — glossy, luminous",
+      },
+      keywords: ["Weight", "Stability", "Luxe", "Intensity", "Maturity"],
+    },
+  },
+  attribution: {
+    heading: "Theoretical basis",
+    line: "This test is built on the Korean Personal Color Consultant Level 2 curriculum by the Korea Makeup Arts Association.",
+    source: "Source · KMUA Personal Color Consultant curriculum",
+  },
 };
 
 export const translations: Translations = {

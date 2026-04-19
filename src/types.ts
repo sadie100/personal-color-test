@@ -1,6 +1,16 @@
 export type Lang = "ko" | "en";
 
-export type Screen = "home" | "test" | "results" | "about";
+export type Screen = "home" | "test" | "results" | "about" | "types";
+
+export type ColorTypeSlug =
+  | "spring-light"
+  | "spring-bright"
+  | "summer-light"
+  | "summer-muted"
+  | "autumn-muted"
+  | "autumn-dark"
+  | "winter-bright"
+  | "winter-dark";
 
 export type HueCategory = "red" | "orange" | "yellow" | "green" | "blue" | "purplePink" | "neutral";
 
@@ -211,6 +221,73 @@ export interface TranslationSchema {
   stylingMetalLabel: string;
   stylingAccessorySizeLabel: string;
   stylingSourceNote: string;
+  nav: NavNamespace;
+  types: TypesNamespace;
+  attribution: AttributionNamespace;
+}
+
+export interface NavNamespace {
+  types: string;
+}
+
+export interface TypeAttributesCopy {
+  base: string;
+  brightness: string;
+  chroma: string;
+  clarity: string;
+}
+
+export interface TypeContentCopy {
+  title: string;
+  tagline: string;
+  summary: string;
+  quote: string;
+  attributes: TypeAttributesCopy;
+  keywords: string[];
+}
+
+export interface TypeDetailCopy {
+  baseLabel: string;
+  brightnessLabel: string;
+  chromaLabel: string;
+  clarityLabel: string;
+  keywordsLabel: string;
+  pccsLabel: string;
+  paletteLabel: string;
+  beautyTitle: string;
+  fashionTitle: string;
+  prev: string;
+  next: string;
+  backToList: string;
+  heroMetaSeason: (season: string) => string;
+  heroMetaBase: (base: string) => string;
+  heroMetaTone: (tone: string) => string;
+}
+
+export interface TypesNamespace {
+  pageTitle: string;
+  pageSubtitle: string;
+  pageIntro: string;
+  warmGroupTitle: string;
+  warmGroupDesc: string;
+  coolGroupTitle: string;
+  coolGroupDesc: string;
+  cardViewDetail: string;
+  detail: TypeDetailCopy;
+  "spring-light": TypeContentCopy;
+  "spring-bright": TypeContentCopy;
+  "summer-light": TypeContentCopy;
+  "summer-muted": TypeContentCopy;
+  "autumn-muted": TypeContentCopy;
+  "autumn-dark": TypeContentCopy;
+  "winter-bright": TypeContentCopy;
+  "winter-dark": TypeContentCopy;
+}
+
+export interface AttributionNamespace {
+  heading: string;
+  line: string;
+  source: string;
 }
 
 export type Translations = Record<Lang, TranslationSchema>;

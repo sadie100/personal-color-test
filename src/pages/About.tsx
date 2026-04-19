@@ -1,4 +1,5 @@
 import pccsImage from "../assets/pccs_tone_map.jpg";
+import { AttributionNote } from "../components/AttributionNote";
 import { colorData } from "../data/colorData";
 import { translations } from "../i18n/translations";
 import type {
@@ -227,6 +228,8 @@ export const About = ({ lang, onStart }: AboutProps) => {
             {t.startButton}
           </button>
         </section>
+
+        <AttributionNote lang={lang} />
       </div>
 
       <div className="h-12" />

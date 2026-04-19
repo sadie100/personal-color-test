@@ -6,6 +6,8 @@ import { diagnosticChips } from "./data/colorData";
 import "./index.css";
 import { About } from "./pages/About";
 import { ColorTest } from "./pages/ColorTest";
+import { ColorTypeDetail } from "./pages/ColorTypeDetail";
+import { ColorTypes } from "./pages/ColorTypes";
 import { Home } from "./pages/Home";
 import { Results } from "./pages/Results";
 import type { DiagnosticChip, Lang, Screen, TestCompletePayload, TestMode } from "./types";
@@ -46,6 +48,10 @@ const getScreenFromPathname = (pathname: string): Screen => {
 
   if (pathname === "/about") {
     return "about";
+  }
+
+  if (pathname === "/types" || pathname.startsWith("/types/")) {
+    return "types";
   }
 
   return "home";
@@ -200,6 +206,11 @@ function App() {
         return;
       }
 
+      if (target === "types") {
+        navigate("/types");
+        return;
+      }
+
       if (target === "results") {
         if (!testMode) {
           navigate("/test");
@@ -245,6 +256,8 @@ function App() {
           element={<Home onStart={handleStartTest} lang={lang} onAbout={() => navigate("/about")} />}
         />
         <Route path="/about" element={<About lang={lang} onStart={handleStartTest} />} />
+        <Route path="/types" element={<ColorTypes lang={lang} />} />
+        <Route path="/types/:typeId" element={<ColorTypeDetail lang={lang} />} />
         <Route
           path="/test"
           element={

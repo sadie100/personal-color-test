@@ -42,6 +42,16 @@ export const Header = ({ lang, onToggleLang, screen, onNavigate }: HeaderProps) 
             {t.navAbout}
           </button>
           <button
+            onClick={() => handleNav("types")}
+            className={`cursor-pointer text-sm font-medium transition-colors ${
+              screen === "types"
+                ? "border-b-2 border-purple-500 pb-0.5 text-purple-600"
+                : "text-gray-600 hover:text-purple-600"
+            }`}
+          >
+            {t.nav.types}
+          </button>
+          <button
             onClick={() => handleNav("test")}
             className="cursor-pointer rounded-full bg-gradient-to-r from-blue-500 to-purple-500 px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90 active:scale-95"
           >
@@ -87,6 +97,14 @@ export const Header = ({ lang, onToggleLang, screen, onNavigate }: HeaderProps) 
             }`}
           >
             {t.navAbout}
+          </button>
+          <button
+            onClick={() => handleNav("types")}
+            className={`block w-full cursor-pointer rounded-lg px-3 py-2.5 text-left text-sm font-medium transition-colors ${
+              screen === "types" ? "bg-purple-50 text-purple-600" : "text-gray-700 hover:bg-gray-50"
+            }`}
+          >
+            {t.nav.types}
           </button>
           <button
             onClick={() => handleNav("test")}

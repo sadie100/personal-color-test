@@ -1,3 +1,4 @@
+import { AttributionNote } from "../components/AttributionNote";
 import { translations } from "../i18n/translations";
 import type { Lang } from "../types";
 
@@ -109,6 +110,10 @@ export const Home = ({ onStart, lang, onAbout }: HomeProps) => {
               {t.homeLearnMore}
             </button>
           </div>
+        </div>
+
+        <div className="mt-10">
+          <AttributionNote lang={lang} variant="dark" />
         </div>
       </div>
     </div>
