@@ -15,19 +15,19 @@ vi.mock("./components/Header", () => ({
   ),
 }));
 
-vi.mock("./components/Home", () => ({
+vi.mock("./pages/Home", () => ({
   Home: () => <div data-testid="home-screen">home-screen</div>,
 }));
 
-vi.mock("./components/About", () => ({
+vi.mock("./pages/About", () => ({
   About: () => <div data-testid="about-screen">about-screen</div>,
 }));
 
-vi.mock("./components/ColorTest", () => ({
+vi.mock("./pages/ColorTest", () => ({
   ColorTest: () => <div data-testid="test-screen">test-screen</div>,
 }));
 
-vi.mock("./components/Results", () => ({
+vi.mock("./pages/Results", () => ({
   Results: ({
     mode,
     likedChips,

@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 
-import { About } from "./components/About";
-import { ColorTest } from "./components/ColorTest";
 import { Header } from "./components/Header";
-import { Home } from "./components/Home";
-import { Results } from "./components/Results";
 import { diagnosticChips } from "./data/colorData";
 import "./index.css";
+import { About } from "./pages/About";
+import { ColorTest } from "./pages/ColorTest";
+import { Home } from "./pages/Home";
+import { Results } from "./pages/Results";
 import type { DiagnosticChip, Lang, Screen, TestCompletePayload, TestMode } from "./types";
 import { createResultsSearchParams, getPayloadFromResultsSearchParams } from "./utils/resultShare";
 

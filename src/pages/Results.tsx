@@ -1,8 +1,16 @@
 import { useState } from "react";
 
-import { colorData, getChipName, getPersonalColorTypeLabel, getSimpleResultDiagnosticChips, getSimpleResultTypeLabel, personalColorTypeMeta, simpleResultTypeMeta } from "../data/colorData";
+import { StylingRecommendations } from "../components/StylingRecommendations";
+import {
+  colorData,
+  getChipName,
+  getPersonalColorTypeLabel,
+  getSimpleResultDiagnosticChips,
+  getSimpleResultTypeLabel,
+  personalColorTypeMeta,
+  simpleResultTypeMeta,
+} from "../data/colorData";
 import { translations } from "../i18n/translations";
-import { StylingRecommendations } from "./StylingRecommendations";
 import {
   analyzePersonalColor,
   analyzeSimplePersonalColor,
@@ -88,7 +96,8 @@ interface StickerBadgeProps {
   tone: BadgeMode;
 }
 
-const buildSelectionSet = (chips: ReadonlyArray<DiagnosticChip>): Set<string> => new Set(chips.map((chip) => chip.hex));
+const buildSelectionSet = (chips: ReadonlyArray<DiagnosticChip>): Set<string> =>
+  new Set(chips.map((chip) => chip.hex));
 
 const isToneCardData = (card: ToneCardData | null): card is ToneCardData => card !== null;
 
@@ -208,7 +217,9 @@ export const Results = ({
 
   const topCards = [resultState.bestCard, ...resultState.comparisonCards].filter(isToneCardData);
   const activePaletteCard =
-    (selectedPaletteToneId ? topCards.find((card) => card.id === selectedPaletteToneId) : null) ?? topCards[0] ?? null;
+    (selectedPaletteToneId ? topCards.find((card) => card.id === selectedPaletteToneId) : null) ??
+    topCards[0] ??
+    null;
 
   if (!resultState.bestCard) {
     return (
@@ -229,7 +240,9 @@ export const Results = ({
       <div className="mx-auto max-w-5xl">
         <div className="mb-8 text-center">
           <h1 className="mb-2 text-4xl font-bold">{t.yourPersonalColor}</h1>
-          <p className="mx-auto max-w-2xl text-gray-600">{mode === "simple" ? t.simpleResultIntro : t.resultPaletteIntro}</p>
+          <p className="mx-auto max-w-2xl text-gray-600">
+            {mode === "simple" ? t.simpleResultIntro : t.resultPaletteIntro}
+          </p>
         </div>
 
         {topCards.length > 0 && (

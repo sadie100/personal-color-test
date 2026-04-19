@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { ColorCard } from "../components/ColorCard";
+import { LangToggle } from "../components/LangToggle";
+import { ProgressBar } from "../components/ProgressBar";
+import { SwipeButtons } from "../components/SwipeButtons";
+import { TestSetup } from "../components/TestSetup";
 import { translations } from "../i18n/translations";
 import type { DiagnosticChip, Lang, TestCompletePayload, TestConfiguration } from "../types";
 import { getSelectedDiagnosticChips } from "../utils/testSet";
-import { ColorCard } from "./ColorCard";
-import { LangToggle } from "./LangToggle";
-import { ProgressBar } from "./ProgressBar";
-import { SwipeButtons } from "./SwipeButtons";
-import { TestSetup } from "./TestSetup";
 
 const CARD_TRANSITION_MS = 300;
 

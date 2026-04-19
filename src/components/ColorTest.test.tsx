@@ -2,7 +2,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import { ColorTest } from "./ColorTest";
+import { ColorTest } from "../pages/ColorTest";
 
 describe("ColorTest setup flow", () => {
   it("shows mode selection first and starts the simple test by default", () => {

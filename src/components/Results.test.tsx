@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { diagnosticChips } from "../data/colorData";
-import { Results } from "./Results";
+import { Results } from "../pages/Results";
 
 const getChip = (id: string) => {
   const chip = diagnosticChips.find((entry) => entry.id === id);
