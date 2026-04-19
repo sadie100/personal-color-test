@@ -112,9 +112,7 @@ export const Home = ({ onStart, lang, onAbout }: HomeProps) => {
           </div>
         </div>
 
-        <div className="mt-10">
-          <AttributionNote lang={lang} variant="dark" />
-        </div>
+        <AttributionNote lang={lang} variant="dark" className="mt-10" />
       </div>
     </div>
   );

@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 
-import { AttributionNote } from "../components/AttributionNote";
 import { colorData } from "../data/colorData";
 import { colorTypeMetas, coolSlugs, warmSlugs } from "../data/colorTypeMeta";
 import { translations } from "../i18n/translations";
@@ -128,8 +127,6 @@ export const ColorTypes = ({ lang }: ColorTypesProps) => {
             ))}
           </ul>
         </section>
-
-        <AttributionNote lang={lang} />
       </div>
     </div>
   );

@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 
-import { AttributionNote } from "../components/AttributionNote";
 import { StylingRecommendations } from "../components/StylingRecommendations";
 import { colorData } from "../data/colorData";
 import { colorTypeMetas } from "../data/colorTypeMeta";
@@ -209,8 +208,6 @@ export const ColorTypeDetail = ({ lang }: ColorTypeDetailProps) => {
             />
           </Link>
         </nav>
-
-        <AttributionNote lang={lang} />
       </div>
     </div>
   );
