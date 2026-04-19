@@ -29,10 +29,10 @@ describe("Results", () => {
 
     expect(screen.getByText("Best Color 진단칩")).toBeTruthy();
     expect(screen.getByText("Worst Color 진단칩")).toBeTruthy();
-    expect(screen.getByText("웜 핑크")).toBeTruthy();
-    expect(screen.getByText("봄 오렌지")).toBeTruthy();
-    expect(screen.getByText("쿨 블루")).toBeTruthy();
-    expect(screen.getByText("겨울 블루")).toBeTruthy();
+    expect(screen.getByText("엘리노어")).toBeTruthy();
+    expect(screen.getByText("살로미")).toBeTruthy();
+    expect(screen.getByText("헤븐")).toBeTruthy();
+    expect(screen.getByText("인디고 다이")).toBeTruthy();
     expect(screen.getAllByText("LIKE").length).toBeGreaterThan(0);
     expect(screen.getAllByText("NOPE").length).toBeGreaterThan(0);
   });
