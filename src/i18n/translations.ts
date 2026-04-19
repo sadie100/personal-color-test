@@ -128,6 +128,20 @@ const ko: TranslationSchema = {
   aboutStep2: "각 색상에 대해 좋아요 또는 싫어요로 평가합니다",
   aboutStep3: "선호하는 색상 패턴을 분석하여 당신의 퍼스널 컬러를 알려드립니다",
   aboutCTA: "지금 테스트 해보기",
+  stylingTitle: "스타일링 가이드",
+  stylingSubtitle: (type: string) => `${type}를 위한 맞춤 추천`,
+  stylingFabricLabel: "소재 & 실루엣",
+  stylingPatternLabel: "패턴",
+  stylingAccessoryLabel: "액세서리 & 메탈",
+  stylingHairLabel: "헤어 컬러",
+  stylingMakeupLabel: "메이크업",
+  stylingKeywordsLabel: "키워드",
+  stylingSkinLabel: "피부 표현",
+  stylingLipLabel: "립",
+  stylingEyeLabel: "아이",
+  stylingMetalLabel: "메탈",
+  stylingAccessorySizeLabel: "디자인",
+  stylingSourceNote: "※ 참고: 한국분장예술인협회 퍼스널 컬러 컨설턴트 이론",
 };
 
 const en: TranslationSchema = {
@@ -262,6 +276,20 @@ const en: TranslationSchema = {
   aboutStep2: "Rate each color with like or dislike",
   aboutStep3: "We analyze your color preferences to reveal your personal color type",
   aboutCTA: "Take the Test Now",
+  stylingTitle: "Styling Guide",
+  stylingSubtitle: (type: string) => `Curated for ${type}`,
+  stylingFabricLabel: "Fabric & Silhouette",
+  stylingPatternLabel: "Patterns",
+  stylingAccessoryLabel: "Accessories & Metals",
+  stylingHairLabel: "Hair Color",
+  stylingMakeupLabel: "Makeup",
+  stylingKeywordsLabel: "Keywords",
+  stylingSkinLabel: "Skin",
+  stylingLipLabel: "Lip",
+  stylingEyeLabel: "Eye",
+  stylingMetalLabel: "Metals",
+  stylingAccessorySizeLabel: "Design",
+  stylingSourceNote: "※ Reference: Korean Personal Color Consultant theory (KMUA)",
 };
 
 export const translations: Translations = {

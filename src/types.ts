@@ -197,6 +197,20 @@ export interface TranslationSchema {
   aboutStep2: string;
   aboutStep3: string;
   aboutCTA: string;
+  stylingTitle: string;
+  stylingSubtitle: (type: string) => string;
+  stylingFabricLabel: string;
+  stylingPatternLabel: string;
+  stylingAccessoryLabel: string;
+  stylingHairLabel: string;
+  stylingMakeupLabel: string;
+  stylingKeywordsLabel: string;
+  stylingSkinLabel: string;
+  stylingLipLabel: string;
+  stylingEyeLabel: string;
+  stylingMetalLabel: string;
+  stylingAccessorySizeLabel: string;
+  stylingSourceNote: string;
 }
 
 export type Translations = Record<Lang, TranslationSchema>;

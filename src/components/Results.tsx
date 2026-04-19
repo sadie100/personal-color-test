@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { colorData, getChipName, getPersonalColorTypeLabel, getSimpleResultDiagnosticChips, getSimpleResultTypeLabel, personalColorTypeMeta, simpleResultTypeMeta } from "../data/colorData";
 import { translations } from "../i18n/translations";
+import { StylingRecommendations } from "./StylingRecommendations";
 import {
   analyzePersonalColor,
   analyzeSimplePersonalColor,
@@ -303,6 +304,15 @@ export const Results = ({
               />
             )}
           </div>
+        )}
+
+        {mode === "detailed" && (
+          <StylingRecommendations
+            bestType={resultState.bestCard.id as PersonalColorType}
+            displayName={resultState.bestCard.displayName}
+            lang={lang}
+            t={t}
+          />
         )}
 
         {resultState.worstCard && (
