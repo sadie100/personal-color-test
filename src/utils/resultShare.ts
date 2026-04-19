@@ -1,8 +1,10 @@
 import {
+  detailedDiagnosticChips,
   diagnosticChips,
   getSimpleResultDiagnosticChips,
   personalColorTypeMeta,
   personalColorTypes,
+  simpleDiagnosticChips,
   simpleResultTypeMeta,
   simpleResultTypes,
 } from "../data/colorData";
@@ -133,9 +135,9 @@ const getModeFromParams = (searchParams: URLSearchParams): TestMode =>
   searchParams.get("mode") === "simple" ? "simple" : "detailed";
 
 const getRepresentativeChip = (type: PersonalColorType): DiagnosticChip | null =>
-  diagnosticChips.find(
-    (chip) => chip.diagnosticPhase === "detail" && chip.targetTypes.includes(type),
-  ) ?? diagnosticChips.find((chip) => chip.targetTypes.includes(type)) ?? null;
+  detailedDiagnosticChips.find((chip) => chip.targetTypes.includes(type))
+  ?? simpleDiagnosticChips.find((chip) => chip.targetTypes.includes(type))
+  ?? null;
 
 const getRepresentativeChipsForSimpleTone = (type: SimpleResultType): DiagnosticChip[] => {
   const chips = getSimpleResultDiagnosticChips(type);

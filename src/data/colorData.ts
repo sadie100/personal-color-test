@@ -259,7 +259,7 @@ const chips = {
   winterDarkMagenta: createChip("detail-winter-dark-magenta", "다크 마젠타", "Bold Purple", "#6F0072", { l: 0.382, c: 0.177, h: 327 }, "purplePink"),
 };
 
-export const diagnosticChips: DiagnosticChip[] = [
+export const simpleDiagnosticChips: DiagnosticChip[] = [
   createDiagnosticChip(chips.warmPink, "base", ["Spring Light", "Spring Bright", "Autumn Muted", "Autumn Dark"]),
   createDiagnosticChip(chips.coolPink, "base", ["Summer Light", "Summer Muted", "Winter Bright", "Winter Dark"]),
   createDiagnosticChip(chips.warmYellow, "base", ["Spring Light", "Spring Bright", "Autumn Muted", "Autumn Dark"]),
@@ -283,7 +283,9 @@ export const diagnosticChips: DiagnosticChip[] = [
   createDiagnosticChip(chips.winterSeasonBlue, "season", ["Winter Bright", "Winter Dark"]),
   createDiagnosticChip(chips.summerSeasonPurple, "season", ["Summer Light", "Summer Muted"]),
   createDiagnosticChip(chips.winterSeasonPurple, "season", ["Winter Bright", "Winter Dark"]),
+];
 
+export const detailedDiagnosticChips: DiagnosticChip[] = [
   createDiagnosticChip(chips.springLightPink, "detail", ["Spring Light"]),
   createDiagnosticChip(chips.springLightPeach, "detail", ["Spring Light"]),
   createDiagnosticChip(chips.springLightCreamYellow, "detail", ["Spring Light"]),
@@ -324,6 +326,8 @@ export const diagnosticChips: DiagnosticChip[] = [
   createDiagnosticChip(chips.winterDarkPurple, "detail", ["Winter Dark"]),
   createDiagnosticChip(chips.winterDarkMagenta, "detail", ["Winter Dark"]),
 ];
+
+export const diagnosticChips: DiagnosticChip[] = [...simpleDiagnosticChips, ...detailedDiagnosticChips];
 
 export const colorData: ColorDataMap = {
   "Spring Light": [
@@ -390,7 +394,7 @@ export const getSimpleResultPalette = (type: SimpleResultType): ColorChip[] =>
 export const getSimpleResultDiagnosticChips = (type: SimpleResultType): DiagnosticChip[] => {
   const { baseTone, season } = simpleResultTypeMeta[type];
 
-  return diagnosticChips.filter((chip) => {
+  return simpleDiagnosticChips.filter((chip) => {
     if (chip.diagnosticPhase === "base") {
       return hasMatchingBaseTone(chip, baseTone);
     }
