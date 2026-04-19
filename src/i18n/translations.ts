@@ -28,7 +28,7 @@ const ko: TranslationSchema = {
   testModeSimpleCount: (count: number) => `문항 ${count}개 · 베이스 + 계절`,
   testModeDetailed: "세부 테스트",
   testModeDetailedDescription:
-    "베이스와 계절에 더해, 브라이트·뮤트·다크 같은 세부톤까지 자세히 확인합니다.",
+    "베이스와 계절에 더해, 브라이트·뮤트·다크 같은 세부톤까지 자세히 확인하고 결과에서 톤별 스타일링 가이드도 함께 제공합니다.",
   testModeDetailedCount: (count: number) => `문항 ${count}개 · 베이스 + 계절 + 세부톤`,
   testStartSelected: "선택한 모드로 테스트 시작",
   testCurrentMode: (label: string) => `현재 테스트 ${label}`,
@@ -172,7 +172,7 @@ const en: TranslationSchema = {
   testModeSimpleCount: (count: number) => `${count} chips · base + season`,
   testModeDetailed: "Detailed test",
   testModeDetailedDescription:
-    "In addition to base and season, this mode lets you look more closely at detail tones like bright, muted, and dark.",
+    "In addition to base and season, this mode digs into detail tones like bright, muted, and dark, and also provides tone-specific styling guidance in the results.",
   testModeDetailedCount: (count: number) => `${count} chips · base + season + detail`,
   testStartSelected: "Start with this mode",
   testCurrentMode: (label: string) => `Current test: ${label}`,
