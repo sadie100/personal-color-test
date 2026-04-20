@@ -105,15 +105,15 @@ export function StylingRecommendations({
   return (
     <div className="mb-6 rounded-3xl border border-slate-100 bg-white p-6 shadow-md">
       <div className="mb-5">
-        <h2 className="text-2xl font-bold text-slate-900">{t.stylingTitle}</h2>
+        <h2 className="text-2xl font-bold text-slate-900">{t.styling.title}</h2>
         <p className="mt-1 text-sm text-slate-500">
-          {t.stylingSubtitle(displayName)}
+          {t.styling.subtitle(displayName)}
         </p>
       </div>
 
       <div className="mb-5 flex flex-wrap items-center gap-2">
         <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-          {t.stylingKeywordsLabel}
+          {t.styling.keywords}
         </span>
         {keywords.map((keyword) => (
           <span
@@ -128,7 +128,7 @@ export function StylingRecommendations({
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <Panel
           icon={<Shirt size={18} strokeWidth={1.75} />}
-          label={t.stylingFabricLabel}
+          label={t.styling.fabric}
           accent="rose"
         >
           <p>{data.fabric[lang]}</p>
@@ -136,7 +136,7 @@ export function StylingRecommendations({
 
         <Panel
           icon={<Sparkles size={18} strokeWidth={1.75} />}
-          label={t.stylingPatternLabel}
+          label={t.styling.pattern}
           accent="amber"
         >
           <p>{data.patterns[lang]}</p>
@@ -144,16 +144,16 @@ export function StylingRecommendations({
 
         <Panel
           icon={<Gem size={18} strokeWidth={1.75} />}
-          label={t.stylingAccessoryLabel}
+          label={t.styling.accessory}
           accent="emerald"
         >
-          <FieldRow label={t.stylingAccessorySizeLabel} value={data.accessorySize[lang]} />
-          <FieldRow label={t.stylingMetalLabel} value={data.metals[lang]} />
+          <FieldRow label={t.styling.accessorySize} value={data.accessorySize[lang]} />
+          <FieldRow label={t.styling.metal} value={data.metals[lang]} />
         </Panel>
 
         <Panel
           icon={<Scissors size={18} strokeWidth={1.75} />}
-          label={t.stylingHairLabel}
+          label={t.styling.hair}
           accent="sky"
         >
           <p>{data.hair[lang]}</p>
@@ -161,17 +161,17 @@ export function StylingRecommendations({
 
         <Panel
           icon={<Palette size={18} strokeWidth={1.75} />}
-          label={t.stylingMakeupLabel}
+          label={t.styling.makeup}
           accent="violet"
           fullWidth
         >
-          <FieldRow label={t.stylingSkinLabel} value={makeup.skin} />
-          <FieldRow label={t.stylingLipLabel} value={makeup.lip} />
-          <FieldRow label={t.stylingEyeLabel} value={makeup.eye} />
+          <FieldRow label={t.styling.skin} value={makeup.skin} />
+          <FieldRow label={t.styling.lip} value={makeup.lip} />
+          <FieldRow label={t.styling.eye} value={makeup.eye} />
         </Panel>
       </div>
 
-      <p className="mt-5 text-xs text-slate-400">{t.stylingSourceNote}</p>
+      <p className="mt-5 text-xs text-slate-400">{t.styling.sourceNote}</p>
     </div>
   );
 }

@@ -3,7 +3,10 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { diagnosticChips } from "../data/colorData";
+import { translations } from "../i18n/translations";
 import { Results } from "../pages/Results";
+
+const ko = translations.ko;
 
 const getChip = (id: string) => {
   const chip = diagnosticChips.find((entry) => entry.id === id);
@@ -27,13 +30,13 @@ describe("Results", () => {
       />,
     );
 
-    expect(screen.getByText("Best Color 진단칩")).toBeTruthy();
-    expect(screen.getByText("Worst Color 진단칩")).toBeTruthy();
+    expect(screen.getByText(ko.results.diagnosticChipTitle(ko.results.best))).toBeTruthy();
+    expect(screen.getByText(ko.results.diagnosticChipTitle(ko.results.worst))).toBeTruthy();
     expect(screen.getByText("엘리노어")).toBeTruthy();
     expect(screen.getByText("살로미")).toBeTruthy();
     expect(screen.getByText("헤븐")).toBeTruthy();
     expect(screen.getByText("인디고 다이")).toBeTruthy();
-    expect(screen.getAllByText("LIKE").length).toBeGreaterThan(0);
-    expect(screen.getAllByText("NOPE").length).toBeGreaterThan(0);
+    expect(screen.getAllByText(ko.results.badges.liked).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(ko.results.badges.disliked).length).toBeGreaterThan(0);
   });
 });

@@ -1,9 +1,4 @@
-[x] 결과 화면에 Theory.md 참고해서 톤에 따른 패션 추천 같은거 넣기. detail 모드에서만
-
-[x] Theory.md 참고해서 홈페이지에 웜/쿨 등에 대한 설명 추가하기. 그리고 여기서 진단하는 세부톤에 대한 설명도... 그리고 대한민국 퍼스널 컬러 컨설턴트 테스트 이론 기반으로 만들었다는 문구 명시하기 (텍스트는 좀 다듬어서)
-  → 헤더에 '컬러 타입 유형' 메뉴 추가, /types 목록 + /types/:slug 상세 페이지 신설. Home/About 하단에 이론 출처 문구 표시.
-
-[ ] i18n 키 점표기 이관: 기존 flat 키(`navAbout`, `aboutTitle`, `about*`, `styling*`, `homeHero*` 등)를 `nav.about`, `about.title`, `about.pccs.*`, `styling.*`, `home.hero.*` 같은 네임스페이스로 이관. `TranslationSchema`도 nested interface로 전면 재구성.
+[x] i18n 키 점표기 이관: 기존 flat 키(`navAbout`, `aboutTitle`, `about*`, `styling*`, `homeHero*` 등)를 `nav.about`, `about.title`, `about.pccs.*`, `styling.*`, `home.hero.*` 같은 네임스페이스로 이관. `TranslationSchema`도 nested interface로 전면 재구성.
 
 [ ] CLAUDE.md 업데이트: (1) "no routing library" → react-router-dom 사용으로 정정, (2) 스크린 전환 설명을 라우트 기반으로 갱신, (3) i18n 점표기 네임스페이스 규칙 문서화 (`nav.*`, `types.*`, `types.{slug}.*`, `attribution.*`), (4) 신규 `src/data/colorTypeMeta.ts` 역할 기술.
 
@@ -18,8 +13,6 @@
 [ ] 도메인 달고 SEO 높이기
 
 [ ] 중간 결과 보기는 제거해도 될듯?
-
-[ ] 컬러이름이 너무 직관적. 브라이트 레드 브라이트 옐로우... 다른 색상 자체의 이름 없을가? 예쁜 이름으로 불러오는 방법 찾아보기
 
 [ ] 테스트 화면에서 색상이름 및 현재단계가 하얀 톤의 컬러에서 눈에 안띄는 문제 해결
 

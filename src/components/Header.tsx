@@ -39,7 +39,7 @@ export const Header = ({ lang, onToggleLang, screen, onNavigate }: HeaderProps) 
                 : "text-gray-600 hover:text-purple-600"
             }`}
           >
-            {t.navAbout}
+            {t.nav.about}
           </button>
           <button
             onClick={() => handleNav("types")}
@@ -55,7 +55,7 @@ export const Header = ({ lang, onToggleLang, screen, onNavigate }: HeaderProps) 
             onClick={() => handleNav("test")}
             className="cursor-pointer rounded-full bg-gradient-to-r from-blue-500 to-purple-500 px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90 active:scale-95"
           >
-            {t.navTest}
+            {t.nav.test}
           </button>
           <LangToggle lang={lang} onToggle={onToggleLang} />
         </nav>
@@ -96,7 +96,7 @@ export const Header = ({ lang, onToggleLang, screen, onNavigate }: HeaderProps) 
               screen === "about" ? "bg-purple-50 text-purple-600" : "text-gray-700 hover:bg-gray-50"
             }`}
           >
-            {t.navAbout}
+            {t.nav.about}
           </button>
           <button
             onClick={() => handleNav("types")}
@@ -110,7 +110,7 @@ export const Header = ({ lang, onToggleLang, screen, onNavigate }: HeaderProps) 
             onClick={() => handleNav("test")}
             className="block w-full cursor-pointer rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 px-3 py-2.5 text-left text-sm font-semibold text-white"
           >
-            {t.navTest}
+            {t.nav.test}
           </button>
         </div>
       )}

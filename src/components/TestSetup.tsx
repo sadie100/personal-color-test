@@ -27,15 +27,15 @@ export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProp
   }> = [
     {
       mode: "simple",
-      title: t.testModeSimple,
-      description: t.testModeSimpleDescription,
-      countLabel: t.testModeSimpleCount(simpleColorCount),
+      title: t.test.mode.simple.label,
+      description: t.test.mode.simple.description,
+      countLabel: t.test.mode.simple.count(simpleColorCount),
     },
     {
       mode: "detailed",
-      title: t.testModeDetailed,
-      description: t.testModeDetailedDescription,
-      countLabel: t.testModeDetailedCount(detailedColorCount),
+      title: t.test.mode.detailed.label,
+      description: t.test.mode.detailed.description,
+      countLabel: t.test.mode.detailed.count(detailedColorCount),
     },
   ];
 
@@ -46,7 +46,7 @@ export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProp
           onClick={onHome}
           className="rounded-full border border-white/40 bg-white/15 px-4 py-2 text-sm font-semibold backdrop-blur-sm transition hover:bg-white/25 active:scale-95"
         >
-          {t.homeButton}
+          {t.test.home}
         </button>
         <LangToggle lang={lang} onToggle={onToggleLang} />
       </div>
@@ -54,8 +54,8 @@ export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProp
       <div className="mx-auto flex min-h-[calc(100vh-3rem)] w-full max-w-4xl items-center justify-center pt-16">
         <div className="w-full rounded-3xl bg-white/15 p-6 shadow-2xl backdrop-blur-md sm:p-8">
           <div className="mb-8 text-center">
-            <h1 className="text-3xl font-bold sm:text-4xl">{t.testSetupTitle}</h1>
-            <p className="mt-3 text-sm text-white/90 sm:text-base">{t.testSetupDescription}</p>
+            <h1 className="text-3xl font-bold sm:text-4xl">{t.test.setup.title}</h1>
+            <p className="mt-3 text-sm text-white/90 sm:text-base">{t.test.setup.description}</p>
           </div>
 
           <div>
@@ -95,7 +95,7 @@ export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProp
             }
             className="mt-8 w-full rounded-full bg-white px-6 py-4 text-base font-bold text-purple-700 shadow-lg transition hover:scale-[1.01] hover:bg-purple-50 disabled:cursor-not-allowed disabled:bg-white/60 disabled:text-purple-300 disabled:hover:scale-100"
           >
-            {t.testStartSelected}
+            {t.test.mode.startSelected}
           </button>
         </div>
       </div>

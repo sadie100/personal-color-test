@@ -44,7 +44,7 @@ export const ColorTypeDetail = ({ lang }: ColorTypeDetailProps) => {
   const prevCopy = t.types[prev];
   const nextCopy = t.types[next];
 
-  const baseLabel = meta.base === "Warm" ? t.warmUndertone : t.coolUndertone;
+  const baseLabel = meta.base === "Warm" ? t.undertone.warm : t.undertone.cool;
 
   return (
     <div className="min-h-screen w-full bg-gray-50 pt-16 pb-16">

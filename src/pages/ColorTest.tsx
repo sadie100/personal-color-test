@@ -101,7 +101,7 @@ const ActiveColorTest = ({
   if (!currentColor) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-gray-100">
-        <p className="text-xl">{t.loading}</p>
+        <p className="text-xl">{t.test.loading}</p>
       </div>
     );
   }
@@ -117,7 +117,7 @@ const ActiveColorTest = ({
           {currentIndex + 1} / {orderedColors.length}
         </p>
         <p className="text-sm">
-          {t.liked}: {likedChips.length}
+          {t.test.liked}: {likedChips.length}
         </p>
       </div>
 
@@ -126,7 +126,7 @@ const ActiveColorTest = ({
           onClick={onHome}
           className="rounded-full border border-white/50 bg-white/90 px-4 py-2.5 text-sm font-semibold text-gray-800 shadow-lg backdrop-blur-sm transition-all hover:scale-105 hover:bg-white active:scale-95"
         >
-          {t.homeButton}
+          {t.test.home}
         </button>
         <LangToggle lang={lang} onToggle={onToggleLang} />
       </div>
@@ -142,7 +142,7 @@ const ActiveColorTest = ({
           }
           className="absolute right-6 bottom-6 rounded-full border border-white/50 bg-white/90 px-4 py-2.5 text-sm font-semibold text-gray-800 shadow-lg backdrop-blur-sm transition-all hover:scale-105 hover:bg-white active:scale-95"
         >
-          {t.earlyExit}
+          {t.test.earlyExit}
         </button>
       )}
     </div>

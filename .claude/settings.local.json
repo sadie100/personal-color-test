@@ -10,7 +10,8 @@
       "WebFetch(domain:www.16personalities.com)",
       "mcp__plugin_playwright_playwright__browser_navigate",
       "mcp__plugin_playwright_playwright__browser_take_screenshot",
-      "mcp__plugin_playwright_playwright__browser_click"
+      "mcp__plugin_playwright_playwright__browser_click",
+      "Bash(npm run *)"
     ]
   }
 }

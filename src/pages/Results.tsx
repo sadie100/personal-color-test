@@ -185,28 +185,28 @@ export const Results = ({
       ? {
           bestCard: (() => {
             const bestTone = analyzeSimplePersonalColor(likedChips, dislikedChips);
-            return bestTone ? buildSimpleCard(bestTone, t.bestColor, "best") : null;
+            return bestTone ? buildSimpleCard(bestTone, t.results.best, "best") : null;
           })(),
           comparisonCards: [] as ToneCardData[],
           worstCard: (() => {
             const worstTone = getWorstSimpleResult(likedChips, dislikedChips);
-            return worstTone ? buildSimpleCard(worstTone, t.worstColor, "worst") : null;
+            return worstTone ? buildSimpleCard(worstTone, t.results.worst, "worst") : null;
           })(),
         }
       : (() => {
           const bestResults = getBestResults(likedChips, dislikedChips, 3);
           const personalColorType = analyzePersonalColor(likedChips, dislikedChips);
           const secondaryBestResults = bestResults.slice(1, 3);
-          const bestCard = personalColorType ? buildDetailedCard(personalColorType, t.bestColor, "best") : null;
+          const bestCard = personalColorType ? buildDetailedCard(personalColorType, t.results.best, "best") : null;
           const comparisonCards = secondaryBestResults.map((tone, index) =>
             buildDetailedCard(
               tone,
-              index === 0 ? t.secondBestColor : t.thirdBestColor,
+              index === 0 ? t.results.second : t.results.third,
               index === 0 ? "second" : "third",
             ),
           );
           const worstTone = getWorstResult(likedChips, dislikedChips);
-          const worstCard = worstTone ? buildDetailedCard(worstTone, t.worstColor, "worst") : null;
+          const worstCard = worstTone ? buildDetailedCard(worstTone, t.results.worst, "worst") : null;
 
           return {
             bestCard,
@@ -224,12 +224,12 @@ export const Results = ({
   if (!resultState.bestCard) {
     return (
       <div className="flex h-screen w-full flex-col items-center justify-center gap-4 bg-linear-to-br from-gray-50 to-gray-100">
-        <p className="text-xl font-semibold text-gray-700">{t.noLikes}</p>
+        <p className="text-xl font-semibold text-gray-700">{t.results.noLikes}</p>
         <button
           onClick={onRetry}
           className="rounded-lg bg-blue-500 px-6 py-3 font-bold text-white transition-colors hover:bg-blue-600"
         >
-          {t.tryAgain}
+          {t.results.tryAgain}
         </button>
       </div>
     );
@@ -239,9 +239,9 @@ export const Results = ({
     <div className="min-h-screen w-full overflow-auto bg-linear-to-br from-gray-50 to-gray-100 p-6 pt-20">
       <div className="mx-auto max-w-5xl">
         <div className="mb-8 text-center">
-          <h1 className="mb-2 text-4xl font-bold">{t.yourPersonalColor}</h1>
+          <h1 className="mb-2 text-4xl font-bold">{t.results.header}</h1>
           <p className="mx-auto max-w-2xl text-gray-600">
-            {mode === "simple" ? t.simpleResultIntro : t.resultPaletteIntro}
+            {mode === "simple" ? t.results.simpleIntro : t.results.paletteIntro}
           </p>
         </div>
 
@@ -296,13 +296,13 @@ export const Results = ({
 
             {activePaletteCard && (
               <PaletteSection
-                title={mode === "simple" ? t.diagnosticChipTitle(activePaletteCard.label) : t.paletteTitle(activePaletteCard.label)}
+                title={mode === "simple" ? t.results.diagnosticChipTitle(activePaletteCard.label) : t.results.paletteTitle(activePaletteCard.label)}
                 description={
                   mode === "simple"
-                    ? t.simpleBestDiagnosticDescription
-                    : activePaletteCard.label === t.bestColor
-                      ? t.bestPaletteDescription
-                      : t.comparisonPaletteDescription
+                    ? t.results.simpleDiagnostics.best
+                    : activePaletteCard.label === t.results.best
+                      ? t.results.paletteDescriptions.best
+                      : t.results.paletteDescriptions.comparison
                 }
                 badgeText={activePaletteCard.displayName}
                 paletteColors={activePaletteCard.paletteColors}
@@ -334,8 +334,8 @@ export const Results = ({
               <ResultToneCard card={resultState.worstCard} lang={lang} />
             </div>
             <PaletteSection
-              title={mode === "simple" ? t.diagnosticChipTitle(t.worstColor) : t.paletteTitle(t.worstColor)}
-              description={mode === "simple" ? t.simpleWorstDiagnosticDescription : t.worstPaletteDescription}
+              title={mode === "simple" ? t.results.diagnosticChipTitle(t.results.worst) : t.results.paletteTitle(t.results.worst)}
+              description={mode === "simple" ? t.results.simpleDiagnostics.worst : t.results.paletteDescriptions.worst}
               badgeText={resultState.worstCard.displayName}
               paletteColors={resultState.worstCard.paletteColors}
               badgeClass={resultState.worstCard.badgeClass}
@@ -351,18 +351,18 @@ export const Results = ({
         )}
 
         <div className="mb-6 rounded-lg border-l-4 border-blue-500 bg-blue-50 p-6">
-          <h3 className="mb-2 font-bold">{t.aboutColorType}</h3>
-          <p className="mb-3 text-sm text-gray-700">{t.basedOn}</p>
+          <h3 className="mb-2 font-bold">{t.results.analysisTitle}</h3>
+          <p className="mb-3 text-sm text-gray-700">{t.results.analysisIntro}</p>
           <ul className="space-y-1 text-sm text-gray-700">
-            <li>✓ {resultState.bestCard.baseTone === "Warm" ? t.warmUndertone : t.coolUndertone}</li>
-            {resultState.bestCard.season === "Spring" && <li>✓ {t.springTrait}</li>}
-            {resultState.bestCard.season === "Summer" && <li>✓ {t.summerTrait}</li>}
-            {resultState.bestCard.season === "Autumn" && <li>✓ {t.autumnTrait}</li>}
-            {resultState.bestCard.season === "Winter" && <li>✓ {t.winterTrait}</li>}
-            {resultState.bestCard.detailTone === "Light" && <li>✓ {t.lightTrait}</li>}
-            {resultState.bestCard.detailTone === "Bright" && <li>✓ {t.brightTrait}</li>}
-            {resultState.bestCard.detailTone === "Muted" && <li>✓ {t.mutedTrait}</li>}
-            {resultState.bestCard.detailTone === "Dark" && <li>✓ {t.darkTrait}</li>}
+            <li>✓ {resultState.bestCard.baseTone === "Warm" ? t.undertone.warm : t.undertone.cool}</li>
+            {resultState.bestCard.season === "Spring" && <li>✓ {t.traits.spring}</li>}
+            {resultState.bestCard.season === "Summer" && <li>✓ {t.traits.summer}</li>}
+            {resultState.bestCard.season === "Autumn" && <li>✓ {t.traits.autumn}</li>}
+            {resultState.bestCard.season === "Winter" && <li>✓ {t.traits.winter}</li>}
+            {resultState.bestCard.detailTone === "Light" && <li>✓ {t.traits.light}</li>}
+            {resultState.bestCard.detailTone === "Bright" && <li>✓ {t.traits.bright}</li>}
+            {resultState.bestCard.detailTone === "Muted" && <li>✓ {t.traits.muted}</li>}
+            {resultState.bestCard.detailTone === "Dark" && <li>✓ {t.traits.dark}</li>}
           </ul>
         </div>
 
@@ -371,17 +371,17 @@ export const Results = ({
             onClick={onRetry}
             className="flex-1 rounded-lg bg-blue-500 py-3 font-bold text-white transition-colors hover:bg-blue-600"
           >
-            {t.tryAgain}
+            {t.results.tryAgain}
           </button>
           <button
             onClick={() => {
               const urlToShare = shareUrl || window.location.href;
               void navigator.clipboard.writeText(urlToShare);
-              window.alert(t.copied);
+              window.alert(t.results.copied);
             }}
             className="flex-1 rounded-lg bg-gray-500 py-3 font-bold text-white transition-colors hover:bg-gray-600"
           >
-            {t.shareResult}
+            {t.results.share}
           </button>
         </div>
       </div>
@@ -453,10 +453,10 @@ const PaletteSection = ({
         </div>
         <p className="text-sm text-slate-600">{description}</p>
         <div className="flex flex-wrap gap-2">
-          <MetaPill text={t.paletteContainsCount(paletteColors.length)} />
-          {badgeMode === "liked" && likedCount > 0 && <MetaPill text={t.likedMatchesCount(likedCount)} tone="liked" />}
+          <MetaPill text={t.results.badges.paletteCount(paletteColors.length)} />
+          {badgeMode === "liked" && likedCount > 0 && <MetaPill text={t.results.badges.likedCount(likedCount)} tone="liked" />}
           {badgeMode === "disliked" && dislikedCount > 0 && (
-            <MetaPill text={t.dislikedMatchesCount(dislikedCount)} tone="disliked" />
+            <MetaPill text={t.results.badges.dislikedCount(dislikedCount)} tone="disliked" />
           )}
         </div>
       </div>
@@ -479,8 +479,8 @@ const PaletteSection = ({
                   style={{ backgroundColor: color.hex }}
                   title={getChipName(color, lang)}
                 />
-                {badgeMode === "liked" && isLiked && <StickerBadge label={t.likedSticker} tone="liked" />}
-                {badgeMode === "disliked" && isDisliked && <StickerBadge label={t.dislikedSticker} tone="disliked" />}
+                {badgeMode === "liked" && isLiked && <StickerBadge label={t.results.badges.liked} tone="liked" />}
+                {badgeMode === "disliked" && isDisliked && <StickerBadge label={t.results.badges.disliked} tone="disliked" />}
               </div>
               <div className="pt-3">
                 <p className="truncate text-sm font-semibold text-slate-800">{getChipName(color, lang)}</p>
