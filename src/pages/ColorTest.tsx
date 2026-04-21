@@ -49,7 +49,7 @@ const ActiveColorTest = ({
   const currentColor = orderedColors[currentIndex] ?? null;
 
   const handleNext = useCallback(
-    (liked: boolean, swipeDirection?: "left" | "right") => {
+    (liked: boolean, swipeDirection: "left" | "right") => {
       if (isTransitioning || !currentColor) {
         return;
       }
@@ -75,28 +75,20 @@ const ActiveColorTest = ({
           return;
         }
 
+        // Place the new card off-screen opposite the exit, then slide it in to X=0
+        // on the next tick. The short setTimeout (not a double RAF) ensures the
+        // browser paints the off-screen position before the transition re-enables —
+        // React otherwise coalesces both renders into the same frame.
+        const enterFromX = (swipeDirection === "right" ? -1 : 1) * (window.innerWidth + 200);
         setCurrentIndex(currentIndex + 1);
         setExitDirection(null);
-
-        if (swipeDirection) {
-          // Place the new card off-screen opposite the exit, then slide it in to X=0
-          // on the next tick. Skip the opacity fade. The short setTimeout (not a
-          // double RAF) ensures the browser paints the off-screen position before
-          // the transition re-enables — React otherwise coalesces both renders.
-          const enterFromX = (swipeDirection === "right" ? -1 : 1) * (window.innerWidth + 200);
-          setIsDragging(true);
-          setDragX(enterFromX);
-          setIsTransitioning(false);
-          window.setTimeout(() => {
-            setIsDragging(false);
-            setDragX(0);
-          }, 32);
-        } else {
+        setIsDragging(true);
+        setDragX(enterFromX);
+        setIsTransitioning(false);
+        window.setTimeout(() => {
+          setIsDragging(false);
           setDragX(0);
-          window.requestAnimationFrame(() => {
-            setIsTransitioning(false);
-          });
-        }
+        }, 32);
       }, CARD_TRANSITION_MS);
     },
     [
@@ -111,20 +103,34 @@ const ActiveColorTest = ({
     ],
   );
 
+  const advance = useCallback(
+    (liked: boolean) => {
+      if (isTransitioning || exitDirection) {
+        return;
+      }
+      const direction: "left" | "right" = liked ? "right" : "left";
+      setExitDirection(direction);
+      window.setTimeout(() => {
+        handleNext(liked, direction);
+      }, CARD_TRANSITION_MS);
+    },
+    [handleNext, isTransitioning, exitDirection],
+  );
+
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       if (event.key === "ArrowLeft") {
-        handleNext(false);
+        advance(false);
       }
 
       if (event.key === "ArrowRight") {
-        handleNext(true);
+        advance(true);
       }
     };
 
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [handleNext]);
+  }, [advance]);
 
   const handlePointerDown = useCallback(
     (event: ReactPointerEvent<HTMLDivElement>) => {
@@ -180,16 +186,12 @@ const ActiveColorTest = ({
       setIsDragging(false);
 
       if (passesDistance || passesVelocity) {
-        const direction: "left" | "right" = dx > 0 ? "right" : "left";
-        setExitDirection(direction);
-        window.setTimeout(() => {
-          handleNext(direction === "right", direction);
-        }, CARD_TRANSITION_MS);
+        advance(dx > 0);
       } else {
         setDragX(0);
       }
     },
-    [handleNext],
+    [advance],
   );
 
   if (!currentColor) {
@@ -213,14 +215,13 @@ const ActiveColorTest = ({
       >
         <ColorCard
           color={currentColor}
-          isTransitioning={isTransitioning}
           lang={lang}
           dragX={dragX}
           isDragging={isDragging}
           exitDirection={exitDirection}
         />
       </div>
-      <SwipeButtons onDislike={() => handleNext(false)} onLike={() => handleNext(true)} />
+      <SwipeButtons onDislike={() => advance(false)} onLike={() => advance(true)} />
 
       <div className="absolute top-4 left-4 max-w-[min(22rem,calc(100vw-8rem))] rounded-2xl bg-black/25 p-4 text-white shadow-lg backdrop-blur-sm">
         <p className="text-sm">
