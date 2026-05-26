@@ -43,10 +43,19 @@ export const CameraStage = ({
     }
   }, [stream]);
 
-  if (status === "unsupported" || status === "denied") {
-    const title = status === "unsupported" ? t.test.camera.unsupportedTitle : t.test.camera.deniedTitle;
+  if (status === "unsupported" || status === "denied" || status === "notfound") {
+    const title =
+      status === "unsupported"
+        ? t.test.camera.unsupportedTitle
+        : status === "notfound"
+          ? t.test.camera.notFoundTitle
+          : t.test.camera.deniedTitle;
     const message =
-      status === "unsupported" ? t.test.camera.unsupportedMessage : t.test.camera.deniedMessage;
+      status === "unsupported"
+        ? t.test.camera.unsupportedMessage
+        : status === "notfound"
+          ? t.test.camera.notFoundMessage
+          : t.test.camera.deniedMessage;
     return (
       <div
         className="absolute inset-0 flex items-center justify-center bg-linear-to-br from-slate-800 to-slate-600 p-6"
@@ -58,7 +67,7 @@ export const CameraStage = ({
           <h2 className="text-xl font-bold">{title}</h2>
           <p className="mt-3 text-sm leading-relaxed text-gray-600">{message}</p>
           <div className="mt-6 flex flex-col gap-2">
-            {status === "denied" && (
+            {(status === "denied" || status === "notfound") && (
               <button
                 type="button"
                 onClick={request}

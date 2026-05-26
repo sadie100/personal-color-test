@@ -1,6 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-export type CameraStatus = "idle" | "requesting" | "granted" | "denied" | "unsupported";
+export type CameraStatus =
+  | "idle"
+  | "requesting"
+  | "granted"
+  | "denied"
+  | "notfound"
+  | "unsupported";
 
 interface UseCameraResult {
   status: CameraStatus;
@@ -13,10 +19,12 @@ const isMediaDevicesSupported = () =>
   typeof navigator.mediaDevices !== "undefined" &&
   typeof navigator.mediaDevices.getUserMedia === "function";
 
+type FailureReason = "denied" | "notfound";
+
 export const useCamera = (enabled: boolean): UseCameraResult => {
   const supported = useMemo(() => isMediaDevicesSupported(), []);
   const [stream, setStream] = useState<MediaStream | null>(null);
-  const [denied, setDenied] = useState(false);
+  const [failure, setFailure] = useState<FailureReason | null>(null);
   const [attempt, setAttempt] = useState(0);
 
   const status: CameraStatus = !supported
@@ -25,12 +33,12 @@ export const useCamera = (enabled: boolean): UseCameraResult => {
       ? "idle"
       : stream
         ? "granted"
-        : denied
-          ? "denied"
+        : failure
+          ? failure
           : "requesting";
 
   const request = useCallback(() => {
-    setDenied(false);
+    setFailure(null);
     setAttempt((n) => n + 1);
   }, []);
 
@@ -52,12 +60,14 @@ export const useCamera = (enabled: boolean): UseCameraResult => {
         acquired = mediaStream;
         setStream(mediaStream);
       })
-      .catch(() => {
+      .catch((error: unknown) => {
         if (cancelled) {
           return;
         }
+        const name = error instanceof Error ? error.name : "";
+        const isNotFound = name === "NotFoundError" || name === "OverconstrainedError";
         setStream(null);
-        setDenied(true);
+        setFailure(isNotFound ? "notfound" : "denied");
       });
 
     return () => {

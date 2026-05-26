@@ -66,6 +66,9 @@ const ko: TranslationSchema = {
       deniedTitle: "카메라 권한이 필요해요",
       deniedMessage:
         "얼굴에 색을 입혀보려면 카메라 접근을 허용해주세요. 브라우저 주소창의 카메라 아이콘에서 권한을 다시 설정할 수 있습니다.",
+      notFoundTitle: "카메라를 찾을 수 없어요",
+      notFoundMessage:
+        "사용할 수 있는 카메라가 감지되지 않았습니다. 카메라가 연결되어 있어야 이 모드를 사용할 수 있어요.",
       unsupportedTitle: "카메라를 사용할 수 없어요",
       unsupportedMessage:
         "이 브라우저나 환경에서는 카메라를 사용할 수 없습니다. 컬러칩 모드로 진행해보세요.",
@@ -442,6 +445,9 @@ const en: TranslationSchema = {
       deniedTitle: "Camera permission required",
       deniedMessage:
         "To try colors on yourself, please allow camera access. You can re-grant permission from the camera icon in your address bar.",
+      notFoundTitle: "No camera detected",
+      notFoundMessage:
+        "We couldn't find a usable camera on this device. A camera needs to be connected to use this mode.",
       unsupportedTitle: "Camera unavailable",
       unsupportedMessage:
         "This browser or environment does not support camera access. Try the color chip mode instead.",
