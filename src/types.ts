@@ -36,6 +36,8 @@ export type ResultTone = PersonalColorType | SimpleResultType;
 
 export type TestMode = "simple" | "detailed";
 
+export type TestDisplayMode = "chip" | "camera";
+
 export type DiagnosticPhase = "base" | "season" | "detail";
 
 export interface Oklch {
@@ -73,6 +75,7 @@ export type TestCompleteResult = TestCompletePayload;
 
 export interface TestConfiguration {
   mode: TestMode;
+  displayMode: TestDisplayMode;
 }
 
 export type AboutSeasonSlug = "spring" | "summer" | "autumn" | "winter";
@@ -138,6 +141,23 @@ export interface TestSetupCopy {
   description: string;
 }
 
+export interface TestDisplayCopy {
+  title: string;
+  chip: { label: string; description: string };
+  camera: { label: string; description: string };
+}
+
+export interface TestCameraCopy {
+  requesting: string;
+  deniedTitle: string;
+  deniedMessage: string;
+  unsupportedTitle: string;
+  unsupportedMessage: string;
+  retry: string;
+  backToSetup: string;
+  faceHint: string;
+}
+
 export interface TestProgressCopy {
   current: (label: string) => string;
   remaining: (count: number) => string;
@@ -152,6 +172,8 @@ export interface TestNamespace {
   home: string;
   setup: TestSetupCopy;
   mode: TestModeCopy;
+  display: TestDisplayCopy;
+  camera: TestCameraCopy;
   progress: TestProgressCopy;
 }
 

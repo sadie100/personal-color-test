@@ -50,6 +50,29 @@ const ko: TranslationSchema = {
       },
       startSelected: "선택한 모드로 테스트 시작",
     },
+    display: {
+      title: "색상 보여주는 방식",
+      chip: {
+        label: "컬러칩",
+        description: "전체 화면을 색상으로 채워서 보여줍니다.",
+      },
+      camera: {
+        label: "카메라",
+        description: "내 얼굴 아래 옷 모양으로 색상을 입혀봅니다.",
+      },
+    },
+    camera: {
+      requesting: "카메라를 시작하는 중...",
+      deniedTitle: "카메라 권한이 필요해요",
+      deniedMessage:
+        "얼굴에 색을 입혀보려면 카메라 접근을 허용해주세요. 브라우저 주소창의 카메라 아이콘에서 권한을 다시 설정할 수 있습니다.",
+      unsupportedTitle: "카메라를 사용할 수 없어요",
+      unsupportedMessage:
+        "이 브라우저나 환경에서는 카메라를 사용할 수 없습니다. 컬러칩 모드로 진행해보세요.",
+      retry: "다시 시도",
+      backToSetup: "← 다른 표시 방식 선택",
+      faceHint: "얼굴을 화면 중앙에 맞춰주세요",
+    },
     progress: {
       current: (label: string) => `현재 테스트 ${label}`,
       remaining: (count: number) => `남은 색상 ${count}개`,
@@ -402,6 +425,29 @@ const en: TranslationSchema = {
         count: (count: number) => `${count} chips · base + season + detail`,
       },
       startSelected: "Start with this mode",
+    },
+    display: {
+      title: "How to display colors",
+      chip: {
+        label: "Color chips",
+        description: "Fill the full screen with each color.",
+      },
+      camera: {
+        label: "Camera",
+        description: "See each color rendered as a shirt below your face.",
+      },
+    },
+    camera: {
+      requesting: "Starting camera...",
+      deniedTitle: "Camera permission required",
+      deniedMessage:
+        "To try colors on yourself, please allow camera access. You can re-grant permission from the camera icon in your address bar.",
+      unsupportedTitle: "Camera unavailable",
+      unsupportedMessage:
+        "This browser or environment does not support camera access. Try the color chip mode instead.",
+      retry: "Try again",
+      backToSetup: "← Pick a different display",
+      faceHint: "Center your face in the frame",
     },
     progress: {
       current: (label: string) => `Current test: ${label}`,

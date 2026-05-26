@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 
 import { translations } from "../i18n/translations";
-import type { Lang, TestConfiguration, TestMode } from "../types";
+import type { Lang, TestConfiguration, TestDisplayMode, TestMode } from "../types";
 import { getSelectedColorCount } from "../utils/testSet";
 import { LangToggle } from "./LangToggle";
 
@@ -15,6 +15,24 @@ interface TestSetupProps {
 export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProps) => {
   const t = translations[lang];
   const [selectedMode, setSelectedMode] = useState<TestMode>("simple");
+  const [selectedDisplay, setSelectedDisplay] = useState<TestDisplayMode>("chip");
+
+  const displayOptions: Array<{
+    value: TestDisplayMode;
+    label: string;
+    description: string;
+  }> = [
+    {
+      value: "chip",
+      label: t.test.display.chip.label,
+      description: t.test.display.chip.description,
+    },
+    {
+      value: "camera",
+      label: t.test.display.camera.label,
+      description: t.test.display.camera.description,
+    },
+  ];
 
   const simpleColorCount = useMemo(() => getSelectedColorCount("simple"), []);
   const detailedColorCount = useMemo(() => getSelectedColorCount("detailed"), []);
@@ -58,6 +76,42 @@ export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProp
             <p className="mt-3 text-sm text-white/90 sm:text-base">{t.test.setup.description}</p>
           </div>
 
+          <div className="mb-6">
+            <h2 className="mb-3 text-base font-semibold text-white/90">{t.test.display.title}</h2>
+            <div
+              role="radiogroup"
+              aria-label={t.test.display.title}
+              className="grid grid-cols-2 gap-2 rounded-2xl border border-white/20 bg-black/15 p-1.5"
+            >
+              {displayOptions.map((option) => {
+                const isSelected = selectedDisplay === option.value;
+                return (
+                  <button
+                    key={option.value}
+                    type="button"
+                    role="radio"
+                    aria-checked={isSelected}
+                    onClick={() => setSelectedDisplay(option.value)}
+                    className={`rounded-xl px-3 py-2.5 text-center transition ${
+                      isSelected
+                        ? "bg-white text-purple-700 shadow"
+                        : "text-white/80 hover:bg-white/10"
+                    }`}
+                  >
+                    <span className="block text-sm font-semibold">{option.label}</span>
+                    <span
+                      className={`mt-1 block text-xs ${
+                        isSelected ? "text-purple-600/80" : "text-white/65"
+                      }`}
+                    >
+                      {option.description}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
           <div>
             <div className="mt-5 grid gap-3 sm:grid-cols-2">
               {modeCards.map((card) => {
@@ -91,6 +145,7 @@ export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProp
             onClick={() =>
               onStart({
                 mode: selectedMode,
+                displayMode: selectedDisplay,
               })
             }
             className="mt-8 w-full rounded-full bg-white px-6 py-4 text-base font-bold text-purple-700 shadow-lg transition hover:scale-[1.01] hover:bg-purple-50 disabled:cursor-not-allowed disabled:bg-white/60 disabled:text-purple-300 disabled:hover:scale-100"

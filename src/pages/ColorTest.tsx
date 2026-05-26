@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
 
+import { CameraStage } from "../components/CameraStage";
 import { ColorCard } from "../components/ColorCard";
 import { LangToggle } from "../components/LangToggle";
 import { ProgressBar } from "../components/ProgressBar";
@@ -23,6 +24,7 @@ interface ColorTestProps {
 
 interface ActiveColorTestProps extends ColorTestProps {
   configuration: TestConfiguration;
+  onBackToSetup: () => void;
 }
 
 const ActiveColorTest = ({
@@ -31,6 +33,7 @@ const ActiveColorTest = ({
   onHome,
   lang,
   onToggleLang,
+  onBackToSetup,
 }: ActiveColorTestProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [likedChips, setLikedChips] = useState<DiagnosticChip[]>([]);
@@ -213,13 +216,24 @@ const ActiveColorTest = ({
         onPointerUp={endDrag}
         onPointerCancel={endDrag}
       >
-        <ColorCard
-          color={currentColor}
-          lang={lang}
-          dragX={dragX}
-          isDragging={isDragging}
-          exitDirection={exitDirection}
-        />
+        {configuration.displayMode === "camera" ? (
+          <CameraStage
+            color={currentColor}
+            lang={lang}
+            dragX={dragX}
+            isDragging={isDragging}
+            exitDirection={exitDirection}
+            onBackToSetup={onBackToSetup}
+          />
+        ) : (
+          <ColorCard
+            color={currentColor}
+            lang={lang}
+            dragX={dragX}
+            isDragging={isDragging}
+            exitDirection={exitDirection}
+          />
+        )}
       </div>
       <SwipeButtons onDislike={() => advance(false)} onLike={() => advance(true)} />
 
@@ -281,6 +295,7 @@ export const ColorTest = ({ onComplete, onHome, lang, onToggleLang }: ColorTestP
       onHome={onHome}
       lang={lang}
       onToggleLang={onToggleLang}
+      onBackToSetup={() => setConfiguration(null)}
     />
   );
 };
