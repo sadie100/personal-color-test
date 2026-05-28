@@ -139,6 +139,11 @@ export interface TestModeCopy {
 export interface TestSetupCopy {
   title: string;
   description: string;
+  howTo: {
+    title: string;
+    swipe: string;
+    judge: string;
+  };
 }
 
 export interface TestDisplayCopy {

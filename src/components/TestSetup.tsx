@@ -140,6 +140,29 @@ export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProp
             </div>
           </div>
 
+          <section
+            aria-label={t.test.setup.howTo.title}
+            className="mt-6 rounded-2xl border border-white/15 bg-white/10 p-4 sm:p-5"
+          >
+            <h3 className="text-sm font-semibold tracking-wide text-white/90 uppercase">
+              {t.test.setup.howTo.title}
+            </h3>
+            <ul className="mt-3 space-y-2.5 text-sm leading-relaxed text-white/85">
+              <li className="flex gap-3">
+                <span aria-hidden className="mt-0.5 text-base">
+                  ↔
+                </span>
+                <span>{t.test.setup.howTo.swipe}</span>
+              </li>
+              <li className="flex gap-3">
+                <span aria-hidden className="mt-0.5 text-base">
+                  ✦
+                </span>
+                <span>{t.test.setup.howTo.judge}</span>
+              </li>
+            </ul>
+          </section>
+
           <button
             type="button"
             onClick={() =>
@@ -148,7 +171,7 @@ export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProp
                 displayMode: selectedDisplay,
               })
             }
-            className="mt-8 w-full rounded-full bg-white px-6 py-4 text-base font-bold text-purple-700 shadow-lg transition hover:scale-[1.01] hover:bg-purple-50 disabled:cursor-not-allowed disabled:bg-white/60 disabled:text-purple-300 disabled:hover:scale-100"
+            className="mt-6 w-full rounded-full bg-white px-6 py-4 text-base font-bold text-purple-700 shadow-lg transition hover:scale-[1.01] hover:bg-purple-50 disabled:cursor-not-allowed disabled:bg-white/60 disabled:text-purple-300 disabled:hover:scale-100"
           >
             {t.test.mode.startSelected}
           </button>

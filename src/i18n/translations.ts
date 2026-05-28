@@ -32,6 +32,12 @@ const ko: TranslationSchema = {
     setup: {
       title: "원하는 테스트 모드를 골라보세요",
       description: "테스트 모드에 따라 보여드리는 컬러칩 구성이 달라집니다.",
+      howTo: {
+        title: "이렇게 진행돼요",
+        swipe: "한 장씩 넘기면서 좋아요 / 싫어요로 평가해요. 좌우 스와이프, ←/→ 키, ✕/♥ 버튼 모두 가능해요.",
+        judge:
+          "단순히 좋아하는 색이 아니라, 색을 얼굴 가까이에 댔을 때 피부에 생기가 돌고 명암이 자연스럽게 살아나는 색을 골라보세요.",
+      },
     },
     mode: {
       title: "테스트 모드",
@@ -53,8 +59,8 @@ const ko: TranslationSchema = {
     display: {
       title: "색상 보여주는 방식",
       chip: {
-        label: "컬러칩",
-        description: "전체 화면을 색상으로 채워서 보여줍니다.",
+        label: "풀 화면 컬러칩",
+        description: "거울 앞에서 화면을 얼굴 아래에 대고 맞는 색상을 찾아봅니다.",
       },
       camera: {
         label: "카메라",
@@ -411,6 +417,13 @@ const en: TranslationSchema = {
     setup: {
       title: "Choose your test mode",
       description: "The set of color chips shown will vary depending on the test mode.",
+      howTo: {
+        title: "How it works",
+        swipe:
+          "Rate each color one at a time as like or dislike. Swipe left/right, use the ←/→ keys, or tap the ✕/♥ buttons.",
+        judge:
+          "Don't just pick colors you like — hold each color near your face and look for the ones that bring life and natural contrast to your skin.",
+      },
     },
     mode: {
       title: "Test mode",
@@ -432,8 +445,8 @@ const en: TranslationSchema = {
     display: {
       title: "How to display colors",
       chip: {
-        label: "Color chips",
-        description: "Fill the full screen with each color.",
+        label: "Full-screen chips",
+        description: "Hold the screen under your face in front of a mirror to find your colors.",
       },
       camera: {
         label: "Camera",
