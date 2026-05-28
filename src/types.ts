@@ -158,6 +158,8 @@ export interface TestCameraCopy {
   deniedMessage: string;
   unsupportedTitle: string;
   unsupportedMessage: string;
+  notFoundTitle: string;
+  notFoundMessage: string;
   retry: string;
   backToSetup: string;
   faceHint: string;
