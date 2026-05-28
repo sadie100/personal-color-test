@@ -27,7 +27,7 @@ export const Header = ({ lang, onToggleLang, screen, onNavigate }: HeaderProps) 
           onClick={() => handleNav("home")}
           className="cursor-pointer bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-lg font-bold text-transparent"
         >
-          Personal Color Test
+          Personal Color Self Test
         </button>
 
         <nav className="hidden items-center gap-6 md:flex">

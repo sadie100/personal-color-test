@@ -14,7 +14,7 @@ const ko: TranslationSchema = {
         "이론 기반 진단 컬러칩으로 나의 퍼스널 컬러 8타입을 찾아보세요. 잘 맞는 색의 방향을 알면 스타일링이 훨씬 선명해집니다.",
     },
     learnMore: "퍼스널 컬러에 대해 알아보기",
-    startButton: "컬러 테스트 시작",
+    startButton: "셀프 테스트 시작",
     features: {
       viewColors: "다양한 색상을 풀스크린으로 감상",
       likeDislike: "좋아요 / 싫어요로 색상 평가",
@@ -399,7 +399,7 @@ const en: TranslationSchema = {
         "Discover your personal color type through theory-based diagnostic chips. Knowing your best direction makes styling and color choices much clearer.",
     },
     learnMore: "Learn about Personal Color",
-    startButton: "Start Color Test",
+    startButton: "Start Self Test",
     features: {
       viewColors: "View full-screen colors",
       likeDislike: "Like or dislike colors with simple buttons",
