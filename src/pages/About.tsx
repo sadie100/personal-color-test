@@ -204,7 +204,7 @@ export const About = ({ lang, onStart }: AboutProps) => {
           </h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {[t.about.howItWorks.step1, t.about.howItWorks.step2, t.about.howItWorks.step3].map((step, index) => (
-              <div key={step} className="flex gap-3">
+              <div key={`step-${index}`} className="flex gap-3">
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent font-display text-lg text-accent-fg">
                   {index + 1}
                 </div>
