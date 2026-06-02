@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 import { colorData } from "../data/colorData";
-import { colorTypeMetas, coolSlugs, warmSlugs } from "../data/colorTypeMeta";
+import { colorTypeMetas, seasonSlugGroups } from "../data/colorTypeMeta";
 import { translations } from "../i18n/translations";
 import type { ColorTypeSlug, Lang } from "../types";
 
@@ -18,6 +18,7 @@ const TypeCard = ({ slug, lang }: TypeCardProps) => {
   const meta = colorTypeMetas[slug];
   const copy = translations[lang].types[slug];
   const palette = colorData[meta.type].slice(0, 6);
+  const signature = colorData[meta.type].slice(0, 4);
   const cta = translations[lang].types.cardViewDetail;
 
   return (
@@ -25,27 +26,30 @@ const TypeCard = ({ slug, lang }: TypeCardProps) => {
       <Link
         to={`/types/${slug}`}
         className={[
-          "group flex h-full flex-col overflow-hidden rounded-3xl border-t-4 bg-surface shadow-sm transition-all",
+          "group flex h-full flex-col overflow-hidden rounded-3xl border border-hairline bg-surface shadow-sm transition-all",
           "hover:-translate-y-0.5 hover:shadow-lg focus-visible:-translate-y-0.5 focus-visible:shadow-lg",
           "focus-visible:ring-2 focus-visible:ring-ink focus-visible:outline-none",
-          meta.borderClass,
         ].join(" ")}
         aria-label={`${copy.title} — ${copy.tagline}`}
       >
-        <div
-          className={[
-            "relative h-28 w-full bg-gradient-to-br px-5 py-4",
-            meta.gradientClass,
-            meta.heroTextClass,
-          ].join(" ")}
-        >
-          <p className="text-xs font-semibold tracking-wide uppercase opacity-80">
-            {meta.season} · {meta.detailTone}
-          </p>
-          <h3 className="mt-1 text-xl font-bold">{copy.title}</h3>
+        <div className="flex h-24 w-full" aria-hidden>
+          {signature.map((color, index) => (
+            <span
+              key={`${color.hex}-${index}`}
+              className="h-full flex-1"
+              style={{ backgroundColor: color.hex }}
+            />
+          ))}
         </div>
 
         <div className="flex flex-1 flex-col gap-4 p-5">
+          <div>
+            <p className="text-xs font-semibold tracking-wide text-ink-3 uppercase">
+              {meta.season} · {meta.detailTone}
+            </p>
+            <h3 className="mt-1 font-display text-xl text-ink">{copy.title}</h3>
+          </div>
+
           <p className="text-sm leading-relaxed break-keep text-ink-2">{copy.tagline}</p>
 
           <div className="flex flex-wrap gap-1.5">
@@ -63,7 +67,7 @@ const TypeCard = ({ slug, lang }: TypeCardProps) => {
             {palette.map((color, index) => (
               <span
                 key={`${color.hex}-${index}`}
-                className="h-6 flex-1 rounded-md border border-white/60 shadow-sm"
+                className="h-6 flex-1 rounded-md border border-hairline shadow-sm"
                 style={{ backgroundColor: color.hex }}
               />
             ))}
@@ -94,33 +98,25 @@ export const ColorTypes = ({ lang }: ColorTypesProps) => {
       </section>
 
       <div className="mx-auto max-w-5xl space-y-14 px-4 py-12">
-        <section aria-labelledby="warm-group">
-          <header className="mb-5">
-            <h2 id="warm-group" className="font-display text-2xl text-ink md:text-3xl">
-              {t.warmGroupTitle}
-            </h2>
-            <p className="mt-1 text-sm text-ink-2 md:text-base">{t.warmGroupDesc}</p>
-          </header>
-          <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {warmSlugs.map((slug) => (
-              <TypeCard key={slug} slug={slug} lang={lang} />
-            ))}
-          </ul>
-        </section>
-
-        <section aria-labelledby="cool-group">
-          <header className="mb-5">
-            <h2 id="cool-group" className="font-display text-2xl text-ink md:text-3xl">
-              {t.coolGroupTitle}
-            </h2>
-            <p className="mt-1 text-sm text-ink-2 md:text-base">{t.coolGroupDesc}</p>
-          </header>
-          <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {coolSlugs.map((slug) => (
-              <TypeCard key={slug} slug={slug} lang={lang} />
-            ))}
-          </ul>
-        </section>
+        {seasonSlugGroups.map((group) => {
+          const groupCopy = t.seasonGroups[group.season.toLowerCase() as keyof typeof t.seasonGroups];
+          const groupId = `group-${group.season.toLowerCase()}`;
+          return (
+            <section key={group.season} aria-labelledby={groupId}>
+              <header className="mb-5">
+                <h2 id={groupId} className="font-display text-2xl text-ink md:text-3xl">
+                  {groupCopy.title}
+                </h2>
+                <p className="mt-1 text-sm text-ink-2 md:text-base">{groupCopy.desc}</p>
+              </header>
+              <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                {group.slugs.map((slug) => (
+                  <TypeCard key={slug} slug={slug} lang={lang} />
+                ))}
+              </ul>
+            </section>
+          );
+        })}
       </div>
     </div>
   );

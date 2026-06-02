@@ -236,10 +236,12 @@ const ko: TranslationSchema = {
     pageSubtitle: "웜/쿨 × 라이트·브라이트·뮤트·다크로 나뉘는 8가지 세부 타입",
     pageIntro:
       "색의 베이스(웜/쿨), 명도, 채도·청탁을 기준으로 분류한 8개 세부 타입입니다. 각 타입을 눌러 이론적 특징과 어울리는 스타일링 가이드를 확인해보세요.",
-    warmGroupTitle: "웜톤 (Warm)",
-    warmGroupDesc: "옐로우 베이스. 따뜻함과 생기가 살아나는 계열 — 봄·가을",
-    coolGroupTitle: "쿨톤 (Cool)",
-    coolGroupDesc: "블루 베이스. 시원함과 투명감이 돋보이는 계열 — 여름·겨울",
+    seasonGroups: {
+      spring: { title: "봄 — 따뜻하고 화사한", desc: "노랑기를 머금어 밝고 생기 있는 두 타입." },
+      summer: { title: "여름 — 시원하고 부드러운", desc: "푸른기가 도는 맑고 차분한 두 타입." },
+      autumn: { title: "가을 — 따뜻하고 깊은", desc: "노랑기에 무게가 더해진 그윽한 두 타입." },
+      winter: { title: "겨울 — 시원하고 또렷한", desc: "푸른기에 선명함이 더해진 강렬한 두 타입." },
+    },
     cardViewDetail: "자세히 보기 →",
     detail: {
       baseLabel: "색상 베이스",
@@ -625,10 +627,12 @@ const en: TranslationSchema = {
     pageSubtitle: "Warm / Cool × Light · Bright · Muted · Dark",
     pageIntro:
       "Eight detailed types classified by undertone (warm / cool), brightness, and chroma. Tap any card to explore its theoretical traits and curated styling guide.",
-    warmGroupTitle: "Warm undertone",
-    warmGroupDesc: "Yellow base — warmth and vitality. Spring · Autumn family.",
-    coolGroupTitle: "Cool undertone",
-    coolGroupDesc: "Blue base — coolness and clarity. Summer · Winter family.",
+    seasonGroups: {
+      spring: { title: "Spring — Warm & Vivid", desc: "Two yellow-based types that read bright and lively." },
+      summer: { title: "Summer — Cool & Soft", desc: "Two blue-based types that read clear and calm." },
+      autumn: { title: "Autumn — Warm & Deep", desc: "Two yellow-based types with added depth and weight." },
+      winter: { title: "Winter — Cool & Crisp", desc: "Two blue-based types with sharp, vivid contrast." },
+    },
     cardViewDetail: "View details →",
     detail: {
       baseLabel: "Undertone",
