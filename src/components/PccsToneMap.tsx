@@ -36,7 +36,7 @@ export const PccsToneMap = ({ lang }: PccsToneMapProps) => {
   const t = translations[lang].about.pccs;
 
   return (
-    <figure className="m-0">
+    <div>
       <div className="flex gap-3">
         <div
           className="flex flex-col items-center justify-between py-1 text-xs text-ink-3"
@@ -72,6 +72,6 @@ export const PccsToneMap = ({ lang }: PccsToneMapProps) => {
           </div>
         </div>
       </div>
-    </figure>
+    </div>
   );
 };
