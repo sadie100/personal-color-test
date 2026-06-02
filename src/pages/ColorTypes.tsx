@@ -69,7 +69,7 @@ const TypeCard = ({ slug, lang }: TypeCardProps) => {
             ))}
           </div>
 
-          <span className="mt-auto text-sm font-semibold text-purple-600 transition-transform group-hover:translate-x-0.5">
+          <span className="mt-auto text-sm font-semibold text-ink transition-transform group-hover:translate-x-0.5">
             {cta}
           </span>
         </div>
@@ -82,13 +82,13 @@ export const ColorTypes = ({ lang }: ColorTypesProps) => {
   const t = translations[lang].types;
 
   return (
-    <div className="min-h-screen w-full bg-gray-50 pt-16 pb-16">
-      <section className="bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 px-4 py-14 text-center text-white">
-        <h1 className="mb-3 text-4xl font-bold drop-shadow-lg md:text-5xl">{t.pageTitle}</h1>
-        <p className="mx-auto max-w-2xl text-base text-balance break-keep opacity-95 md:text-lg">
+    <div className="min-h-screen w-full bg-paper pt-16 pb-16">
+      <section className="mx-auto max-w-5xl px-4 py-14">
+        <h1 className="font-display text-4xl text-ink md:text-5xl">{t.pageTitle}</h1>
+        <p className="mt-3 max-w-2xl text-base leading-relaxed break-keep text-ink-2 md:text-lg">
           {t.pageSubtitle}
         </p>
-        <p className="mx-auto mt-3 max-w-2xl text-sm text-balance break-keep opacity-85 md:text-base">
+        <p className="mt-2 max-w-2xl text-sm leading-relaxed break-keep text-ink-3 md:text-base">
           {t.pageIntro}
         </p>
       </section>
@@ -96,13 +96,10 @@ export const ColorTypes = ({ lang }: ColorTypesProps) => {
       <div className="mx-auto max-w-5xl space-y-14 px-4 py-12">
         <section aria-labelledby="warm-group">
           <header className="mb-5">
-            <h2
-              id="warm-group"
-              className="text-2xl font-bold text-slate-900 md:text-3xl"
-            >
+            <h2 id="warm-group" className="font-display text-2xl text-ink md:text-3xl">
               {t.warmGroupTitle}
             </h2>
-            <p className="mt-1 text-sm text-slate-600 md:text-base">{t.warmGroupDesc}</p>
+            <p className="mt-1 text-sm text-ink-2 md:text-base">{t.warmGroupDesc}</p>
           </header>
           <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {warmSlugs.map((slug) => (
@@ -113,13 +110,10 @@ export const ColorTypes = ({ lang }: ColorTypesProps) => {
 
         <section aria-labelledby="cool-group">
           <header className="mb-5">
-            <h2
-              id="cool-group"
-              className="text-2xl font-bold text-slate-900 md:text-3xl"
-            >
+            <h2 id="cool-group" className="font-display text-2xl text-ink md:text-3xl">
               {t.coolGroupTitle}
             </h2>
-            <p className="mt-1 text-sm text-slate-600 md:text-base">{t.coolGroupDesc}</p>
+            <p className="mt-1 text-sm text-ink-2 md:text-base">{t.coolGroupDesc}</p>
           </header>
           <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {coolSlugs.map((slug) => (

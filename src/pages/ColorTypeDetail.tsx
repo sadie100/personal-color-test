@@ -47,7 +47,7 @@ export const ColorTypeDetail = ({ lang }: ColorTypeDetailProps) => {
   const baseLabel = meta.base === "Warm" ? t.undertone.warm : t.undertone.cool;
 
   return (
-    <div className="min-h-screen w-full bg-gray-50 pt-16 pb-16">
+    <div className="min-h-screen w-full bg-paper pt-16 pb-16">
       <section
         className={["bg-gradient-to-br px-4 py-16", meta.gradientClass, meta.heroTextClass].join(" ")}
       >
@@ -83,7 +83,7 @@ export const ColorTypeDetail = ({ lang }: ColorTypeDetailProps) => {
       </section>
 
       <div className="mx-auto max-w-4xl space-y-10 px-4 py-12">
-        <section className="rounded-3xl bg-white p-6 shadow-sm md:p-8">
+        <section className="rounded-3xl border border-hairline bg-surface p-6 md:p-8">
           <p className="text-base leading-relaxed break-keep text-slate-700 md:text-lg">
             {copy.summary}
           </p>
@@ -168,17 +168,17 @@ export const ColorTypeDetail = ({ lang }: ColorTypeDetailProps) => {
           <Link
             to={`/types/${prev}`}
             className={[
-              "flex items-center justify-between gap-3 rounded-2xl border bg-white p-4 shadow-sm transition-all",
+              "flex items-center justify-between gap-3 rounded-2xl border bg-surface p-4 transition-all",
               "hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-400",
               prevMeta.borderClass,
             ].join(" ")}
             aria-label={`${detailCopy.prev}: ${prevCopy.title}`}
           >
             <div>
-              <p className="text-xs font-semibold tracking-wide uppercase text-slate-500">
+              <p className="text-xs font-semibold tracking-wide uppercase text-ink-3">
                 {detailCopy.prev}
               </p>
-              <p className="mt-1 text-base font-bold text-slate-900">{prevCopy.title}</p>
+              <p className="mt-1 text-base font-bold text-ink">{prevCopy.title}</p>
             </div>
             <span
               aria-hidden
@@ -189,17 +189,17 @@ export const ColorTypeDetail = ({ lang }: ColorTypeDetailProps) => {
           <Link
             to={`/types/${next}`}
             className={[
-              "flex items-center justify-between gap-3 rounded-2xl border bg-white p-4 shadow-sm transition-all",
+              "flex items-center justify-between gap-3 rounded-2xl border bg-surface p-4 transition-all",
               "hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-400",
               nextMeta.borderClass,
             ].join(" ")}
             aria-label={`${detailCopy.next}: ${nextCopy.title}`}
           >
             <div>
-              <p className="text-xs font-semibold tracking-wide uppercase text-slate-500">
+              <p className="text-xs font-semibold tracking-wide uppercase text-ink-3">
                 {detailCopy.next}
               </p>
-              <p className="mt-1 text-base font-bold text-slate-900">{nextCopy.title}</p>
+              <p className="mt-1 text-base font-bold text-ink">{nextCopy.title}</p>
             </div>
             <span
               aria-hidden
@@ -222,7 +222,7 @@ interface AttributeCellProps {
 const AttributeCell = ({ label, value, className }: AttributeCellProps) => (
   <div
     className={[
-      "rounded-2xl border border-slate-100 bg-white p-4 shadow-sm",
+      "rounded-2xl border border-hairline bg-surface p-4",
       className ?? "",
     ].join(" ")}
   >
