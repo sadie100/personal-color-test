@@ -10,6 +10,7 @@
   --color-ink-3: #8a857c; /* 캡션 */
   --color-accent: #1f1b16; /* CTA 배경 — 거의 검정 */
   --color-accent-fg: #fafaf7; /* CTA 텍스트 */
+  --color-fill: #f0eee8; /* 칩/태그/차트 셀 배경 — paper와 hairline 사이 */
 
   /* 세리프 디스플레이 (제목 전용) */
   --font-display: "Instrument Serif", "Noto Serif KR", serif;
