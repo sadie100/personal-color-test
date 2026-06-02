@@ -169,7 +169,7 @@ export const ColorTypeDetail = ({ lang }: ColorTypeDetailProps) => {
             to={`/types/${prev}`}
             className={[
               "flex items-center justify-between gap-3 rounded-2xl border bg-surface p-4 transition-all",
-              "hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-400",
+              "hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink",
               prevMeta.borderClass,
             ].join(" ")}
             aria-label={`${detailCopy.prev}: ${prevCopy.title}`}
@@ -190,7 +190,7 @@ export const ColorTypeDetail = ({ lang }: ColorTypeDetailProps) => {
             to={`/types/${next}`}
             className={[
               "flex items-center justify-between gap-3 rounded-2xl border bg-surface p-4 transition-all",
-              "hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-400",
+              "hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink",
               nextMeta.borderClass,
             ].join(" ")}
             aria-label={`${detailCopy.next}: ${nextCopy.title}`}

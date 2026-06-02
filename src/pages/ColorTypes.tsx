@@ -27,7 +27,7 @@ const TypeCard = ({ slug, lang }: TypeCardProps) => {
         className={[
           "group flex h-full flex-col overflow-hidden rounded-3xl border-t-4 bg-surface shadow-sm transition-all",
           "hover:-translate-y-0.5 hover:shadow-lg focus-visible:-translate-y-0.5 focus-visible:shadow-lg",
-          "focus-visible:ring-2 focus-visible:ring-purple-400 focus-visible:outline-none",
+          "focus-visible:ring-2 focus-visible:ring-ink focus-visible:outline-none",
           meta.borderClass,
         ].join(" ")}
         aria-label={`${copy.title} — ${copy.tagline}`}

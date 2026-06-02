@@ -31,21 +31,20 @@ describe("ColorTest setup flow", () => {
     expect(handleComplete).not.toHaveBeenCalled();
   });
 
-  it("lets the user switch to detailed mode before starting", () => {
+  it("lets the user switch from the default detailed mode to simple", () => {
     render(<ColorTest onComplete={vi.fn()} onHome={vi.fn()} lang="ko" onToggleLang={vi.fn()} />);
 
+    const simpleButton = screen.getByRole("radio", {
+      name: new RegExp(ko.test.mode.simple.label),
+    });
     const detailedButton = screen.getByRole("radio", {
       name: new RegExp(ko.test.mode.detailed.label),
     });
 
-    fireEvent.click(detailedButton);
+    fireEvent.click(simpleButton);
 
-    expect(detailedButton.getAttribute("aria-checked")).toBe("true");
-    expect(
-      screen
-        .getByRole("radio", { name: new RegExp(ko.test.mode.simple.label) })
-        .getAttribute("aria-checked"),
-    ).toBe("false");
+    expect(simpleButton.getAttribute("aria-checked")).toBe("true");
+    expect(detailedButton.getAttribute("aria-checked")).toBe("false");
   });
 
   it("starts detailed mode", () => {
