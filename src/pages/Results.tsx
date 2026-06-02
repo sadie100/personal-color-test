@@ -76,7 +76,6 @@ interface PaletteSectionProps {
   t: TranslationSchema;
   lang: Lang;
   muted?: boolean;
-  insideCard?: boolean;
 }
 
 interface MetaPillProps {
@@ -325,7 +324,6 @@ export const Results = ({
                 badgeMode="liked"
                 t={t}
                 lang={lang}
-                insideCard
               />
             )}
           </div>
@@ -381,7 +379,6 @@ export const Results = ({
                 t={t}
                 lang={lang}
                 muted
-                insideCard
               />
             </div>
           </section>
@@ -439,21 +436,15 @@ const PaletteSection = ({
   t,
   lang,
   muted = false,
-  insideCard = false,
 }: PaletteSectionProps) => {
   const likedCount = paletteColors.filter((color) => likedSelectionSet.has(color.hex)).length;
   const dislikedCount = paletteColors.filter((color) => dislikedSelectionSet.has(color.hex)).length;
 
   return (
-    <div
-      className={[
-        "rounded-3xl border border-hairline bg-surface p-6",
-        insideCard ? "rounded-none border-0 px-0 pb-0 shadow-none" : "mb-6 shadow-md",
-      ].join(" ")}
-    >
+    <div className="bg-surface pt-6">
       <div className="mb-5 flex flex-col gap-3">
         <div className="flex flex-wrap items-center gap-2">
-          <h2 className="text-2xl font-bold text-ink">{title}</h2>
+          <h2 className="font-display text-2xl text-ink">{title}</h2>
           <span className={`rounded-full px-3 py-1 text-xs font-semibold ${badgeClass}`}>
             {badgeText}
           </span>
