@@ -1,119 +1,37 @@
-import pccsImage from "../assets/pccs_tone_map.jpg";
+import { PccsToneMap } from "../components/PccsToneMap";
 import { colorData } from "../data/colorData";
 import { translations } from "../i18n/translations";
-import type {
-  AboutSeasonSlug,
-  AboutToneSlug,
-  Color,
-  Lang,
-  PersonalColorType,
-} from "../types";
+import type { AboutSeasonSlug, AboutToneSlug, Lang, PersonalColorType } from "../types";
 
 interface AboutProps {
   lang: Lang;
   onStart: () => void;
 }
 
-interface SeasonConfigItem {
-  key: "Spring" | "Summer" | "Autumn" | "Winter";
+interface SeasonSectionItem {
   slug: AboutSeasonSlug;
-  gradient: string;
-  borderColor: string;
-  bgColor: string;
-  sampleKey: PersonalColorType;
+  types: [PersonalColorType, PersonalColorType];
 }
 
-interface ToneConfigItem {
+interface ToneItem {
   slug: AboutToneSlug;
   sampleKey: PersonalColorType;
   icon: string;
-  bgColor: string;
-  borderColor: string;
 }
 
-interface ColorSwatchesProps {
-  colors: ReadonlyArray<Color>;
-  count?: number;
-}
-
-const seasonConfig: ReadonlyArray<SeasonConfigItem> = [
-  {
-    key: "Spring",
-    slug: "spring",
-    gradient: "from-amber-400 to-orange-300",
-    borderColor: "border-amber-400",
-    bgColor: "bg-amber-50",
-    sampleKey: "Spring Light",
-  },
-  {
-    key: "Summer",
-    slug: "summer",
-    gradient: "from-sky-400 to-indigo-300",
-    borderColor: "border-sky-400",
-    bgColor: "bg-sky-50",
-    sampleKey: "Summer Light",
-  },
-  {
-    key: "Autumn",
-    slug: "autumn",
-    gradient: "from-orange-600 to-amber-700",
-    borderColor: "border-orange-600",
-    bgColor: "bg-orange-50",
-    sampleKey: "Autumn Muted",
-  },
-  {
-    key: "Winter",
-    slug: "winter",
-    gradient: "from-indigo-600 to-purple-700",
-    borderColor: "border-indigo-600",
-    bgColor: "bg-indigo-50",
-    sampleKey: "Winter Bright",
-  },
+const seasonSections: ReadonlyArray<SeasonSectionItem> = [
+  { slug: "spring", types: ["Spring Light", "Spring Bright"] },
+  { slug: "summer", types: ["Summer Light", "Summer Muted"] },
+  { slug: "autumn", types: ["Autumn Muted", "Autumn Dark"] },
+  { slug: "winter", types: ["Winter Bright", "Winter Dark"] },
 ];
 
-const toneConfig: ReadonlyArray<ToneConfigItem> = [
-  {
-    slug: "light",
-    sampleKey: "Spring Light",
-    icon: "☀",
-    bgColor: "bg-yellow-50",
-    borderColor: "border-yellow-300",
-  },
-  {
-    slug: "bright",
-    sampleKey: "Spring Bright",
-    icon: "✦",
-    bgColor: "bg-rose-50",
-    borderColor: "border-rose-300",
-  },
-  {
-    slug: "muted",
-    sampleKey: "Autumn Muted",
-    icon: "◐",
-    bgColor: "bg-stone-50",
-    borderColor: "border-stone-300",
-  },
-  {
-    slug: "dark",
-    sampleKey: "Winter Dark",
-    icon: "◼",
-    bgColor: "bg-slate-50",
-    borderColor: "border-slate-400",
-  },
+const toneItems: ReadonlyArray<ToneItem> = [
+  { slug: "light", sampleKey: "Spring Light", icon: "☀" },
+  { slug: "bright", sampleKey: "Spring Bright", icon: "✦" },
+  { slug: "muted", sampleKey: "Autumn Muted", icon: "◐" },
+  { slug: "dark", sampleKey: "Winter Dark", icon: "◼" },
 ];
-
-const ColorSwatches = ({ colors, count = 5 }: ColorSwatchesProps) => (
-  <div className="mt-3 flex gap-1.5">
-    {colors.slice(0, count).map((color, index) => (
-      <div
-        key={`${color.hex}-${index}`}
-        className="h-8 w-8 rounded-full border border-white/50 shadow-sm"
-        style={{ backgroundColor: color.hex }}
-        title={color.name}
-      />
-    ))}
-  </div>
-);
 
 export const About = ({ lang, onStart }: AboutProps) => {
   const t = translations[lang];
@@ -141,12 +59,8 @@ export const About = ({ lang, onStart }: AboutProps) => {
           <h2 className="mb-6 font-display text-2xl text-ink md:text-3xl">
             {t.about.pccs.title}
           </h2>
-          <div className="mb-6 flex justify-center">
-            <img
-              src={pccsImage}
-              alt={t.about.pccs.imageAlt}
-              className="max-w-full rounded-xl border border-hairline md:max-w-lg"
-            />
+          <div className="mb-6">
+            <PccsToneMap lang={lang} />
           </div>
           <p className="text-base leading-relaxed break-keep text-ink-2 md:text-lg">
             {t.about.pccs.desc}
@@ -157,21 +71,29 @@ export const About = ({ lang, onStart }: AboutProps) => {
           <h2 className="mb-8 font-display text-2xl text-ink md:text-3xl">
             {t.about.seasons.title}
           </h2>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            {seasonConfig.map((season) => (
-              <div
-                key={season.key}
-                className={`${season.bgColor} rounded-2xl border-t-4 p-6 shadow-md ${season.borderColor}`}
-              >
-                <h3 className="mb-2 text-xl font-bold text-gray-800">
-                  {t.about.seasons[season.slug].title}
-                </h3>
-                <p className="text-sm leading-relaxed break-keep text-gray-600">
-                  {t.about.seasons[season.slug].desc}
-                </p>
-                <ColorSwatches colors={colorData[season.sampleKey]} />
-              </div>
-            ))}
+          <div className="space-y-12">
+            {seasonSections.map((season) => {
+              const chips = season.types.flatMap((type) => colorData[type]);
+              const copy = t.about.seasons[season.slug];
+              return (
+                <article key={season.slug}>
+                  <h3 className="font-display text-3xl text-ink md:text-4xl">{copy.title}</h3>
+                  <p className="mt-2 max-w-2xl text-sm leading-relaxed break-keep text-ink-2 md:text-base">
+                    {copy.desc}
+                  </p>
+                  <div className="mt-4 flex h-16 w-full overflow-hidden rounded-2xl border border-hairline md:h-20">
+                    {chips.map((color, index) => (
+                      <span
+                        key={`${season.slug}-${color.hex}-${index}`}
+                        className="h-full flex-1"
+                        style={{ backgroundColor: color.hex }}
+                        title={color.name}
+                      />
+                    ))}
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </section>
 
@@ -180,21 +102,32 @@ export const About = ({ lang, onStart }: AboutProps) => {
             {t.about.tones.title}
           </h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            {toneConfig.map((tone) => (
-              <div
-                key={tone.slug}
-                className={`${tone.bgColor} rounded-2xl border-t-4 p-6 shadow-md ${tone.borderColor}`}
-              >
-                <div className="mb-2 text-2xl">{tone.icon}</div>
-                <h3 className="mb-2 text-lg font-bold text-gray-800">
-                  {t.about.tones[tone.slug].title}
-                </h3>
-                <p className="text-sm leading-relaxed break-keep text-gray-600">
-                  {t.about.tones[tone.slug].desc}
-                </p>
-                <ColorSwatches colors={colorData[tone.sampleKey]} count={4} />
-              </div>
-            ))}
+            {toneItems.map((tone) => {
+              const copy = t.about.tones[tone.slug];
+              const swatches = colorData[tone.sampleKey].slice(0, 4);
+              return (
+                <div
+                  key={tone.slug}
+                  className="rounded-2xl border border-hairline bg-surface p-6"
+                >
+                  <div className="mb-2 text-2xl text-ink-3" aria-hidden>
+                    {tone.icon}
+                  </div>
+                  <h3 className="mb-2 font-display text-lg text-ink">{copy.title}</h3>
+                  <p className="text-sm leading-relaxed break-keep text-ink-2">{copy.desc}</p>
+                  <div className="mt-3 flex gap-1.5">
+                    {swatches.map((color, index) => (
+                      <span
+                        key={`${tone.slug}-${color.hex}-${index}`}
+                        className="h-8 w-8 rounded-full border border-hairline"
+                        style={{ backgroundColor: color.hex }}
+                        title={color.name}
+                      />
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </section>
 
