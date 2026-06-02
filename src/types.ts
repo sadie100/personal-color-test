@@ -350,14 +350,16 @@ export interface TypeDetailCopy {
   heroMetaTone: (tone: string) => string;
 }
 
+export interface TypeGroupCopy {
+  title: string;
+  desc: string;
+}
+
 export interface TypesNamespace {
   pageTitle: string;
   pageSubtitle: string;
   pageIntro: string;
-  warmGroupTitle: string;
-  warmGroupDesc: string;
-  coolGroupTitle: string;
-  coolGroupDesc: string;
+  seasonGroups: Record<AboutSeasonSlug, TypeGroupCopy>;
   cardViewDetail: string;
   detail: TypeDetailCopy;
   "spring-light": TypeContentCopy;

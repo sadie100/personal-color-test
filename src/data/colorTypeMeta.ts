@@ -132,16 +132,15 @@ export const colorTypeMetas: Record<ColorTypeSlug, ColorTypeMeta> = {
   },
 };
 
-export const warmSlugs: ColorTypeSlug[] = [
-  "spring-light",
-  "spring-bright",
-  "autumn-muted",
-  "autumn-dark",
-];
+export interface SeasonSlugGroup {
+  season: Season;
+  slugs: ColorTypeSlug[];
+}
 
-export const coolSlugs: ColorTypeSlug[] = [
-  "summer-light",
-  "summer-muted",
-  "winter-bright",
-  "winter-dark",
+/** 8타입을 시즌별 2개씩 묶는다 (UI_FEEDBACK §3.4 P2-10). */
+export const seasonSlugGroups: SeasonSlugGroup[] = [
+  { season: "Spring", slugs: ["spring-light", "spring-bright"] },
+  { season: "Summer", slugs: ["summer-light", "summer-muted"] },
+  { season: "Autumn", slugs: ["autumn-muted", "autumn-dark"] },
+  { season: "Winter", slugs: ["winter-bright", "winter-dark"] },
 ];
