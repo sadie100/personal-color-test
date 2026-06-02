@@ -21,11 +21,11 @@ export const Header = ({ lang, onToggleLang, screen, onNavigate }: HeaderProps) 
   };
 
   return (
-    <header className="fixed top-0 z-50 w-full border-b border-gray-200 bg-white/85 backdrop-blur-md">
+    <header className="fixed top-0 z-50 w-full border-b border-hairline bg-paper">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
         <button
           onClick={() => handleNav("home")}
-          className="cursor-pointer bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-lg font-bold text-transparent"
+          className="cursor-pointer font-display text-xl text-ink"
         >
           Personal Color Self Test
         </button>
@@ -35,8 +35,8 @@ export const Header = ({ lang, onToggleLang, screen, onNavigate }: HeaderProps) 
             onClick={() => handleNav("about")}
             className={`cursor-pointer text-sm font-medium transition-colors ${
               screen === "about"
-                ? "border-b-2 border-purple-500 pb-0.5 text-purple-600"
-                : "text-gray-600 hover:text-purple-600"
+                ? "border-b-2 border-ink pb-0.5 text-ink"
+                : "text-ink-2 hover:text-ink"
             }`}
           >
             {t.nav.about}
@@ -45,15 +45,15 @@ export const Header = ({ lang, onToggleLang, screen, onNavigate }: HeaderProps) 
             onClick={() => handleNav("types")}
             className={`cursor-pointer text-sm font-medium transition-colors ${
               screen === "types"
-                ? "border-b-2 border-purple-500 pb-0.5 text-purple-600"
-                : "text-gray-600 hover:text-purple-600"
+                ? "border-b-2 border-ink pb-0.5 text-ink"
+                : "text-ink-2 hover:text-ink"
             }`}
           >
             {t.nav.types}
           </button>
           <button
             onClick={() => handleNav("test")}
-            className="cursor-pointer rounded-full bg-gradient-to-r from-blue-500 to-purple-500 px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90 active:scale-95"
+            className="cursor-pointer rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-accent-fg transition-opacity hover:opacity-90 active:scale-95"
           >
             {t.nav.test}
           </button>
@@ -64,7 +64,7 @@ export const Header = ({ lang, onToggleLang, screen, onNavigate }: HeaderProps) 
           <LangToggle lang={lang} onToggle={onToggleLang} />
           <button
             onClick={() => setMenuOpen((value) => !value)}
-            className="cursor-pointer p-2 text-gray-600 hover:text-gray-900"
+            className="cursor-pointer p-2 text-ink-2 hover:text-ink"
             aria-label="Menu"
           >
             <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -89,11 +89,11 @@ export const Header = ({ lang, onToggleLang, screen, onNavigate }: HeaderProps) 
       </div>
 
       {menuOpen && (
-        <div className="space-y-2 border-t border-gray-100 bg-white/95 px-4 py-3 backdrop-blur-md md:hidden">
+        <div className="space-y-2 border-t border-hairline bg-paper px-4 py-3 md:hidden">
           <button
             onClick={() => handleNav("about")}
             className={`block w-full cursor-pointer rounded-lg px-3 py-2.5 text-left text-sm font-medium transition-colors ${
-              screen === "about" ? "bg-purple-50 text-purple-600" : "text-gray-700 hover:bg-gray-50"
+              screen === "about" ? "bg-hairline/50 text-ink" : "text-ink-2 hover:bg-hairline/40"
             }`}
           >
             {t.nav.about}
@@ -101,14 +101,14 @@ export const Header = ({ lang, onToggleLang, screen, onNavigate }: HeaderProps) 
           <button
             onClick={() => handleNav("types")}
             className={`block w-full cursor-pointer rounded-lg px-3 py-2.5 text-left text-sm font-medium transition-colors ${
-              screen === "types" ? "bg-purple-50 text-purple-600" : "text-gray-700 hover:bg-gray-50"
+              screen === "types" ? "bg-hairline/50 text-ink" : "text-ink-2 hover:bg-hairline/40"
             }`}
           >
             {t.nav.types}
           </button>
           <button
             onClick={() => handleNav("test")}
-            className="block w-full cursor-pointer rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 px-3 py-2.5 text-left text-sm font-semibold text-white"
+            className="block w-full cursor-pointer rounded-lg bg-accent px-3 py-2.5 text-left text-sm font-semibold text-accent-fg"
           >
             {t.nav.test}
           </button>
