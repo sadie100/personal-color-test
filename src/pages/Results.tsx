@@ -447,18 +447,18 @@ const PaletteSection = ({
   return (
     <div
       className={[
-        "rounded-3xl border border-slate-100 bg-white p-6",
+        "rounded-3xl border border-hairline bg-surface p-6",
         insideCard ? "rounded-none border-0 px-0 pb-0 shadow-none" : "mb-6 shadow-md",
       ].join(" ")}
     >
       <div className="mb-5 flex flex-col gap-3">
         <div className="flex flex-wrap items-center gap-2">
-          <h2 className="text-2xl font-bold text-slate-900">{title}</h2>
+          <h2 className="text-2xl font-bold text-ink">{title}</h2>
           <span className={`rounded-full px-3 py-1 text-xs font-semibold ${badgeClass}`}>
             {badgeText}
           </span>
         </div>
-        <p className="text-sm text-slate-600">{description}</p>
+        <p className="text-sm text-ink-2">{description}</p>
         <div className="flex flex-wrap gap-2">
           <MetaPill text={t.results.badges.paletteCount(paletteColors.length)} />
           {badgeMode === "liked" && likedCount > 0 && <MetaPill text={t.results.badges.likedCount(likedCount)} tone="liked" />}
@@ -476,7 +476,7 @@ const PaletteSection = ({
           return (
             <div
               key={`${badgeText}-${color.id}`}
-              className={["rounded-2xl border bg-white p-3 transition-shadow", borderClass, muted ? "opacity-75" : ""]
+              className={["rounded-2xl border bg-surface p-3 transition-shadow", borderClass, muted ? "opacity-75" : ""]
                 .filter(Boolean)
                 .join(" ")}
             >
@@ -490,8 +490,8 @@ const PaletteSection = ({
                 {badgeMode === "disliked" && isDisliked && <StickerBadge label={t.results.badges.disliked} tone="disliked" />}
               </div>
               <div className="pt-3">
-                <p className="truncate text-sm font-semibold text-slate-800">{getChipName(color, lang)}</p>
-                <p className="text-xs text-slate-500">{color.hex}</p>
+                <p className="truncate text-sm font-semibold text-ink-2">{getChipName(color, lang)}</p>
+                <p className="text-xs text-ink-3">{color.hex}</p>
               </div>
             </div>
           );
@@ -507,7 +507,7 @@ const MetaPill = ({ text, tone = "default" }: MetaPillProps) => {
       ? "bg-rose-50 text-rose-600 border-rose-100"
       : tone === "disliked"
         ? "bg-red-50 text-red-600 border-red-100"
-        : "bg-slate-50 text-slate-600 border-slate-200";
+        : "bg-paper text-ink-2 border-hairline";
 
   return (
     <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${toneClass}`}>
