@@ -81,7 +81,10 @@ export const About = ({ lang, onStart }: AboutProps) => {
                   <p className="mt-2 max-w-2xl text-sm leading-relaxed break-keep text-ink-2 md:text-base">
                     {copy.desc}
                   </p>
-                  <div className="mt-4 flex h-16 w-full overflow-hidden rounded-2xl border border-hairline md:h-20">
+                  <div
+                    className="mt-4 flex h-16 w-full overflow-hidden rounded-2xl border border-hairline md:h-20"
+                    aria-hidden
+                  >
                     {chips.map((color, index) => (
                       <span
                         key={`${season.slug}-${color.hex}-${index}`}
@@ -115,7 +118,7 @@ export const About = ({ lang, onStart }: AboutProps) => {
                   </div>
                   <h3 className="mb-2 font-display text-lg text-ink">{copy.title}</h3>
                   <p className="text-sm leading-relaxed break-keep text-ink-2">{copy.desc}</p>
-                  <div className="mt-3 flex gap-1.5">
+                  <div className="mt-3 flex gap-1.5" aria-hidden>
                     {swatches.map((color, index) => (
                       <span
                         key={`${tone.slug}-${color.hex}-${index}`}
