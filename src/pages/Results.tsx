@@ -63,13 +63,6 @@ interface ToneCardData extends ToneCardStyle {
   detailTone?: DetailTone;
 }
 
-interface ResultToneCardProps {
-  card: ToneCardData;
-  lang: Lang;
-  className?: string;
-  toneClassName?: string;
-}
-
 interface PaletteSectionProps {
   title: string;
   description: string;
@@ -103,33 +96,32 @@ const isToneCardData = (card: ToneCardData | null): card is ToneCardData => card
 
 const toneCardStyles: Record<ToneCardVariant, ToneCardStyle> = {
   best: {
-    containerClass:
-      "border-blue-100 bg-gradient-to-br from-white via-blue-50 to-purple-50 shadow-lg shadow-blue-100/60",
-    labelClass: "text-blue-600",
-    valueClass: "text-slate-900",
-    badgeClass: "bg-blue-100 text-blue-700",
-    borderClass: "border-blue-200",
+    containerClass: "border-hairline bg-surface",
+    labelClass: "text-ink-3",
+    valueClass: "text-ink",
+    badgeClass: "bg-accent text-accent-fg",
+    borderClass: "border-hairline",
   },
   second: {
-    containerClass: "border-indigo-100 bg-indigo-50/80 shadow-sm shadow-indigo-100/60",
-    labelClass: "text-indigo-600",
-    valueClass: "text-indigo-950",
-    badgeClass: "bg-indigo-100 text-indigo-700",
-    borderClass: "border-indigo-200",
+    containerClass: "border-hairline bg-surface",
+    labelClass: "text-ink-3",
+    valueClass: "text-ink",
+    badgeClass: "bg-hairline text-ink-2",
+    borderClass: "border-hairline",
   },
   third: {
-    containerClass: "border-sky-100 bg-sky-50/80 shadow-sm shadow-sky-100/60",
-    labelClass: "text-sky-600",
-    valueClass: "text-sky-950",
-    badgeClass: "bg-sky-100 text-sky-700",
-    borderClass: "border-sky-200",
+    containerClass: "border-hairline bg-surface",
+    labelClass: "text-ink-3",
+    valueClass: "text-ink",
+    badgeClass: "bg-hairline text-ink-2",
+    borderClass: "border-hairline",
   },
   worst: {
-    containerClass: "border-red-100 bg-red-50/85 shadow-sm shadow-red-100/60",
-    labelClass: "text-red-600",
-    valueClass: "text-red-950",
-    badgeClass: "bg-red-100 text-red-700",
-    borderClass: "border-red-200",
+    containerClass: "border-hairline bg-surface",
+    labelClass: "text-ink-3",
+    valueClass: "text-ink",
+    badgeClass: "bg-hairline text-ink-2",
+    borderClass: "border-hairline",
   },
 };
 
@@ -143,6 +135,7 @@ export const Results = ({
 }: ResultsProps) => {
   const t = translations[lang];
   const [selectedPaletteToneId, setSelectedPaletteToneId] = useState<string | null>(null);
+  const [worstOpen, setWorstOpen] = useState(false);
 
   const likedSelectionSet = buildSelectionSet(likedChips);
   const dislikedSelectionSet = buildSelectionSet(dislikedChips);
@@ -223,11 +216,11 @@ export const Results = ({
 
   if (!resultState.bestCard) {
     return (
-      <div className="flex h-screen w-full flex-col items-center justify-center gap-4 bg-linear-to-br from-gray-50 to-gray-100">
-        <p className="text-xl font-semibold text-gray-700">{t.results.noLikes}</p>
+      <div className="flex h-screen w-full flex-col items-center justify-center gap-4 bg-paper">
+        <p className="text-xl font-semibold text-ink">{t.results.noLikes}</p>
         <button
           onClick={onRetry}
-          className="rounded-lg bg-blue-500 px-6 py-3 font-bold text-white transition-colors hover:bg-blue-600"
+          className="rounded-lg bg-accent px-6 py-3 font-bold text-accent-fg transition-opacity hover:opacity-90"
         >
           {t.results.tryAgain}
         </button>
@@ -236,44 +229,63 @@ export const Results = ({
   }
 
   return (
-    <div className="min-h-screen w-full overflow-auto bg-linear-to-br from-gray-50 to-gray-100 p-6 pt-20">
-      <div className="mx-auto max-w-5xl">
-        <div className="mb-8 text-center">
-          <h1 className="mb-2 text-4xl font-bold">{t.results.header}</h1>
-          <p className="mx-auto max-w-2xl text-gray-600">
+    <div className="min-h-screen w-full overflow-auto bg-paper p-6 pt-20">
+      <div className="mx-auto max-w-4xl">
+        <div className="mb-10 text-left">
+          <h1 className="font-display text-4xl text-ink md:text-5xl">{t.results.header}</h1>
+          <p className="mt-2 max-w-2xl text-ink-2">
             {mode === "simple" ? t.results.simpleIntro : t.results.paletteIntro}
           </p>
         </div>
 
-        {topCards.length > 0 && (
-          <div className="mb-6">
-            {resultState.bestCard && (
-              <div className="mx-auto mb-4 max-w-lg">
-                <ResultToneCard
-                  card={resultState.bestCard}
-                  lang={lang}
-                  className="min-h-[168px]"
-                  toneClassName="text-3xl sm:text-4xl"
+        {resultState.bestCard && (
+          <section className="mb-8">
+            <p className="text-sm font-semibold tracking-wide text-ink-3 uppercase">
+              {resultState.bestCard.label}
+            </p>
+            <h2 className="mt-1 font-display text-4xl text-ink md:text-6xl">
+              {resultState.bestCard.displayName}
+            </h2>
+            <div className="mt-5 flex h-20 w-full overflow-hidden rounded-2xl border border-hairline md:h-28">
+              {resultState.bestCard.paletteColors.map((color) => (
+                <span
+                  key={`best-strip-${color.id}`}
+                  className="h-full flex-1"
+                  style={{ backgroundColor: color.hex }}
+                  title={getChipName(color, lang)}
                 />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {resultState.comparisonCards.length > 0 && (
+          <div className="mb-10 grid gap-3 sm:grid-cols-2">
+            {resultState.comparisonCards.map((card) => (
+              <div
+                key={card.id}
+                className="flex items-center gap-3 rounded-xl border border-hairline bg-surface p-3"
+              >
+                <div className="flex h-10 flex-1 overflow-hidden rounded-lg">
+                  {card.previewColors.map((color) => (
+                    <span
+                      key={`${card.id}-${color.id}`}
+                      className="h-full flex-1"
+                      style={{ backgroundColor: color.hex }}
+                    />
+                  ))}
+                </div>
+                <div className="shrink-0 text-right">
+                  <p className="text-xs font-semibold text-ink-3">{card.label}</p>
+                  <p className="text-sm font-bold text-ink">{card.displayName}</p>
+                </div>
               </div>
-            )}
-            {resultState.comparisonCards.length > 0 && (
-              <div className="mx-auto grid max-w-3xl gap-4 md:grid-cols-2">
-                {resultState.comparisonCards.map((card) => (
-                  <ResultToneCard
-                    key={card.id}
-                    card={card}
-                    lang={lang}
-                    className="min-h-[144px]"
-                  />
-                ))}
-              </div>
-            )}
+            ))}
           </div>
         )}
 
         {topCards.length > 0 && (
-          <div className="mb-6 rounded-3xl border border-slate-100 bg-white p-6 shadow-md">
+          <div className="mb-10 rounded-3xl border border-hairline bg-surface p-6">
             {topCards.length > 1 && (
               <div className="flex flex-wrap gap-3">
                 {topCards.map((card) => (
@@ -284,8 +296,8 @@ export const Results = ({
                     className={[
                       "rounded-full border px-4 py-2 text-sm font-semibold transition-colors",
                       card.id === activePaletteCard?.id
-                        ? `${card.badgeClass} border-transparent`
-                        : "border-slate-200 bg-white text-slate-600 hover:border-slate-300",
+                        ? "border-transparent bg-accent text-accent-fg"
+                        : "border-hairline bg-surface text-ink-2 hover:border-ink/40",
                     ].join(" ")}
                   >
                     {card.label}
@@ -329,31 +341,56 @@ export const Results = ({
         )}
 
         {resultState.worstCard && (
-          <>
-            <div className="mb-6">
-              <ResultToneCard card={resultState.worstCard} lang={lang} />
+          <section className="mb-10 rounded-3xl border border-hairline bg-surface">
+            <button
+              type="button"
+              aria-expanded={worstOpen}
+              aria-label={resultState.worstCard.label}
+              onClick={() => setWorstOpen((value) => !value)}
+              className="flex w-full items-center justify-between gap-3 px-6 py-5 text-left"
+            >
+              <span>
+                <span className="block text-sm font-semibold tracking-wide text-ink-3 uppercase">
+                  {resultState.worstCard.label}
+                </span>
+                <span className="mt-0.5 block font-display text-2xl text-ink">
+                  {resultState.worstCard.displayName}
+                </span>
+              </span>
+              <svg
+                className={`h-5 w-5 shrink-0 text-ink-3 transition-transform ${worstOpen ? "rotate-180" : ""}`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div className={worstOpen ? "px-6 pb-6" : "hidden"}>
+              <PaletteSection
+                title={mode === "simple" ? t.results.diagnosticChipTitle(t.results.worst) : t.results.paletteTitle(t.results.worst)}
+                description={mode === "simple" ? t.results.simpleDiagnostics.worst : t.results.paletteDescriptions.worst}
+                badgeText={resultState.worstCard.displayName}
+                paletteColors={resultState.worstCard.paletteColors}
+                badgeClass={resultState.worstCard.badgeClass}
+                borderClass={resultState.worstCard.borderClass}
+                likedSelectionSet={likedSelectionSet}
+                dislikedSelectionSet={dislikedSelectionSet}
+                badgeMode="disliked"
+                t={t}
+                lang={lang}
+                muted
+                insideCard
+              />
             </div>
-            <PaletteSection
-              title={mode === "simple" ? t.results.diagnosticChipTitle(t.results.worst) : t.results.paletteTitle(t.results.worst)}
-              description={mode === "simple" ? t.results.simpleDiagnostics.worst : t.results.paletteDescriptions.worst}
-              badgeText={resultState.worstCard.displayName}
-              paletteColors={resultState.worstCard.paletteColors}
-              badgeClass={resultState.worstCard.badgeClass}
-              borderClass={resultState.worstCard.borderClass}
-              likedSelectionSet={likedSelectionSet}
-              dislikedSelectionSet={dislikedSelectionSet}
-              badgeMode="disliked"
-              t={t}
-              lang={lang}
-              muted
-            />
-          </>
+          </section>
         )}
 
-        <div className="mb-6 rounded-lg border-l-4 border-blue-500 bg-blue-50 p-6">
-          <h3 className="mb-2 font-bold">{t.results.analysisTitle}</h3>
-          <p className="mb-3 text-sm text-gray-700">{t.results.analysisIntro}</p>
-          <ul className="space-y-1 text-sm text-gray-700">
+        <div className="mb-6 rounded-2xl border border-hairline bg-surface p-6">
+          <h3 className="mb-2 font-display text-xl text-ink">{t.results.analysisTitle}</h3>
+          <p className="mb-3 text-sm text-ink-2">{t.results.analysisIntro}</p>
+          <ul className="space-y-1 text-sm text-ink-2">
             <li>✓ {resultState.bestCard.baseTone === "Warm" ? t.undertone.warm : t.undertone.cool}</li>
             {resultState.bestCard.season === "Spring" && <li>✓ {t.traits.spring}</li>}
             {resultState.bestCard.season === "Summer" && <li>✓ {t.traits.summer}</li>}
@@ -369,7 +406,7 @@ export const Results = ({
         <div className="mb-8 flex gap-4">
           <button
             onClick={onRetry}
-            className="flex-1 rounded-lg bg-blue-500 py-3 font-bold text-white transition-colors hover:bg-blue-600"
+            className="flex-1 rounded-lg bg-accent py-3 font-bold text-accent-fg transition-opacity hover:opacity-90"
           >
             {t.results.tryAgain}
           </button>
@@ -379,42 +416,12 @@ export const Results = ({
               void navigator.clipboard.writeText(urlToShare);
               window.alert(t.results.copied);
             }}
-            className="flex-1 rounded-lg bg-gray-500 py-3 font-bold text-white transition-colors hover:bg-gray-600"
+            className="flex-1 rounded-lg border border-hairline bg-surface py-3 font-bold text-ink transition-colors hover:bg-hairline/40"
           >
             {t.results.share}
           </button>
         </div>
       </div>
-    </div>
-  );
-};
-
-const ResultToneCard = ({
-  card,
-  lang,
-  className = "",
-  toneClassName = "",
-}: ResultToneCardProps) => {
-  return (
-    <div
-      className={["w-full flex-col items-center rounded-3xl border p-5 text-left", card.containerClass, className]
-        .filter(Boolean)
-        .join(" ")}
-    >
-      <p className={`mb-2 text-center text-sm font-semibold ${card.labelClass}`}>{card.label}</p>
-      <p className={`text-center text-2xl font-bold ${card.valueClass} ${toneClassName}`}>{card.displayName}</p>
-      {card.previewColors.length > 0 && (
-        <div className="mt-5 flex justify-center gap-2">
-          {card.previewColors.map((color) => (
-            <span
-              key={`${card.id}-${color.hex}`}
-              className="h-8 w-8 rounded-full border-2 border-white shadow-sm"
-              style={{ backgroundColor: color.hex }}
-              title={getChipName(color, lang)}
-            />
-          ))}
-        </div>
-      )}
     </div>
   );
 };

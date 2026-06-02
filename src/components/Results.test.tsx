@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { diagnosticChips } from "../data/colorData";
@@ -38,5 +38,22 @@ describe("Results", () => {
     expect(screen.getByText("인디고 다이")).toBeTruthy();
     expect(screen.getAllByText(ko.results.badges.liked).length).toBeGreaterThan(0);
     expect(screen.getAllByText(ko.results.badges.disliked).length).toBeGreaterThan(0);
+  });
+
+  it("collapses the worst section by default and expands on toggle", () => {
+    render(
+      <Results
+        mode="simple"
+        likedChips={[getChip("base-warm-pink"), getChip("season-spring-orange")]}
+        dislikedChips={[getChip("base-cool-blue"), getChip("season-winter-blue")]}
+        onRetry={() => {}}
+        lang="ko"
+      />,
+    );
+
+    const toggle = screen.getByRole("button", { name: ko.results.worst });
+    expect(toggle.getAttribute("aria-expanded")).toBe("false");
+    fireEvent.click(toggle);
+    expect(toggle.getAttribute("aria-expanded")).toBe("true");
   });
 });
