@@ -262,7 +262,10 @@ export interface AboutSectionCopy {
 }
 
 export interface AboutPccsCopy extends AboutSectionCopy {
-  imageAlt: string;
+  axisSaturation: string;
+  axisLightness: string;
+  low: string;
+  high: string;
 }
 
 export interface AboutSeasonsCopy {
