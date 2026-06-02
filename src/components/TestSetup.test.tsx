@@ -17,6 +17,6 @@ describe("TestSetup", () => {
 
   it("renders a recommended badge on the detailed card", () => {
     render(<TestSetup lang="ko" onToggleLang={() => {}} onHome={() => {}} onStart={() => {}} />);
-    expect(screen.getByText(ko.test.mode.detailed.recommended)).toBeTruthy();
+    expect(screen.getByText(ko.test.mode.detailed.recommended!)).toBeTruthy();
   });
 });

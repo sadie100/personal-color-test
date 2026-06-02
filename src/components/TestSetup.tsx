@@ -42,6 +42,7 @@ export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProp
     title: string;
     description: string;
     countLabel: string;
+    recommended?: string;
   }> = [
     {
       mode: "simple",
@@ -54,6 +55,7 @@ export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProp
       title: t.test.mode.detailed.label,
       description: t.test.mode.detailed.description,
       countLabel: t.test.mode.detailed.count(detailedColorCount),
+      recommended: t.test.mode.detailed.recommended,
     },
   ];
 
@@ -115,16 +117,21 @@ export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProp
           </div>
 
           <div>
-            <div className="mt-5 grid gap-3 sm:grid-cols-5">
+            <div
+              role="radiogroup"
+              aria-label={t.test.setup.title}
+              className="mt-5 grid gap-3 sm:grid-cols-5"
+            >
               {modeCards.map((card) => {
                 const isSelected = selectedMode === card.mode;
-                const isRecommended = card.mode === "detailed";
+                const isRecommended = Boolean(card.recommended);
 
                 return (
                   <button
                     key={card.mode}
                     type="button"
-                    aria-pressed={isSelected}
+                    role="radio"
+                    aria-checked={isSelected}
                     onClick={() => setSelectedMode(card.mode)}
                     className={[
                       "rounded-2xl border px-4 py-4 text-left transition",
@@ -138,7 +145,7 @@ export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProp
                       <span className="block text-lg font-semibold text-ink">{card.title}</span>
                       {isRecommended && (
                         <span className="rounded-full bg-accent px-2.5 py-0.5 text-xs font-bold text-accent-fg">
-                          {t.test.mode.detailed.recommended}
+                          {card.recommended}
                         </span>
                       )}
                     </span>

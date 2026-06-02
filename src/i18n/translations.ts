@@ -47,7 +47,6 @@ const ko: TranslationSchema = {
         description:
           "베이스와 계절 단계만 테스트해서 봄 웜 / 여름 쿨 같은 큰 방향을 빠르게 확인합니다.",
         count: (count: number) => `문항 ${count}개 · 베이스 + 계절`,
-        recommended: "",
       },
       detailed: {
         label: "세부 테스트",
@@ -435,7 +434,6 @@ const en: TranslationSchema = {
         description:
           "Tests only the base and season stages for a faster Spring Warm / Winter Cool style result.",
         count: (count: number) => `${count} chips · base + season`,
-        recommended: "",
       },
       detailed: {
         label: "Detailed test",

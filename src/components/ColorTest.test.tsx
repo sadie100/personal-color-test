@@ -18,8 +18,8 @@ describe("ColorTest setup flow", () => {
     expect(screen.getByText(ko.test.setup.title)).toBeTruthy();
     expect(
       screen
-        .getByRole("button", { name: new RegExp(ko.test.mode.detailed.label) })
-        .getAttribute("aria-pressed"),
+        .getByRole("radio", { name: new RegExp(ko.test.mode.detailed.label) })
+        .getAttribute("aria-checked"),
     ).toBe("true");
     expect(screen.getByText(ko.test.mode.detailed.count(39))).toBeTruthy();
 
@@ -34,17 +34,17 @@ describe("ColorTest setup flow", () => {
   it("lets the user switch to detailed mode before starting", () => {
     render(<ColorTest onComplete={vi.fn()} onHome={vi.fn()} lang="ko" onToggleLang={vi.fn()} />);
 
-    const detailedButton = screen.getByRole("button", {
+    const detailedButton = screen.getByRole("radio", {
       name: new RegExp(ko.test.mode.detailed.label),
     });
 
     fireEvent.click(detailedButton);
 
-    expect(detailedButton.getAttribute("aria-pressed")).toBe("true");
+    expect(detailedButton.getAttribute("aria-checked")).toBe("true");
     expect(
       screen
-        .getByRole("button", { name: new RegExp(ko.test.mode.simple.label) })
-        .getAttribute("aria-pressed"),
+        .getByRole("radio", { name: new RegExp(ko.test.mode.simple.label) })
+        .getAttribute("aria-checked"),
     ).toBe("false");
   });
 
@@ -52,7 +52,7 @@ describe("ColorTest setup flow", () => {
     render(<ColorTest onComplete={vi.fn()} onHome={vi.fn()} lang="ko" onToggleLang={vi.fn()} />);
 
     fireEvent.click(
-      screen.getByRole("button", { name: new RegExp(ko.test.mode.detailed.label) }),
+      screen.getByRole("radio", { name: new RegExp(ko.test.mode.detailed.label) }),
     );
     fireEvent.click(screen.getByRole("button", { name: ko.test.mode.startSelected }));
 
