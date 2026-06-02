@@ -25,7 +25,7 @@ const TypeCard = ({ slug, lang }: TypeCardProps) => {
       <Link
         to={`/types/${slug}`}
         className={[
-          "group flex h-full flex-col overflow-hidden rounded-3xl border-t-4 bg-white shadow-sm transition-all",
+          "group flex h-full flex-col overflow-hidden rounded-3xl border-t-4 bg-surface shadow-sm transition-all",
           "hover:-translate-y-0.5 hover:shadow-lg focus-visible:-translate-y-0.5 focus-visible:shadow-lg",
           "focus-visible:ring-2 focus-visible:ring-purple-400 focus-visible:outline-none",
           meta.borderClass,
@@ -46,7 +46,7 @@ const TypeCard = ({ slug, lang }: TypeCardProps) => {
         </div>
 
         <div className="flex flex-1 flex-col gap-4 p-5">
-          <p className="text-sm leading-relaxed break-keep text-slate-600">{copy.tagline}</p>
+          <p className="text-sm leading-relaxed break-keep text-ink-2">{copy.tagline}</p>
 
           <div className="flex flex-wrap gap-1.5">
             {copy.keywords.slice(0, 3).map((keyword) => (

@@ -84,12 +84,12 @@ export const ColorTypeDetail = ({ lang }: ColorTypeDetailProps) => {
 
       <div className="mx-auto max-w-4xl space-y-10 px-4 py-12">
         <section className="rounded-3xl border border-hairline bg-surface p-6 md:p-8">
-          <p className="text-base leading-relaxed break-keep text-slate-700 md:text-lg">
+          <p className="text-base leading-relaxed break-keep text-ink-2 md:text-lg">
             {copy.summary}
           </p>
           <blockquote
             className={[
-              "mt-5 border-l-4 pl-4 text-sm leading-relaxed break-keep text-slate-600 italic md:text-base",
+              "mt-5 border-l-4 pl-4 text-sm leading-relaxed break-keep text-ink-2 italic md:text-base",
               meta.borderClass,
             ].join(" ")}
           >
@@ -98,7 +98,7 @@ export const ColorTypeDetail = ({ lang }: ColorTypeDetailProps) => {
         </section>
 
         <section aria-labelledby="attributes-heading">
-          <h2 id="attributes-heading" className="mb-4 text-xl font-bold text-slate-900 md:text-2xl">
+          <h2 id="attributes-heading" className="mb-4 text-xl font-bold text-ink md:text-2xl">
             {detailCopy.baseLabel} · {detailCopy.brightnessLabel} · {detailCopy.chromaLabel} · {detailCopy.clarityLabel}
           </h2>
           <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -115,7 +115,7 @@ export const ColorTypeDetail = ({ lang }: ColorTypeDetailProps) => {
         </section>
 
         <section aria-labelledby="keywords-heading">
-          <h2 id="keywords-heading" className="mb-3 text-xl font-bold text-slate-900 md:text-2xl">
+          <h2 id="keywords-heading" className="mb-3 text-xl font-bold text-ink md:text-2xl">
             {detailCopy.keywordsLabel}
           </h2>
           <ul className="flex flex-wrap gap-2">
@@ -123,7 +123,7 @@ export const ColorTypeDetail = ({ lang }: ColorTypeDetailProps) => {
               <li
                 key={keyword}
                 className={[
-                  "rounded-full border px-3 py-1 text-sm font-semibold text-slate-700",
+                  "rounded-full border px-3 py-1 text-sm font-semibold text-ink-2",
                   meta.borderClass,
                   meta.bgClass,
                 ].join(" ")}
@@ -135,7 +135,7 @@ export const ColorTypeDetail = ({ lang }: ColorTypeDetailProps) => {
         </section>
 
         <section aria-labelledby="palette-heading">
-          <h2 id="palette-heading" className="mb-3 text-xl font-bold text-slate-900 md:text-2xl">
+          <h2 id="palette-heading" className="mb-3 text-xl font-bold text-ink md:text-2xl">
             {detailCopy.paletteLabel}
           </h2>
           <ul className="grid grid-cols-5 gap-2 sm:grid-cols-8 md:grid-cols-10">
@@ -146,14 +146,14 @@ export const ColorTypeDetail = ({ lang }: ColorTypeDetailProps) => {
                   className="h-12 w-12 rounded-lg border border-white/60 shadow-sm"
                   style={{ backgroundColor: color.hex }}
                 />
-                <span className="text-[10px] text-slate-500">{color.hex}</span>
+                <span className="text-[10px] text-ink-3">{color.hex}</span>
               </li>
             ))}
           </ul>
         </section>
 
         <section aria-labelledby="beauty-heading">
-          <h2 id="beauty-heading" className="mb-4 text-xl font-bold text-slate-900 md:text-2xl">
+          <h2 id="beauty-heading" className="mb-4 text-xl font-bold text-ink md:text-2xl">
             {detailCopy.beautyTitle}
           </h2>
           <StylingRecommendations
@@ -226,7 +226,7 @@ const AttributeCell = ({ label, value, className }: AttributeCellProps) => (
       className ?? "",
     ].join(" ")}
   >
-    <dt className="text-xs font-semibold tracking-wide uppercase text-slate-500">{label}</dt>
-    <dd className="mt-1 text-sm leading-relaxed text-slate-800 md:text-base">{value}</dd>
+    <dt className="text-xs font-semibold tracking-wide uppercase text-ink-3">{label}</dt>
+    <dd className="mt-1 text-sm leading-relaxed text-ink-2 md:text-base">{value}</dd>
   </div>
 );
