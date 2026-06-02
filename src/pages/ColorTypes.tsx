@@ -99,8 +99,8 @@ export const ColorTypes = ({ lang }: ColorTypesProps) => {
 
       <div className="mx-auto max-w-5xl space-y-14 px-4 py-12">
         {seasonSlugGroups.map((group) => {
-          const groupCopy = t.seasonGroups[group.season.toLowerCase() as keyof typeof t.seasonGroups];
-          const groupId = `group-${group.season.toLowerCase()}`;
+          const groupCopy = t.seasonGroups[group.seasonSlug];
+          const groupId = `group-${group.seasonSlug}`;
           return (
             <section key={group.season} aria-labelledby={groupId}>
               <header className="mb-5">
