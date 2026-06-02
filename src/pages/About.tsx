@@ -119,42 +119,42 @@ export const About = ({ lang, onStart }: AboutProps) => {
   const t = translations[lang];
 
   return (
-    <div className="min-h-screen w-full bg-gray-50 pt-16">
-      <section className="bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 px-4 py-16 text-center text-white">
-        <h1 className="mb-4 text-4xl font-bold drop-shadow-lg md:text-5xl">{t.about.title}</h1>
-        <p className="mx-auto max-w-2xl text-lg leading-relaxed break-keep opacity-95 md:text-xl">
+    <div className="min-h-screen w-full bg-paper pt-16">
+      <section className="mx-auto max-w-4xl px-4 py-16">
+        <h1 className="font-display text-4xl text-ink md:text-5xl">{t.about.title}</h1>
+        <p className="mt-4 max-w-2xl text-base leading-relaxed break-keep text-ink-2 md:text-lg">
           {t.about.intro}
         </p>
       </section>
 
       <div className="mx-auto max-w-4xl space-y-16 px-4 py-12">
-        <section className="rounded-2xl bg-white p-6 shadow-lg md:p-10">
-          <h2 className="mb-4 text-2xl font-bold text-gray-800 md:text-3xl">
+        <section className="rounded-2xl border border-hairline bg-surface p-6 md:p-10">
+          <h2 className="mb-4 font-display text-2xl text-ink md:text-3xl">
             {t.about.whatIs.title}
           </h2>
-          <p className="text-base leading-relaxed break-keep text-gray-600 md:text-lg">
+          <p className="text-base leading-relaxed break-keep text-ink-2 md:text-lg">
             {t.about.whatIs.desc}
           </p>
         </section>
 
-        <section className="rounded-2xl bg-white p-6 shadow-lg md:p-10">
-          <h2 className="mb-6 text-2xl font-bold text-gray-800 md:text-3xl">
+        <section className="rounded-2xl border border-hairline bg-surface p-6 md:p-10">
+          <h2 className="mb-6 font-display text-2xl text-ink md:text-3xl">
             {t.about.pccs.title}
           </h2>
           <div className="mb-6 flex justify-center">
             <img
               src={pccsImage}
               alt={t.about.pccs.imageAlt}
-              className="max-w-full rounded-xl shadow-md md:max-w-lg"
+              className="max-w-full rounded-xl border border-hairline md:max-w-lg"
             />
           </div>
-          <p className="text-base leading-relaxed break-keep text-gray-600 md:text-lg">
+          <p className="text-base leading-relaxed break-keep text-ink-2 md:text-lg">
             {t.about.pccs.desc}
           </p>
         </section>
 
         <section>
-          <h2 className="mb-8 text-center text-2xl font-bold text-gray-800 md:text-3xl">
+          <h2 className="mb-8 font-display text-2xl text-ink md:text-3xl">
             {t.about.seasons.title}
           </h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -176,7 +176,7 @@ export const About = ({ lang, onStart }: AboutProps) => {
         </section>
 
         <section>
-          <h2 className="mb-8 text-center text-2xl font-bold text-gray-800 md:text-3xl">
+          <h2 className="mb-8 font-display text-2xl text-ink md:text-3xl">
             {t.about.tones.title}
           </h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -198,29 +198,27 @@ export const About = ({ lang, onStart }: AboutProps) => {
           </div>
         </section>
 
-        <section className="rounded-2xl bg-white p-6 shadow-lg md:p-10">
-          <h2 className="mb-6 text-center text-2xl font-bold text-gray-800 md:text-3xl">
+        <section className="rounded-2xl border border-hairline bg-surface p-6 md:p-10">
+          <h2 className="mb-6 font-display text-2xl text-ink md:text-3xl">
             {t.about.howItWorks.title}
           </h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {[t.about.howItWorks.step1, t.about.howItWorks.step2, t.about.howItWorks.step3].map((step, index) => (
-              <div key={step} className="text-center">
-                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-purple-500 text-xl font-bold text-white">
+              <div key={step} className="flex gap-3">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent font-display text-lg text-accent-fg">
                   {index + 1}
                 </div>
-                <p className="text-sm leading-relaxed text-balance break-keep text-gray-600">
-                  {step}
-                </p>
+                <p className="pt-1 text-sm leading-relaxed break-keep text-ink-2">{step}</p>
               </div>
             ))}
           </div>
         </section>
 
-        <section className="rounded-2xl bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 p-8 text-center text-white shadow-lg md:p-12">
-          <h2 className="mb-4 text-2xl font-bold md:text-3xl">{t.about.cta}</h2>
+        <section className="rounded-2xl border border-hairline bg-surface p-8 text-left md:p-12">
+          <h2 className="mb-4 font-display text-2xl text-ink md:text-3xl">{t.about.cta}</h2>
           <button
             onClick={onStart}
-            className="cursor-pointer rounded-full bg-white px-8 py-4 text-lg font-bold text-purple-600 shadow-lg transition-all hover:scale-105 hover:bg-gray-100 active:scale-95"
+            className="cursor-pointer rounded-lg bg-accent px-8 py-4 text-base font-bold text-accent-fg transition-opacity hover:opacity-90 active:scale-95"
           >
             {t.home.startButton}
           </button>
