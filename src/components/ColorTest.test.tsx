@@ -8,7 +8,7 @@ import { ColorTest } from "../pages/ColorTest";
 const ko = translations.ko;
 
 describe("ColorTest setup flow", () => {
-  it("shows mode selection first and starts the simple test by default", () => {
+  it("shows mode selection first and starts the detailed test by default", () => {
     const handleComplete = vi.fn();
 
     render(
@@ -18,16 +18,16 @@ describe("ColorTest setup flow", () => {
     expect(screen.getByText(ko.test.setup.title)).toBeTruthy();
     expect(
       screen
-        .getByRole("button", { name: new RegExp(ko.test.mode.simple.label) })
+        .getByRole("button", { name: new RegExp(ko.test.mode.detailed.label) })
         .getAttribute("aria-pressed"),
     ).toBe("true");
-    expect(screen.getByText(ko.test.mode.simple.count(22))).toBeTruthy();
+    expect(screen.getByText(ko.test.mode.detailed.count(39))).toBeTruthy();
 
     fireEvent.click(screen.getByRole("button", { name: ko.test.mode.startSelected }));
 
     expect(screen.queryByText(ko.test.setup.title)).toBeNull();
     expect(screen.getByText(new RegExp(`${ko.test.liked}:`))).toBeTruthy();
-    expect(screen.getByText("1 / 22")).toBeTruthy();
+    expect(screen.getByText("1 / 39")).toBeTruthy();
     expect(handleComplete).not.toHaveBeenCalled();
   });
 

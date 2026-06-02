@@ -14,7 +14,7 @@ interface TestSetupProps {
 
 export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProps) => {
   const t = translations[lang];
-  const [selectedMode, setSelectedMode] = useState<TestMode>("simple");
+  const [selectedMode, setSelectedMode] = useState<TestMode>("detailed");
   const [selectedDisplay, setSelectedDisplay] = useState<TestDisplayMode>("chip");
 
   const displayOptions: Array<{
@@ -58,30 +58,32 @@ export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProp
   ];
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-linear-to-br from-indigo-500 via-purple-500 to-pink-500 px-4 py-6 text-white sm:px-6">
+    <div className="relative min-h-screen w-full bg-paper px-4 py-6 text-ink sm:px-6">
       <div className="absolute top-4 right-4 left-4 flex items-center justify-between gap-2">
         <button
           onClick={onHome}
-          className="rounded-full border border-white/40 bg-white/15 px-4 py-2 text-sm font-semibold backdrop-blur-sm transition hover:bg-white/25 active:scale-95"
+          className="rounded-lg border border-hairline bg-surface px-4 py-2 text-sm font-semibold text-ink transition hover:bg-hairline/40 active:scale-95"
         >
           {t.test.home}
         </button>
         <LangToggle lang={lang} onToggle={onToggleLang} />
       </div>
 
-      <div className="mx-auto flex min-h-[calc(100vh-3rem)] w-full max-w-4xl items-center justify-center pt-16">
-        <div className="w-full rounded-3xl bg-white/15 p-6 shadow-2xl backdrop-blur-md sm:p-8">
-          <div className="mb-8 text-center">
-            <h1 className="text-3xl font-bold sm:text-4xl">{t.test.setup.title}</h1>
-            <p className="mt-3 text-sm text-white/90 sm:text-base">{t.test.setup.description}</p>
+      <div className="mx-auto flex min-h-[calc(100vh-3rem)] w-full max-w-3xl items-center justify-center pt-16">
+        <div className="w-full rounded-3xl border border-hairline bg-surface p-6 sm:p-8">
+          <div className="mb-8">
+            <h1 className="font-display text-3xl text-ink sm:text-4xl">{t.test.setup.title}</h1>
+            <p className="mt-3 text-sm text-ink-2 sm:text-base">{t.test.setup.description}</p>
           </div>
 
           <div className="mb-6">
-            <h2 className="mb-3 text-base font-semibold text-white/90">{t.test.display.title}</h2>
+            <h2 className="mb-3 text-sm font-semibold tracking-wide text-ink-3 uppercase">
+              {t.test.display.title}
+            </h2>
             <div
               role="radiogroup"
               aria-label={t.test.display.title}
-              className="grid grid-cols-2 gap-2 rounded-2xl border border-white/20 bg-black/15 p-1.5"
+              className="grid grid-cols-2 gap-2 rounded-2xl border border-hairline bg-paper p-1.5"
             >
               {displayOptions.map((option) => {
                 const isSelected = selectedDisplay === option.value;
@@ -94,14 +96,14 @@ export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProp
                     onClick={() => setSelectedDisplay(option.value)}
                     className={`rounded-xl px-3 py-2.5 text-center transition ${
                       isSelected
-                        ? "bg-white text-purple-700 shadow"
-                        : "text-white/80 hover:bg-white/10"
+                        ? "bg-accent text-accent-fg"
+                        : "text-ink-2 hover:bg-hairline/40"
                     }`}
                   >
                     <span className="block text-sm font-semibold">{option.label}</span>
                     <span
                       className={`mt-1 block text-xs ${
-                        isSelected ? "text-purple-600/80" : "text-white/65"
+                        isSelected ? "text-accent-fg/80" : "text-ink-3"
                       }`}
                     >
                       {option.description}
@@ -113,9 +115,10 @@ export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProp
           </div>
 
           <div>
-            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+            <div className="mt-5 grid gap-3 sm:grid-cols-5">
               {modeCards.map((card) => {
                 const isSelected = selectedMode === card.mode;
+                const isRecommended = card.mode === "detailed";
 
                 return (
                   <button
@@ -123,15 +126,24 @@ export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProp
                     type="button"
                     aria-pressed={isSelected}
                     onClick={() => setSelectedMode(card.mode)}
-                    className={`rounded-2xl border px-4 py-4 text-left transition ${
+                    className={[
+                      "rounded-2xl border px-4 py-4 text-left transition",
+                      isRecommended ? "sm:col-span-3" : "sm:col-span-2",
                       isSelected
-                        ? "border-white bg-white/20 shadow-md"
-                        : "border-white/20 bg-black/10 text-white/75 hover:bg-white/10"
-                    }`}
+                        ? "border-ink bg-paper shadow-sm"
+                        : "border-hairline bg-surface text-ink-2 hover:border-ink/40",
+                    ].join(" ")}
                   >
-                    <span className="block text-lg font-semibold">{card.title}</span>
-                    <span className="mt-2 block text-sm text-white/85">{card.description}</span>
-                    <span className="mt-4 inline-flex rounded-full bg-white/15 px-3 py-1 text-xs font-semibold text-white/95">
+                    <span className="flex items-center gap-2">
+                      <span className="block text-lg font-semibold text-ink">{card.title}</span>
+                      {isRecommended && (
+                        <span className="rounded-full bg-accent px-2.5 py-0.5 text-xs font-bold text-accent-fg">
+                          {t.test.mode.detailed.recommended}
+                        </span>
+                      )}
+                    </span>
+                    <span className="mt-2 block text-sm text-ink-2">{card.description}</span>
+                    <span className="mt-4 inline-flex rounded-full border border-hairline px-3 py-1 text-xs font-semibold text-ink-3">
                       {card.countLabel}
                     </span>
                   </button>
@@ -142,12 +154,12 @@ export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProp
 
           <section
             aria-label={t.test.setup.howTo.title}
-            className="mt-6 rounded-2xl border border-white/15 bg-white/10 p-4 sm:p-5"
+            className="mt-6 rounded-2xl border border-hairline bg-paper p-4 sm:p-5"
           >
-            <h3 className="text-sm font-semibold tracking-wide text-white/90 uppercase">
+            <h3 className="text-sm font-semibold tracking-wide text-ink-3 uppercase">
               {t.test.setup.howTo.title}
             </h3>
-            <ul className="mt-3 space-y-2.5 text-sm leading-relaxed text-white/85">
+            <ul className="mt-3 space-y-2.5 text-sm leading-relaxed text-ink-2">
               <li className="flex gap-3">
                 <span aria-hidden className="mt-0.5 text-base">
                   ↔
@@ -171,7 +183,7 @@ export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProp
                 displayMode: selectedDisplay,
               })
             }
-            className="mt-6 w-full rounded-full bg-white px-6 py-4 text-base font-bold text-purple-700 shadow-lg transition hover:scale-[1.01] hover:bg-purple-50 disabled:cursor-not-allowed disabled:bg-white/60 disabled:text-purple-300 disabled:hover:scale-100"
+            className="mt-6 w-full rounded-lg bg-accent px-6 py-4 text-base font-bold text-accent-fg transition hover:opacity-90 active:scale-95"
           >
             {t.test.mode.startSelected}
           </button>

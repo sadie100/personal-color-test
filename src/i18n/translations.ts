@@ -47,12 +47,14 @@ const ko: TranslationSchema = {
         description:
           "베이스와 계절 단계만 테스트해서 봄 웜 / 여름 쿨 같은 큰 방향을 빠르게 확인합니다.",
         count: (count: number) => `문항 ${count}개 · 베이스 + 계절`,
+        recommended: "",
       },
       detailed: {
         label: "세부 테스트",
         description:
           "베이스와 계절에 더해, 브라이트·뮤트·다크 같은 세부톤까지 자세히 확인하고 결과에서 톤별 스타일링 가이드도 함께 제공합니다.",
         count: (count: number) => `문항 ${count}개 · 베이스 + 계절 + 세부톤`,
+        recommended: "권장",
       },
       startSelected: "선택한 모드로 테스트 시작",
     },
@@ -433,12 +435,14 @@ const en: TranslationSchema = {
         description:
           "Tests only the base and season stages for a faster Spring Warm / Winter Cool style result.",
         count: (count: number) => `${count} chips · base + season`,
+        recommended: "",
       },
       detailed: {
         label: "Detailed test",
         description:
           "In addition to base and season, this mode digs into detail tones like bright, muted, and dark, and also provides tone-specific styling guidance in the results.",
         count: (count: number) => `${count} chips · base + season + detail`,
+        recommended: "Recommended",
       },
       startSelected: "Start with this mode",
     },

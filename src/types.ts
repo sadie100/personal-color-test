@@ -126,6 +126,7 @@ export interface TestModeVariantCopy {
   label: string;
   description: string;
   count: (count: number) => string;
+  recommended: string;
 }
 
 export interface TestModeCopy {
