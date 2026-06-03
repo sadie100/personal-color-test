@@ -34,7 +34,7 @@ git push -u origin main
 5. GitHub 저장소 선택: `personal-color-test`
 6. 설정 확인:
    - Framework: Vite
-   - Build Command: `npm run build`
+   - Build Command: `pnpm build`
    - Output Directory: `dist`
 7. "Deploy" 클릭
 
@@ -87,8 +87,8 @@ jobs:
         with:
           node-version: "18"
 
-      - run: npm install
-      - run: npm run build
+      - run: pnpm install
+      - run: pnpm build
 
       - uses: amondnet/vercel-action@v25
         with:
@@ -154,15 +154,15 @@ Vercel 대시보드에서:
 프로덕션 빌드 확인:
 
 ```bash
-npm run build
-npm run preview
+pnpm build
+pnpm preview
 ```
 
 ## 🆘 문제 해결
 
 ### 빌드 실패
 
-- `npm run build` 로컬에서 실행해보기
+- `pnpm build` 로컬에서 실행해보기
 - node_modules 삭제 후 재설치
 - Node.js 버전 확인 (16+ 필요)
 

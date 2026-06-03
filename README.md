@@ -28,18 +28,18 @@
 ### Requirements
 
 - Node.js 18+
-- npm
+- pnpm
 
 ### Install
 
 ```bash
-npm install
+pnpm install
 ```
 
 ### Run Dev Server
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 기본 개발 서버 주소는 `http://localhost:5173`입니다.
@@ -58,15 +58,15 @@ npm run dev
 
 ## Scripts
 
-- `npm run dev`: 개발 서버 실행
-- `npm run build`: 프로덕션 빌드
-- `npm run preview`: 빌드 결과 미리보기
-- `npm run lint`: ESLint 실행
-- `npm run typecheck`: TypeScript 타입 검사
-- `npm run test`: Vitest watch 모드 실행
-- `npm run test:run`: 테스트 1회 실행
-- `npm run format`: Prettier 포맷 적용
-- `npm run format:check`: 포맷 검사
+- `pnpm dev`: 개발 서버 실행
+- `pnpm build`: 프로덕션 빌드
+- `pnpm preview`: 빌드 결과 미리보기
+- `pnpm lint`: ESLint 실행
+- `pnpm typecheck`: TypeScript 타입 검사
+- `pnpm test`: Vitest watch 모드 실행
+- `pnpm test:run`: 테스트 1회 실행
+- `pnpm format`: Prettier 포맷 적용
+- `pnpm format:check`: 포맷 검사
 
 ## 프로젝트 구조
 

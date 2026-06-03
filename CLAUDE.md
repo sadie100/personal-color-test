@@ -5,14 +5,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm run dev         # Start dev server (http://localhost:5173)
-npm run build       # Production build to dist/
-npm run preview     # Preview production build
-npm run lint        # Run ESLint
-npm run typecheck   # Run TypeScript type checking
-npm run test        # Run Vitest in watch mode
-npm run test:run    # Run Vitest once
-npm run format      # Format files with Prettier
+pnpm dev            # Start dev server (http://localhost:5173)
+pnpm build          # Production build to dist/
+pnpm preview        # Preview production build
+pnpm lint           # Run ESLint
+pnpm typecheck      # Run TypeScript type checking
+pnpm test           # Run Vitest in watch mode
+pnpm test:run       # Run Vitest once
+pnpm format         # Format files with Prettier
 ```
 
 ## Architecture
