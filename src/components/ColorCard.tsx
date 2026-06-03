@@ -1,5 +1,6 @@
 import { getChipName } from "../data/colorData";
 import type { DiagnosticChip, Lang } from "../types";
+import { getReadableInkColor } from "../utils/contrast";
 
 interface ColorCardProps {
   color: DiagnosticChip | null;
@@ -36,9 +37,9 @@ export const ColorCard = ({ color, lang, dragX, isDragging, exitDirection }: Col
         willChange: "transform",
       }}
     >
-      <div className="absolute bottom-8 left-8 text-white drop-shadow-lg">
-        <p className="text-2xl font-bold">{getChipName(color, lang)}</p>
-        <p className="text-lg">{color.hex}</p>
+      <div className="absolute bottom-8 left-8" style={{ color: getReadableInkColor(color.hex) }}>
+        <p className="font-display text-3xl leading-tight">{getChipName(color, lang)}</p>
+        <p className="mt-1 font-mono text-sm tracking-wide opacity-80">{color.hex}</p>
       </div>
     </div>
   );
