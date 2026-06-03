@@ -1,11 +1,11 @@
-import { useMemo } from "react";
+import { useMemo, type CSSProperties } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 
 import { StylingRecommendations } from "../components/StylingRecommendations";
 import { colorData } from "../data/colorData";
 import { colorTypeMetas } from "../data/colorTypeMeta";
 import { translations } from "../i18n/translations";
-import type { ColorTypeSlug, Lang } from "../types";
+import type { Color, ColorTypeSlug, Lang } from "../types";
 import { colorTypeSlugs, fromSlug } from "../utils/colorTypeSlug";
 
 interface ColorTypeDetailProps {
@@ -22,6 +22,18 @@ const getAdjacent = (slug: ColorTypeSlug): AdjacentSlugs => {
   const prev = colorTypeSlugs[(index - 1 + colorTypeSlugs.length) % colorTypeSlugs.length]!;
   const next = colorTypeSlugs[(index + 1) % colorTypeSlugs.length]!;
   return { prev, next };
+};
+
+/** Blend 5 evenly-sampled palette colors into a soft gradient (falls back to a solid hex). */
+const paletteCircleStyle = (palette: Color[], fallbackHex: string): CSSProperties => {
+  if (palette.length <= 1) {
+    return { backgroundColor: fallbackHex };
+  }
+  const swatches = Array.from(
+    { length: 5 },
+    (_, i) => palette[Math.round((i * (palette.length - 1)) / 4)]!.hex,
+  );
+  return { backgroundImage: `linear-gradient(135deg, ${swatches.join(", ")})` };
 };
 
 export const ColorTypeDetail = ({ lang }: ColorTypeDetailProps) => {
@@ -48,27 +60,30 @@ export const ColorTypeDetail = ({ lang }: ColorTypeDetailProps) => {
 
   return (
     <div className="min-h-screen w-full bg-paper pt-16 pb-16">
-      <section
-        className={["bg-gradient-to-br px-4 py-16", meta.gradientClass, meta.heroTextClass].join(" ")}
-      >
+      <section className="bg-paper px-4 pt-10 pb-8">
         <div className="mx-auto flex max-w-4xl flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div>
             <Link
               to="/types"
-              className="inline-flex text-xs font-semibold tracking-wide uppercase opacity-80 transition-opacity hover:opacity-100"
+              className="inline-flex text-xs font-semibold tracking-wide uppercase text-ink-3 transition-colors hover:text-ink"
             >
               {detailCopy.backToList}
             </Link>
-            <h1 className="mt-3 text-4xl font-bold drop-shadow-sm md:text-5xl">{copy.title}</h1>
-            <p className="mt-2 text-base opacity-90 md:text-lg">{copy.tagline}</p>
+            <span
+              aria-hidden
+              className="mt-4 block h-1 w-12 rounded-full"
+              style={{ backgroundColor: meta.signatureHex }}
+            />
+            <h1 className="mt-3 font-display text-4xl text-ink md:text-5xl">{copy.title}</h1>
+            <p className="mt-2 text-base text-ink-2 md:text-lg">{copy.tagline}</p>
             <div className="mt-5 flex flex-wrap gap-2 text-xs font-semibold md:text-sm">
-              <span className="rounded-full bg-white/20 px-3 py-1 backdrop-blur">
+              <span className="rounded-full border border-hairline bg-surface px-3 py-1 text-ink-2">
                 {detailCopy.heroMetaSeason(meta.season)}
               </span>
-              <span className="rounded-full bg-white/20 px-3 py-1 backdrop-blur">
+              <span className="rounded-full border border-hairline bg-surface px-3 py-1 text-ink-2">
                 {detailCopy.heroMetaBase(baseLabel)}
               </span>
-              <span className="rounded-full bg-white/20 px-3 py-1 backdrop-blur">
+              <span className="rounded-full border border-hairline bg-surface px-3 py-1 text-ink-2">
                 {detailCopy.heroMetaTone(meta.detailTone)}
               </span>
             </div>
@@ -76,8 +91,8 @@ export const ColorTypeDetail = ({ lang }: ColorTypeDetailProps) => {
 
           <div
             aria-hidden
-            className="relative h-28 w-28 shrink-0 rounded-full border-4 border-white/70 shadow-xl md:h-36 md:w-36"
-            style={{ backgroundColor: meta.signatureHex }}
+            className="relative h-28 w-28 shrink-0 rounded-full border-4 border-surface shadow-md ring-1 ring-hairline md:h-36 md:w-36"
+            style={paletteCircleStyle(palette, meta.signatureHex)}
           />
         </div>
       </section>
@@ -98,7 +113,7 @@ export const ColorTypeDetail = ({ lang }: ColorTypeDetailProps) => {
         </section>
 
         <section aria-labelledby="attributes-heading">
-          <h2 id="attributes-heading" className="mb-4 text-xl font-bold text-ink md:text-2xl">
+          <h2 id="attributes-heading" className="mb-4 font-display text-xl text-ink md:text-2xl">
             {detailCopy.baseLabel} · {detailCopy.brightnessLabel} · {detailCopy.chromaLabel} · {detailCopy.clarityLabel}
           </h2>
           <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -115,7 +130,7 @@ export const ColorTypeDetail = ({ lang }: ColorTypeDetailProps) => {
         </section>
 
         <section aria-labelledby="keywords-heading">
-          <h2 id="keywords-heading" className="mb-3 text-xl font-bold text-ink md:text-2xl">
+          <h2 id="keywords-heading" className="mb-3 font-display text-xl text-ink md:text-2xl">
             {detailCopy.keywordsLabel}
           </h2>
           <ul className="flex flex-wrap gap-2">
@@ -135,7 +150,7 @@ export const ColorTypeDetail = ({ lang }: ColorTypeDetailProps) => {
         </section>
 
         <section aria-labelledby="palette-heading">
-          <h2 id="palette-heading" className="mb-3 text-xl font-bold text-ink md:text-2xl">
+          <h2 id="palette-heading" className="mb-3 font-display text-xl text-ink md:text-2xl">
             {detailCopy.paletteLabel}
           </h2>
           <ul className="grid grid-cols-5 gap-2 sm:grid-cols-8 md:grid-cols-10">
@@ -153,7 +168,7 @@ export const ColorTypeDetail = ({ lang }: ColorTypeDetailProps) => {
         </section>
 
         <section aria-labelledby="beauty-heading">
-          <h2 id="beauty-heading" className="mb-4 text-xl font-bold text-ink md:text-2xl">
+          <h2 id="beauty-heading" className="mb-4 font-display text-xl text-ink md:text-2xl">
             {detailCopy.beautyTitle}
           </h2>
           <StylingRecommendations
@@ -183,7 +198,7 @@ export const ColorTypeDetail = ({ lang }: ColorTypeDetailProps) => {
             <span
               aria-hidden
               className="h-8 w-8 shrink-0 rounded-full border border-white/70 shadow-sm"
-              style={{ backgroundColor: prevMeta.signatureHex }}
+              style={paletteCircleStyle(colorData[prevMeta.type], prevMeta.signatureHex)}
             />
           </Link>
           <Link
@@ -204,7 +219,7 @@ export const ColorTypeDetail = ({ lang }: ColorTypeDetailProps) => {
             <span
               aria-hidden
               className="h-8 w-8 shrink-0 rounded-full border border-white/70 shadow-sm"
-              style={{ backgroundColor: nextMeta.signatureHex }}
+              style={paletteCircleStyle(colorData[nextMeta.type], nextMeta.signatureHex)}
             />
           </Link>
         </nav>
