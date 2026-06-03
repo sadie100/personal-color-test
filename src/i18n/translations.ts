@@ -167,10 +167,7 @@ const ko: TranslationSchema = {
     pccs: {
       title: "PCCS 톤 시스템",
       desc: "PCCS(Practical Color Co-ordinate System)는 색상을 명도(Lightness)와 채도(Saturation) 두 축으로 분류하는 시스템입니다. 위 도표에서 세로축은 명도를, 가로축은 채도를 나타냅니다. 같은 색상이라도 명도와 채도에 따라 전혀 다른 느낌을 주며, 이것이 퍼스널 컬러 진단의 핵심 원리입니다.",
-      axisSaturation: "채도",
-      axisLightness: "명도",
-      low: "낮음",
-      high: "높음",
+      imageAlt: "PCCS 톤 분류 도표 - 명도와 채도에 따른 색상 분류",
     },
     seasons: {
       title: "4계절 컬러 시스템",
@@ -561,10 +558,7 @@ const en: TranslationSchema = {
     pccs: {
       title: "PCCS Tone System",
       desc: "PCCS (Practical Color Co-ordinate System) classifies colors along two axes: Lightness and Saturation. In the chart above, the vertical axis represents lightness and the horizontal axis represents saturation. The same hue can feel completely different depending on its lightness and saturation — this is the core principle behind personal color analysis.",
-      axisSaturation: "Saturation",
-      axisLightness: "Lightness",
-      low: "Low",
-      high: "High",
+      imageAlt: "PCCS Tone Classification Chart — colors organized by lightness and saturation",
     },
     seasons: {
       title: "The 4 Season Color System",

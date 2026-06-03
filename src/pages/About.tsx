@@ -1,4 +1,4 @@
-import { PccsToneMap } from "../components/PccsToneMap";
+import pccsImage from "../assets/pccs_tone_map.jpg";
 import { colorData } from "../data/colorData";
 import { translations } from "../i18n/translations";
 import type { AboutSeasonSlug, AboutToneSlug, Lang, PersonalColorType } from "../types";
@@ -59,8 +59,12 @@ export const About = ({ lang, onStart }: AboutProps) => {
           <h2 className="mb-6 font-display text-2xl text-ink md:text-3xl">
             {t.about.pccs.title}
           </h2>
-          <div className="mb-6">
-            <PccsToneMap lang={lang} />
+          <div className="mb-6 flex justify-center">
+            <img
+              src={pccsImage}
+              alt={t.about.pccs.imageAlt}
+              className="max-w-full rounded-xl border border-hairline md:max-w-lg"
+            />
           </div>
           <p className="text-base leading-relaxed break-keep text-ink-2 md:text-lg">
             {t.about.pccs.desc}
