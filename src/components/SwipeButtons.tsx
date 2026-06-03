@@ -1,25 +1,33 @@
+import { Heart, X } from "lucide-react";
+
+import { translations } from "../i18n/translations";
+import type { Lang } from "../types";
+
 interface SwipeButtonsProps {
   onDislike: () => void;
   onLike: () => void;
+  lang: Lang;
 }
 
-export const SwipeButtons = ({ onDislike, onLike }: SwipeButtonsProps) => {
+export const SwipeButtons = ({ onDislike, onLike, lang }: SwipeButtonsProps) => {
+  const t = translations[lang].test;
+
   return (
-    <div className="absolute right-0 bottom-8 left-0 flex items-center justify-center gap-4 px-4">
+    <div className="absolute right-0 bottom-8 left-0 flex items-center justify-center gap-5 px-4">
       <button
         onClick={onDislike}
-        className="flex h-16 w-16 items-center justify-center rounded-full bg-red-500 text-white shadow-lg transition-all hover:scale-110 hover:bg-red-600 active:scale-95"
-        title="Dislike (Left Arrow)"
+        aria-label={t.dislike}
+        className="flex h-16 w-16 cursor-pointer items-center justify-center rounded-full border border-hairline bg-surface text-ink shadow-sm transition-all hover:bg-fill active:scale-95"
       >
-        <span className="text-2xl">✕</span>
+        <X size={26} strokeWidth={2} />
       </button>
 
       <button
         onClick={onLike}
-        className="flex h-16 w-16 items-center justify-center rounded-full bg-green-500 text-white shadow-lg transition-all hover:scale-110 hover:bg-green-600 active:scale-95"
-        title="Like (Right Arrow)"
+        aria-label={t.like}
+        className="flex h-16 w-16 cursor-pointer items-center justify-center rounded-full bg-accent text-accent-fg shadow-sm transition-all hover:opacity-90 active:scale-95"
       >
-        <span className="text-2xl">♥</span>
+        <Heart size={24} fill="currentColor" strokeWidth={0} />
       </button>
     </div>
   );
