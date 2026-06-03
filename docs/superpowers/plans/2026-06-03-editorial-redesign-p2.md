@@ -16,7 +16,7 @@
 | ------- | ------------------------------------------- | ------------------------------------------------------------------------------------------- | --------- |
 | P2-9    | About 4계절 섹션 → 1-Up 풀폭 시즌 섹션      | **풀폭 스택 섹션**(h-screen 스냅 아님), 시즌당 칩 10개 풀폭 스트립                          | Task 3    |
 | P2-10   | 8타입 카드 시즌별 2개 그룹핑 + 컬러 띠      | warm/cool 2그룹 → **시즌 4그룹**, 카드 헤더 그라데이션 → **시그니처 4색 띠**                | Task 2    |
-| P2-11   | PCCS 톤 차트 자체 제작                      | **간소화 에디토리얼 그리드**(채도×명도 4×4 CSS 그리드, 톤당 대표색 1 + 라벨, 무채색 프레임) | Task 4    |
+| P2-11   | ~~PCCS 톤 차트 자체 제작~~ **(폐기 — 되돌림)** | ~~간소화 에디토리얼 그리드(채도×명도 4×4 CSS 그리드)~~ → 구현 후 가독성이 떨어져 되돌림. **외부 이미지(`pccs_tone_map.jpg`)를 헤어라인 카드에 액자화한 것이 최종**이며 교체 예정 없음. (Task 4 참조) | ~~Task 4~~ |
 | Minor-1 | ColorTypes 키워드 칩 쿨그레이 seam          | `bg-slate-100 text-slate-700` → `--color-fill` 토큰                                         | Task 1    |
 | Minor-2 | PaletteSection `insideCard=false` 데드 분기 | prop 제거 + 항상-insideCard 스타일 인라인                                                   | Task 1    |
 | Minor-3 | PaletteSection 타이틀 `font-bold`           | → `font-display` (다른 제목과 통일)                                                         | Task 1    |
@@ -571,6 +571,8 @@ const toneItems: ReadonlyArray<ToneItem> = [
 ---
 
 ## Task 4: PCCS 톤 차트 자체 그리드 컴포넌트 (P2-11)
+
+> ⚠️ **이 Task는 되돌려졌다 (DO NOT IMPLEMENT).** 자체 CSS 그리드(`PccsToneMap.tsx`)를 한 번 구현했으나 원본 휠 차트보다 가독성이 떨어져 폐기하고 외부 이미지(`pccs_tone_map.jpg`)로 되돌렸다. About은 지금도 이미지를 헤어라인 `bg-surface` 카드에 액자화해 쓰며, **교체 예정 없음.** 아래 단계는 시도 기록으로만 남겨둔다. (디자인 시스템 문서: [docs/DESIGN.md](../../DESIGN.md) PCCS tone chart 항목.)
 
 **Files:**
 
