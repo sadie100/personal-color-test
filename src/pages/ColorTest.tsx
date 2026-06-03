@@ -3,7 +3,6 @@ import type { PointerEvent as ReactPointerEvent } from "react";
 
 import { CameraStage } from "../components/CameraStage";
 import { ColorCard } from "../components/ColorCard";
-import { LangToggle } from "../components/LangToggle";
 import { ProgressBar } from "../components/ProgressBar";
 import { SwipeButtons } from "../components/SwipeButtons";
 import { TestSetup } from "../components/TestSetup";
@@ -22,7 +21,7 @@ interface ColorTestProps {
   onToggleLang: (newLang: Lang) => void;
 }
 
-interface ActiveColorTestProps extends ColorTestProps {
+interface ActiveColorTestProps extends Omit<ColorTestProps, "onToggleLang"> {
   configuration: TestConfiguration;
   onBackToSetup: () => void;
 }
@@ -32,7 +31,6 @@ const ActiveColorTest = ({
   onComplete,
   onHome,
   lang,
-  onToggleLang,
   onBackToSetup,
 }: ActiveColorTestProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -235,25 +233,24 @@ const ActiveColorTest = ({
           />
         )}
       </div>
-      <SwipeButtons onDislike={() => advance(false)} onLike={() => advance(true)} />
+      <SwipeButtons lang={lang} onDislike={() => advance(false)} onLike={() => advance(true)} />
 
-      <div className="absolute top-4 left-4 max-w-[min(22rem,calc(100vw-8rem))] rounded-2xl bg-black/25 p-4 text-white shadow-lg backdrop-blur-sm">
-        <p className="text-sm">
+      <div className="absolute top-4 left-4 rounded-xl border border-hairline bg-surface px-4 py-2.5 shadow-sm">
+        <p className="text-sm font-semibold text-ink">
           {currentIndex + 1} / {orderedColors.length}
         </p>
-        <p className="text-sm">
+        <p className="text-xs text-ink-3">
           {t.test.liked}: {likedChips.length}
         </p>
       </div>
 
-      <div className="absolute top-4 right-4 flex items-center gap-2">
+      <div className="absolute top-4 right-4">
         <button
           onClick={onHome}
-          className="rounded-full border border-white/50 bg-white/90 px-4 py-2.5 text-sm font-semibold text-gray-800 shadow-lg backdrop-blur-sm transition-all hover:scale-105 hover:bg-white active:scale-95"
+          className="cursor-pointer rounded-full border border-hairline bg-surface px-4 py-2.5 text-sm font-semibold text-ink shadow-sm transition-all hover:bg-fill active:scale-95"
         >
           {t.test.home}
         </button>
-        <LangToggle lang={lang} onToggle={onToggleLang} />
       </div>
 
       {currentIndex >= 10 && (
@@ -265,7 +262,7 @@ const ActiveColorTest = ({
               dislikedChips,
             })
           }
-          className="absolute right-6 bottom-6 rounded-full border border-white/50 bg-white/90 px-4 py-2.5 text-sm font-semibold text-gray-800 shadow-lg backdrop-blur-sm transition-all hover:scale-105 hover:bg-white active:scale-95"
+          className="absolute right-6 bottom-6 cursor-pointer rounded-full border border-hairline bg-surface px-4 py-2.5 text-sm font-medium text-ink-2 shadow-sm transition-all hover:bg-fill active:scale-95"
         >
           {t.test.earlyExit}
         </button>
@@ -294,7 +291,6 @@ export const ColorTest = ({ onComplete, onHome, lang, onToggleLang }: ColorTestP
       onComplete={onComplete}
       onHome={onHome}
       lang={lang}
-      onToggleLang={onToggleLang}
       onBackToSetup={() => setConfiguration(null)}
     />
   );

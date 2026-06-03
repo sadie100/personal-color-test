@@ -57,4 +57,18 @@ describe("ColorTest setup flow", () => {
 
     expect(screen.getByText("1 / 39")).toBeTruthy();
   });
+
+  it("스와이프 화면에는 언어 토글을 노출하지 않는다", () => {
+    render(<ColorTest onComplete={vi.fn()} onHome={vi.fn()} lang="ko" onToggleLang={vi.fn()} />);
+
+    // 모드 선택(setup) 화면에는 언어 토글이 있다
+    expect(screen.queryByText("한국어")).not.toBeNull();
+
+    // 테스트 시작 → 스와이프 화면 진입
+    fireEvent.click(screen.getByRole("button", { name: ko.test.mode.startSelected }));
+
+    // 스와이프 화면에는 언어 토글 라벨이 없어야 한다
+    expect(screen.getByText("1 / 39")).toBeTruthy();
+    expect(screen.queryByText("한국어")).toBeNull();
+  });
 });
