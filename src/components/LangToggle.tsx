@@ -36,7 +36,8 @@ export const LangToggle = ({ lang, onToggle }: LangToggleProps) => {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen((value) => !value)}
-        className="flex items-center gap-1.5 rounded-full border border-hairline bg-surface py-2.5 pr-3 pl-4 text-sm font-semibold text-ink shadow-sm transition-all hover:bg-fill active:scale-95"
+        aria-label={current.label}
+        className="flex shrink-0 items-center gap-1.5 rounded-full border border-hairline bg-surface py-2.5 pr-3 pl-3 text-sm font-semibold text-ink shadow-sm transition-all hover:bg-fill active:scale-95 sm:pl-4"
       >
         <svg
           className="h-4 w-4 shrink-0 text-ink-3"
@@ -63,9 +64,9 @@ export const LangToggle = ({ lang, onToggle }: LangToggleProps) => {
             d="M12 3c-2.4 3-3.8 5.8-3.8 9s1.4 6 3.8 9M12 3c2.4 3 3.8 5.8 3.8 9s-1.4 6-3.8 9"
           />
         </svg>
-        {current.label}
+        <span className="hidden sm:inline">{current.label}</span>
         <svg
-          className={`h-3.5 w-3.5 text-ink-3 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          className={`hidden h-3.5 w-3.5 text-ink-3 transition-transform duration-200 sm:block ${open ? "rotate-180" : ""}`}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
