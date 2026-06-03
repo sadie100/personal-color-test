@@ -32,10 +32,10 @@ describe("Results", () => {
 
     expect(screen.getByText(ko.results.diagnosticChipTitle(ko.results.best))).toBeTruthy();
     expect(screen.getByText(ko.results.diagnosticChipTitle(ko.results.worst))).toBeTruthy();
-    expect(screen.getByText("엘리노어")).toBeTruthy();
-    expect(screen.getByText("살로미")).toBeTruthy();
-    expect(screen.getByText("헤븐")).toBeTruthy();
-    expect(screen.getByText("인디고 다이")).toBeTruthy();
+    expect(screen.getByText("페일 살몬")).toBeTruthy();
+    expect(screen.getByText("위트")).toBeTruthy();
+    expect(screen.getByText("로빈 에그 블루")).toBeTruthy();
+    expect(screen.getByText("로열")).toBeTruthy();
     expect(screen.getAllByText(ko.results.badges.liked).length).toBeGreaterThan(0);
     expect(screen.getAllByText(ko.results.badges.disliked).length).toBeGreaterThan(0);
   });
