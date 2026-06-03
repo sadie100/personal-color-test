@@ -1,3 +1,4 @@
+import { Heart, X } from "lucide-react";
 import { useState } from "react";
 
 import { StylingRecommendations } from "../components/StylingRecommendations";
@@ -493,31 +494,42 @@ const PaletteSection = ({
 };
 
 const MetaPill = ({ text, tone = "default" }: MetaPillProps) => {
-  const toneClass =
-    tone === "liked"
-      ? "bg-rose-50 text-rose-600 border-rose-100"
-      : tone === "disliked"
-        ? "bg-red-50 text-red-600 border-red-100"
-        : "bg-paper text-ink-2 border-hairline";
+  if (tone === "default") {
+    return (
+      <span className="rounded-full border border-hairline bg-paper px-3 py-1 text-xs font-semibold text-ink-2">
+        {text}
+      </span>
+    );
+  }
 
   return (
-    <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${toneClass}`}>
+    <span className="inline-flex items-center gap-1 rounded-full border border-hairline bg-fill px-3 py-1 text-xs font-semibold text-ink-2">
+      {tone === "liked" ? (
+        <Heart size={12} fill="currentColor" strokeWidth={0} aria-hidden />
+      ) : (
+        <X size={12} strokeWidth={2.5} aria-hidden />
+      )}
       {text}
     </span>
   );
 };
 
 const StickerBadge = ({ label, tone }: StickerBadgeProps) => {
-  const toneClass =
-    tone === "liked"
-      ? "bg-rose-500 text-white shadow-rose-200"
-      : "bg-red-500 text-white shadow-red-200";
+  const isLiked = tone === "liked";
 
   return (
     <span
-      className={`absolute -right-2 -bottom-2 rotate-[-8deg] rounded-full px-2.5 py-1 text-[10px] font-black tracking-[0.16em] shadow-md ${toneClass}`}
+      className={[
+        "absolute -right-2 -bottom-2 flex h-8 w-8 items-center justify-center rounded-full shadow-sm ring-2 ring-surface",
+        isLiked ? "bg-accent text-accent-fg" : "border border-hairline bg-surface text-ink",
+      ].join(" ")}
     >
-      {label}
+      {isLiked ? (
+        <Heart size={15} fill="currentColor" strokeWidth={0} aria-hidden />
+      ) : (
+        <X size={16} strokeWidth={2.5} aria-hidden />
+      )}
+      <span className="sr-only">{label}</span>
     </span>
   );
 };

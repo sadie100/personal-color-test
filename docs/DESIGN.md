@@ -61,10 +61,11 @@ Loaded via Google Fonts CDN in [index.html](../index.html).
 - **Brand color must never beat content color.** The season palettes (4 seasons × tones, 180 chips) are the only saturated color on the page; the UI is their frame.
 - When emphasis is needed, reach for **type size, weight, and the near-black accent** — not gradients or saturated fills.
 
-**Permitted color accents (functional, not decorative):**
+**Permitted color accent (functional, not decorative):**
 
 - **Type-signature color** — a type's own colors are *content*: the 4-color signature band on type cards, the gradient signature circle on the type-detail hero, and the per-type detail hero. These are intentionally retained.
-- **Results overlap stickers** — on the Results palette, chips the user liked/disliked carry a small `LIKE` / `NOPE` sticker badge (`bg-rose-500` / `bg-red-500`) and a matching count pill (`bg-rose-50` / `bg-red-50`). This is the one place small saturated UI accents are allowed, because they mark a functional overlap relationship. See [src/pages/Results.tsx](../src/pages/Results.tsx).
+
+The UI introduces **no other saturated color** — even functional like/dislike markers stay achromatic (see Results overlap badges below).
 
 ⸻
 
@@ -123,6 +124,9 @@ Hairline `bg-surface` cards, serif titles, `text-ink-2` body. Keyword chips use 
 
 ### Type cards
 [src/pages/ColorTypes.tsx](../src/pages/ColorTypes.tsx) — the 8 types are grouped into **4 season sections** (Spring/Summer/Autumn/Winter, 2 cards each). Each card header is a **signature 4-color solid band** (its type's content color), with name, season·tone label, keywords, a 6-chip palette row, and a CTA.
+
+### Results overlap badges
+[src/pages/Results.tsx](../src/pages/Results.tsx) — on the result palette, chips the user previously liked/disliked carry a small circular corner badge that **reuses the swipe-button language**: liked = `bg-accent` circle + paper ♥, disliked = `bg-surface border-hairline` circle + ink ✕ (lucide `Heart` / `X`). A `ring-2 ring-surface` separates the badge from any chip color, and an `sr-only` localized label ("좋아요"/"싫어요") carries the meaning for screen readers (icon + shape, never color). The matching count pills are achromatic `bg-fill` with the same small icon. No rotation, no saturated fill.
 
 ### Worst accordion
 [src/pages/Results.tsx](../src/pages/Results.tsx) — the worst-match section is a hairline card collapsed by default, expanded by an `aria-expanded` toggle with a rotating chevron. Content stays mounted (hidden via `display:none`), demoting secondary info without hiding it from users who want it.
