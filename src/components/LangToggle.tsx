@@ -36,10 +36,10 @@ export const LangToggle = ({ lang, onToggle }: LangToggleProps) => {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen((value) => !value)}
-        className="flex items-center gap-1.5 rounded-full border border-white/50 bg-white/90 py-2.5 pr-3 pl-4 text-sm font-semibold text-gray-800 shadow-lg backdrop-blur-sm transition-all hover:bg-white active:scale-95"
+        className="flex items-center gap-1.5 rounded-full border border-hairline bg-surface py-2.5 pr-3 pl-4 text-sm font-semibold text-ink shadow-sm transition-all hover:bg-fill active:scale-95"
       >
         <svg
-          className="h-4 w-4 shrink-0 text-gray-500"
+          className="h-4 w-4 shrink-0 text-ink-3"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -65,7 +65,7 @@ export const LangToggle = ({ lang, onToggle }: LangToggleProps) => {
         </svg>
         {current.label}
         <svg
-          className={`h-3.5 w-3.5 text-gray-500 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          className={`h-3.5 w-3.5 text-ink-3 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -75,7 +75,7 @@ export const LangToggle = ({ lang, onToggle }: LangToggleProps) => {
       </button>
 
       {open && (
-        <div className="absolute right-0 z-50 mt-1.5 min-w-full overflow-hidden rounded-xl border border-gray-100 bg-white shadow-xl">
+        <div className="absolute right-0 z-50 mt-1.5 min-w-full overflow-hidden rounded-xl border border-hairline bg-surface shadow-xl">
           {options.map((option) => (
             <button
               key={option.value}
@@ -83,7 +83,7 @@ export const LangToggle = ({ lang, onToggle }: LangToggleProps) => {
                 onToggle(option.value);
                 setOpen(false);
               }}
-              className={`w-full px-4 py-2.5 text-left text-sm font-medium transition-colors hover:bg-gray-50 ${lang === option.value ? "bg-purple-50/60 text-purple-600" : "text-gray-700"}`}
+              className={`w-full px-4 py-2.5 text-left text-sm font-medium transition-colors hover:bg-fill ${lang === option.value ? "bg-fill text-ink" : "text-ink-2"}`}
             >
               {option.label}
             </button>
