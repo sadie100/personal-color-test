@@ -27,7 +27,8 @@ export const Header = ({ lang, onToggleLang, screen, onNavigate }: HeaderProps) 
           onClick={() => handleNav("home")}
           className="cursor-pointer font-display text-xl text-ink"
         >
-          Personal Color Self Test
+          <span className="whitespace-nowrap">Personal Color</span>{" "}
+          <span className="whitespace-nowrap">Self Test</span>
         </button>
 
         <nav className="hidden items-center gap-6 md:flex">
