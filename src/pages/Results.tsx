@@ -135,7 +135,6 @@ export const Results = ({
 }: ResultsProps) => {
   const t = translations[lang];
   const [selectedPaletteToneId, setSelectedPaletteToneId] = useState<string | null>(null);
-  const [worstOpen, setWorstOpen] = useState(false);
 
   const likedSelectionSet = buildSelectionSet(likedChips);
   const dislikedSelectionSet = buildSelectionSet(dislikedChips);
@@ -341,32 +340,15 @@ export const Results = ({
 
         {resultState.worstCard && (
           <section className="mb-10 rounded-3xl border border-hairline bg-surface">
-            <button
-              type="button"
-              aria-expanded={worstOpen}
-              aria-label={resultState.worstCard.label}
-              onClick={() => setWorstOpen((value) => !value)}
-              className="flex w-full items-center justify-between gap-3 px-6 py-5 text-left"
-            >
-              <span>
-                <span className="block text-sm font-semibold tracking-wide text-ink-3 uppercase">
-                  {resultState.worstCard.label}
-                </span>
-                <span className="mt-0.5 block font-display text-2xl text-ink">
-                  {resultState.worstCard.displayName}
-                </span>
+            <div className="px-6 pt-5">
+              <span className="block text-sm font-semibold tracking-wide text-ink-3 uppercase">
+                {resultState.worstCard.label}
               </span>
-              <svg
-                className={`h-5 w-5 shrink-0 text-ink-3 transition-transform ${worstOpen ? "rotate-180" : ""}`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                aria-hidden
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-            <div className={worstOpen ? "px-6 pb-6" : "hidden"}>
+              <span className="mt-0.5 block font-display text-2xl text-ink">
+                {resultState.worstCard.displayName}
+              </span>
+            </div>
+            <div className="px-6 pb-6">
               <PaletteSection
                 title={mode === "simple" ? t.results.diagnosticChipTitle(t.results.worst) : t.results.paletteTitle(t.results.worst)}
                 description={mode === "simple" ? t.results.simpleDiagnostics.worst : t.results.paletteDescriptions.worst}
