@@ -177,6 +177,8 @@ export interface TestNamespace {
   earlyExit: string;
   loading: string;
   liked: string;
+  like: string;
+  dislike: string;
   home: string;
   setup: TestSetupCopy;
   mode: TestModeCopy;

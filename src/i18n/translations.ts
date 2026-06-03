@@ -28,6 +28,8 @@ const ko: TranslationSchema = {
     earlyExit: "중간 결과 보기 →",
     loading: "색상 불러오는 중...",
     liked: "좋아요",
+    like: "좋아요",
+    dislike: "싫어요",
     home: "← 처음으로",
     setup: {
       title: "원하는 테스트 모드를 골라보세요",
@@ -416,6 +418,8 @@ const en: TranslationSchema = {
     earlyExit: "See Results →",
     loading: "Loading colors...",
     liked: "Liked",
+    like: "Like",
+    dislike: "Dislike",
     home: "← Home",
     setup: {
       title: "Choose your test mode",
