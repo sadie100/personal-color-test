@@ -253,7 +253,7 @@ const ActiveColorTest = ({
         </button>
       </div>
 
-      {currentIndex >= 10 && (
+      {import.meta.env.DEV && currentIndex >= 10 && (
         <button
           onClick={() =>
             onComplete({
