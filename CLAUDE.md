@@ -17,27 +17,27 @@ pnpm format         # Format files with Prettier
 
 ## Architecture
 
-Single-page React + TypeScript app with no routing library. Screen transitions are managed by a `screen` state in [src/App.tsx](src/App.tsx) with four values: `'home'`, `'about'`, `'test'`, `'results'`.
+Single-page React 19 + TypeScript app. Routing uses **react-router-dom v7** ([src/App.tsx](src/App.tsx)): `<Routes>` define `/`, `/about`, `/types`, `/types/:typeId`, `/test`, `/results` (unknown paths redirect to `/`). The logical `screen` is *derived* from `location.pathname` via `getScreenFromPathname`, not stored in state. `lang`, `testMode`, and `likedChips`/`dislikedChips` selections live in `App` state.
 
-**Data flow:**
+**Global navigation**: `Header` is rendered on every screen except `test`. It contains the brand link, navigation, and the language dropdown.
 
-1. `Home` → `onStart()` → switches to `'test'`
-2. `Home` → `onAbout()` → switches to `'about'`
-3. `About` → `onStart()` → switches to `'test'`
-4. `ColorTest` → `onComplete({ likedColors, dislikedColors })` → switches to `'results'`
-5. `Results` → `onRetry()` → resets selections and switches back to `'test'`
+**Results sharing**: completed results are encoded into the `/results` URL query string ([src/utils/resultShare.ts](src/utils/resultShare.ts)). `App` canonicalizes the query and can reconstruct a result purely from the URL, so result links are shareable.
 
-**Global navigation**: `Header` is rendered on every screen except `test`. It contains the brand link, About/Test navigation, and the language dropdown.
+**Type definitions** ([src/types.ts](src/types.ts)): `Lang`, `Screen`, `PersonalColorType` (8 types), `SimpleResultType` (4 types), `ColorChip`, `DiagnosticChip`, `TestMode` (`simple` | `detailed`), `TestDisplayMode` (`chip` | `camera`), `TestCompletePayload`, and the i18n `TranslationSchema`. Prefer importing these over redefining shapes locally.
 
-**Type definitions** ([src/types.ts](src/types.ts)): Shared app types live here, including `Lang`, `Screen`, `SeasonTone`, `Color`, `ColorWithSeason`, and `TestCompletePayload`. Prefer importing and reusing these types instead of redefining shapes locally.
+**Color space**: colors use **OKLCH** (`oklch: { l, c, h }`), with `culori` for conversions. (Not HSL.)
 
-**Color data** ([src/data/colorData.ts](src/data/colorData.ts)): 180 colors organized as `Record<SeasonTone, Color[]>`. Each of the 12 `SeasonTone` keys contains 15 colors. `seasonTones` exports the canonical ordered list of valid keys.
+**Color data** ([src/data/colorData.ts](src/data/colorData.ts)): chips are built via `createChip`/`createDiagnosticChip`. A `DiagnosticChip` carries a `diagnosticPhase` (`base` | `season` | `detail`) and `targetTypes` (the `PersonalColorType`s it points to). Two test sets are exported: `simpleDiagnosticChips` and `detailedDiagnosticChips` (combined as `diagnosticChips`). `colorData` is the per-type display palette (`Record<PersonalColorType, ColorChip[]>`). `personalColorTypes` / `simpleResultTypes` are the canonical ordered key lists.
 
-**Analysis algorithm** ([src/utils/analyzer.ts](src/utils/analyzer.ts)): The current result logic is ranking-based, not HSL-average based. Each selected color already includes a `seasonTone`, and results are derived by counting the most frequent `SeasonTone` values in liked/disliked selections. Tie-breaking uses count, the time a tone reached that count, first appearance, then alphabetical order.
+**Analysis algorithm** ([src/utils/analyzer.ts](src/utils/analyzer.ts)): target-type scoring. Each liked chip adds +1 to every type in its `targetTypes`; each disliked chip subtracts 1. Types are ranked by score, tie-broken by declaration order in `personalColorTypes`. `getWorstResult` ranks ascending. Simple mode maps each type to its `Season + BaseTone` `SimpleResultType` first.
 
-**ColorTest component** ([src/components/ColorTest.tsx](src/components/ColorTest.tsx)): Flattens all palettes into `ColorWithSeason[]`, shuffles once on mount, tracks liked/disliked selections separately, and supports keyboard shortcuts for `ArrowLeft` and `ArrowRight`. After index `>= 10`, a localized early-exit button appears.
+**Test flow** ([src/pages/ColorTest.tsx](src/pages/ColorTest.tsx)): `TestSetup` picks the `TestMode` and `TestDisplayMode`; `getSelectedDiagnosticChips` returns the chip set for that mode. Supports pointer/touch swipe, `ArrowLeft`/`ArrowRight` shortcuts, and an early-exit button. `camera` display mode uses [src/hooks/useCamera.ts](src/hooks/useCamera.ts) + [src/components/CameraStage.tsx](src/components/CameraStage.tsx).
 
-**Results component** ([src/components/Results.tsx](src/components/Results.tsx)): Shows the best match, second/third best matches, and a worst match derived from disliked colors when available. It also renders full palette sections with overlap badges for previously liked/disliked colors.
+**Results** ([src/pages/Results.tsx](src/pages/Results.tsx)): best / 2nd / 3rd matches plus a worst match, palette sections with liked/disliked overlap badges, styling recommendations, and a copyable share link.
+
+**Color-type encyclopedia** ([src/pages/ColorTypes.tsx](src/pages/ColorTypes.tsx), [src/pages/ColorTypeDetail.tsx](src/pages/ColorTypeDetail.tsx)): browse all types at `/types`, slugged detail pages at `/types/:typeId` (slugs from [src/utils/colorTypeSlug.ts](src/utils/colorTypeSlug.ts)).
+
+**i18n** ([src/i18n/translations.ts](src/i18n/translations.ts)): `ko`/`en` copy keyed by `TranslationSchema`; `lang` is threaded from `App` into each page.
 
 ## Tailwind CSS
 
