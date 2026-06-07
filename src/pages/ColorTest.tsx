@@ -39,6 +39,10 @@ const ActiveColorTest = ({
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [dragX, setDragX] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  // Distinct from `isDragging` (which is also reused to disable the card
+  // transition during the slide-in animation): true only while the user's
+  // finger is actively dragging, used to gate the swipe-button scaling.
+  const [isUserDragging, setIsUserDragging] = useState(false);
   const [exitDirection, setExitDirection] = useState<"left" | "right" | null>(null);
   const dragStartRef = useRef<{ x: number; y: number; t: number; cancelled: boolean } | null>(null);
   const orderedColors = useMemo(
@@ -146,6 +150,7 @@ const ActiveColorTest = ({
         cancelled: false,
       };
       setIsDragging(true);
+      setIsUserDragging(true);
     },
     [isTransitioning, exitDirection],
   );
@@ -161,6 +166,7 @@ const ActiveColorTest = ({
     if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 10) {
       start.cancelled = true;
       setIsDragging(false);
+      setIsUserDragging(false);
       setDragX(0);
       return;
     }
@@ -171,6 +177,7 @@ const ActiveColorTest = ({
     (event: ReactPointerEvent<HTMLDivElement>) => {
       const start = dragStartRef.current;
       dragStartRef.current = null;
+      setIsUserDragging(false);
       if (event.currentTarget.hasPointerCapture(event.pointerId)) {
         event.currentTarget.releasePointerCapture(event.pointerId);
       }
@@ -233,7 +240,13 @@ const ActiveColorTest = ({
           />
         )}
       </div>
-      <SwipeButtons lang={lang} onDislike={() => advance(false)} onLike={() => advance(true)} />
+      <SwipeButtons
+        lang={lang}
+        onDislike={() => advance(false)}
+        onLike={() => advance(true)}
+        dragX={isUserDragging ? dragX : 0}
+        threshold={SWIPE_DISTANCE_THRESHOLD}
+      />
 
       <div className="absolute top-4 left-4 rounded-xl border border-hairline bg-surface px-4 py-2.5 shadow-sm">
         <p className="text-sm font-semibold text-ink">
