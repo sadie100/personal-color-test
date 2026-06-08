@@ -245,7 +245,7 @@ export const Results = ({
             <p className="text-sm font-semibold tracking-wide text-ink-3 uppercase">
               {resultState.bestCard.label}
             </p>
-            <h2 className="mt-1 font-display text-4xl text-ink md:text-6xl">
+            <h2 className="mt-1 font-display text-3xl text-ink md:text-4xl">
               {resultState.bestCard.displayName}
             </h2>
             <div className="mt-5 flex h-20 w-full overflow-hidden rounded-2xl border border-hairline md:h-28">
