@@ -61,7 +61,7 @@ export const ColorTypeDetail = ({ lang }: ColorTypeDetailProps) => {
   return (
     <div className="min-h-screen w-full bg-paper pt-16 pb-16">
       <section className="bg-paper px-4 pt-10 pb-8">
-        <div className="mx-auto flex max-w-4xl flex-col gap-6 md:flex-row md:items-center md:justify-between">
+        <div className="page-container flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div>
             <Link
               to="/types"
@@ -97,7 +97,7 @@ export const ColorTypeDetail = ({ lang }: ColorTypeDetailProps) => {
         </div>
       </section>
 
-      <div className="mx-auto max-w-4xl space-y-10 px-4 py-12">
+      <div className="page-container space-y-10 px-4 py-12">
         <section className="rounded-3xl border border-hairline bg-surface p-6 md:p-8">
           <p className="text-base leading-relaxed break-keep text-ink-2 md:text-lg">
             {copy.summary}

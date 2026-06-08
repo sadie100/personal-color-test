@@ -17,7 +17,7 @@ export const Home = ({ onStart, lang, onAbout }: HomeProps) => {
 
   return (
     <div className="min-h-screen w-full bg-paper px-4 pt-24 pb-16">
-      <div className="mx-auto grid max-w-5xl items-center gap-12 md:grid-cols-2">
+      <div className="page-container grid items-center gap-12 md:grid-cols-2">
         <div className="text-left">
           <h1 className="font-display text-5xl leading-tight break-keep text-ink md:text-6xl">
             {t.home.hero.quote}

@@ -39,14 +39,14 @@ export const About = ({ lang, onStart, onTypes }: AboutProps) => {
 
   return (
     <div className="min-h-screen w-full bg-paper pt-16">
-      <section className="mx-auto max-w-4xl px-4 py-16">
+      <section className="page-container px-4 py-16">
         <h1 className="font-display text-4xl text-ink md:text-5xl">{t.about.title}</h1>
         <p className="mt-4 max-w-2xl text-base leading-relaxed break-keep text-ink-2 md:text-lg">
           {t.about.intro}
         </p>
       </section>
 
-      <div className="mx-auto max-w-4xl space-y-16 px-4 py-12">
+      <div className="page-container space-y-16 px-4 py-12">
         <section className="rounded-2xl border border-hairline bg-surface p-6 md:p-10">
           <h2 className="mb-4 font-display text-2xl text-ink md:text-3xl">
             {t.about.whatIs.title}

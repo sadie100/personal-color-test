@@ -229,7 +229,7 @@ export const Results = ({
 
   return (
     <div className="min-h-screen w-full overflow-auto bg-paper p-6 pt-20">
-      <div className="mx-auto max-w-4xl">
+      <div className="page-container">
         <div className="mb-10 text-left">
           <h1 className="font-display text-4xl text-ink md:text-5xl">{t.results.header}</h1>
           <p className="mt-2 max-w-2xl text-ink-2">

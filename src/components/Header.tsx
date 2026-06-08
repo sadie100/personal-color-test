@@ -22,7 +22,7 @@ export const Header = ({ lang, onToggleLang, screen, onNavigate }: HeaderProps) 
 
   return (
     <header className="fixed top-0 z-50 w-full border-b border-hairline bg-paper">
-      <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
+      <div className="page-container flex items-center justify-between px-4 py-3">
         <button
           onClick={() => handleNav("home")}
           className="cursor-pointer font-display text-xl text-ink"

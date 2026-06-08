@@ -87,7 +87,7 @@ export const ColorTypes = ({ lang }: ColorTypesProps) => {
 
   return (
     <div className="min-h-screen w-full bg-paper pt-16 pb-16">
-      <section className="mx-auto max-w-5xl px-4 py-14">
+      <section className="page-container px-4 py-14">
         <h1 className="font-display text-4xl text-ink md:text-5xl">{t.pageTitle}</h1>
         <p className="mt-3 max-w-2xl text-base leading-relaxed break-keep text-ink-2 md:text-lg">
           {t.pageSubtitle}
@@ -97,7 +97,7 @@ export const ColorTypes = ({ lang }: ColorTypesProps) => {
         </p>
       </section>
 
-      <div className="mx-auto max-w-5xl space-y-14 px-4 py-12">
+      <div className="page-container space-y-14 px-4 py-12">
         {seasonSlugGroups.map((group) => {
           const groupCopy = t.seasonGroups[group.seasonSlug];
           const groupId = `group-${group.seasonSlug}`;

@@ -16,6 +16,11 @@
   --font-display: "Instrument Serif", "Noto Serif KR", serif;
 }
 
+/* 전역 페이지 콘텐츠 폭 — 헤더와 동일한 max-width로 좌우 정렬 통일 */
+@utility page-container {
+  @apply mx-auto max-w-5xl;
+}
+
 html {
   scroll-behavior: smooth;
 }
