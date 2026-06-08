@@ -103,7 +103,7 @@ export const About = ({ lang, onStart, onTypes }: AboutProps) => {
               );
             })}
           </div>
-          <div className="mt-8">
+          <div className="mt-8 text-right">
             <button
               onClick={onTypes}
               className="group inline-flex cursor-pointer items-center gap-2 rounded-lg border border-hairline bg-surface px-5 py-3 text-sm font-medium text-ink transition-colors hover:bg-hairline/40"
@@ -169,7 +169,7 @@ export const About = ({ lang, onStart, onTypes }: AboutProps) => {
           </div>
         </section>
 
-        <section className="rounded-2xl border border-hairline bg-surface p-8 text-left md:p-12">
+        <section className="rounded-2xl border border-hairline bg-surface p-8 text-center md:p-12">
           <h2 className="mb-4 font-display text-2xl text-ink md:text-3xl">{t.about.cta}</h2>
           <button
             onClick={onStart}
