@@ -1,0 +1,25 @@
+# Personal Color Self Test (퍼스널 컬러 셀프 테스트)
+
+> A personal color self-diagnosis tool that works just by picking colors. Rate color cards with like/dislike, and the tool estimates your season among 12 personal color types (8 detailed types). Available in Korean and English, based on the Korea Makeup Artists Association (한국분장예술인협회) personal color consultant theory.
+
+## Main Pages
+
+- [Home](https://personal-color.dev/): Start the test and service overview
+- [About Personal Color](https://personal-color.dev/about): Personal color concepts, the PCCS tone system, and theory source
+- [Color Type Encyclopedia](https://personal-color.dev/types): Full list of the 8 personal color types
+
+## Color Type Details
+
+- [Spring Light](https://personal-color.dev/types/spring-light): Bright, warm spring light type
+- [Spring Bright](https://personal-color.dev/types/spring-bright): Vivid, warm spring bright type
+- [Summer Light](https://personal-color.dev/types/summer-light): Soft, cool summer light type
+- [Summer Muted](https://personal-color.dev/types/summer-muted): Calm, cool summer muted type
+- [Autumn Muted](https://personal-color.dev/types/autumn-muted): Calm, warm autumn muted type
+- [Autumn Dark](https://personal-color.dev/types/autumn-dark): Deep, warm autumn dark type
+- [Winter Bright](https://personal-color.dev/types/winter-bright): Vivid, cool winter bright type
+- [Winter Dark](https://personal-color.dev/types/winter-dark): Deep, cool winter dark type
+
+## Notes
+
+- Theory source: Korea Makeup Artists Association (한국분장예술인협회) personal color consultant curriculum
+- The test (`/test`) and results (`/results`) pages are per-user interactive screens and are not intended for indexing.
