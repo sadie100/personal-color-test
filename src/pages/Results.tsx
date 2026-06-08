@@ -1,5 +1,6 @@
-import { Heart, X } from "lucide-react";
+import { ArrowRight, Heart, X } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 import { StylingRecommendations } from "../components/StylingRecommendations";
 import {
@@ -19,6 +20,7 @@ import {
   getWorstResult,
   getWorstSimpleResult,
 } from "../utils/analyzer";
+import { toSlug } from "../utils/colorTypeSlug";
 import type {
   BaseTone,
   ColorChip,
@@ -77,6 +79,7 @@ interface PaletteSectionProps {
   t: TranslationSchema;
   lang: Lang;
   muted?: boolean;
+  detailType?: PersonalColorType;
 }
 
 interface MetaPillProps {
@@ -324,6 +327,7 @@ export const Results = ({
                 badgeMode="liked"
                 t={t}
                 lang={lang}
+                detailType={mode === "detailed" ? (activePaletteCard.id as PersonalColorType) : undefined}
               />
             )}
           </div>
@@ -362,6 +366,7 @@ export const Results = ({
                 t={t}
                 lang={lang}
                 muted
+                detailType={mode === "detailed" ? (resultState.worstCard.id as PersonalColorType) : undefined}
               />
             </div>
           </section>
@@ -419,6 +424,7 @@ const PaletteSection = ({
   t,
   lang,
   muted = false,
+  detailType,
 }: PaletteSectionProps) => {
   const likedCount = paletteColors.filter((color) => likedSelectionSet.has(color.hex)).length;
   const dislikedCount = paletteColors.filter((color) => dislikedSelectionSet.has(color.hex)).length;
@@ -426,11 +432,27 @@ const PaletteSection = ({
   return (
     <div className="bg-surface pt-6">
       <div className="mb-5 flex flex-col gap-3">
-        <div className="flex flex-wrap items-center gap-2">
-          <h2 className="font-display text-2xl text-ink">{title}</h2>
-          <span className={`rounded-full px-3 py-1 text-xs font-semibold ${badgeClass}`}>
-            {badgeText}
-          </span>
+        <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <h2 className="font-display text-2xl text-ink">{title}</h2>
+            <span className={`rounded-full px-3 py-1 text-xs font-semibold ${badgeClass}`}>
+              {badgeText}
+            </span>
+          </div>
+          {detailType && (
+            <Link
+              to={`/types/${toSlug(detailType)}`}
+              aria-label={`${badgeText} ${t.results.viewTypeDetail}`}
+              className="group inline-flex shrink-0 items-center gap-1.5 rounded-full border border-hairline bg-surface px-4 py-2 text-sm font-semibold text-ink transition-colors hover:border-ink/40 hover:bg-fill focus-visible:ring-2 focus-visible:ring-ink focus-visible:outline-none"
+            >
+              {t.results.viewTypeDetail}
+              <ArrowRight
+                size={15}
+                className="transition-transform group-hover:translate-x-0.5"
+                aria-hidden
+              />
+            </Link>
+          )}
         </div>
         <p className="text-sm text-ink-2">{description}</p>
         <div className="flex flex-wrap gap-2">

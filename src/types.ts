@@ -231,6 +231,7 @@ export interface ResultsNamespace {
   badges: ResultsBadgesCopy;
   analysisTitle: string;
   analysisIntro: string;
+  viewTypeDetail: string;
   tryAgain: string;
   share: string;
   copied: string;

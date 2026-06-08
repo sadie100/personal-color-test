@@ -129,6 +129,7 @@ const ko: TranslationSchema = {
     },
     analysisTitle: "내 컬러 타입 분석",
     analysisIntro: "좋아요/싫어요 패턴을 분석한 결과, 가장 잘 맞는 컬러 특성은 다음과 같습니다:",
+    viewTypeDetail: "타입 자세히 보기",
     tryAgain: "다시 시작",
     share: "결과 공유",
     copied: "클립보드에 복사되었습니다!",
@@ -523,6 +524,7 @@ const en: TranslationSchema = {
     analysisTitle: "About Your Color Type",
     analysisIntro:
       "Based on your like/dislike patterns, these are your strongest color characteristics:",
+    viewTypeDetail: "View type details",
     tryAgain: "Try Again",
     share: "Share Result",
     copied: "Copied to clipboard!",
