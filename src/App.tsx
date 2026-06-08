@@ -255,7 +255,10 @@ function App() {
           path="/"
           element={<Home onStart={handleStartTest} lang={lang} onAbout={() => navigate("/about")} />}
         />
-        <Route path="/about" element={<About lang={lang} onStart={handleStartTest} />} />
+        <Route
+          path="/about"
+          element={<About lang={lang} onStart={handleStartTest} onTypes={() => navigate("/types")} />}
+        />
         <Route path="/types" element={<ColorTypes lang={lang} />} />
         <Route path="/types/:typeId" element={<ColorTypeDetail lang={lang} />} />
         <Route

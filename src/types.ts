@@ -273,6 +273,7 @@ export interface AboutSeasonsCopy {
   summer: AboutSectionCopy;
   autumn: AboutSectionCopy;
   winter: AboutSectionCopy;
+  seeAllTypes: string;
 }
 
 export interface AboutTonesCopy {

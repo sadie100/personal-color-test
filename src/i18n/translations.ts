@@ -189,6 +189,7 @@ const ko: TranslationSchema = {
         title: "겨울 (Winter)",
         desc: "차갑고 선명한 색감이 특징입니다. 순백, 블랙, 로열블루, 마젠타 등 강렬하고 대비가 뚜렷한 색상이 어울리며, 피부가 하얗거나 깊은 쿨톤을 가진 분들에게 잘 맞습니다.",
       },
+      seeAllTypes: "8가지 타입 자세히 보기",
     },
     tones: {
       title: "4가지 세부 톤",
@@ -582,6 +583,7 @@ const en: TranslationSchema = {
         title: "Winter",
         desc: "Characterized by cool and vivid colors. Pure white, black, royal blue, and magenta — bold, high-contrast colors. Best suited for those with a fair or deep cool undertone.",
       },
+      seeAllTypes: "Explore all 8 types",
     },
     tones: {
       title: "4 Detail Tones",

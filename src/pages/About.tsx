@@ -6,6 +6,7 @@ import type { AboutSeasonSlug, AboutToneSlug, Lang, PersonalColorType } from "..
 interface AboutProps {
   lang: Lang;
   onStart: () => void;
+  onTypes: () => void;
 }
 
 interface SeasonSectionItem {
@@ -33,7 +34,7 @@ const toneItems: ReadonlyArray<ToneItem> = [
   { slug: "dark", sampleKey: "Winter Dark", icon: "◼" },
 ];
 
-export const About = ({ lang, onStart }: AboutProps) => {
+export const About = ({ lang, onStart, onTypes }: AboutProps) => {
   const t = translations[lang];
 
   return (
@@ -101,6 +102,20 @@ export const About = ({ lang, onStart }: AboutProps) => {
                 </article>
               );
             })}
+          </div>
+          <div className="mt-8">
+            <button
+              onClick={onTypes}
+              className="group inline-flex cursor-pointer items-center gap-2 rounded-lg border border-hairline bg-surface px-5 py-3 text-sm font-medium text-ink transition-colors hover:bg-hairline/40"
+            >
+              {t.about.seasons.seeAllTypes}
+              <span
+                className="transition-transform group-hover:translate-x-0.5"
+                aria-hidden
+              >
+                →
+              </span>
+            </button>
           </div>
         </section>
 
