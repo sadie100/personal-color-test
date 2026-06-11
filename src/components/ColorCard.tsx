@@ -15,7 +15,7 @@ export const ColorCard = ({ color, lang, dragX, isDragging, exitDirection }: Col
     return null;
   }
 
-  const exitOffset = window.innerWidth + 200;
+  const exitOffset = typeof window === "undefined" ? 1200 : window.innerWidth + 200;
   const translateX = exitDirection
     ? exitDirection === "right"
       ? exitOffset

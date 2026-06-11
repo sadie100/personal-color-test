@@ -21,6 +21,7 @@ import {
   getWorstSimpleResult,
 } from "../utils/analyzer";
 import { toSlug } from "../utils/colorTypeSlug";
+import { localizePath } from "../utils/localizePath";
 import type {
   BaseTone,
   ColorChip,
@@ -441,7 +442,7 @@ const PaletteSection = ({
           </div>
           {detailType && (
             <Link
-              to={`/types/${toSlug(detailType)}`}
+              to={localizePath(lang, `/types/${toSlug(detailType)}`)}
               aria-label={`${badgeText} ${t.results.viewTypeDetail}`}
               className="group inline-flex shrink-0 items-center gap-1.5 rounded-full border border-hairline bg-surface px-4 py-2 text-sm font-semibold text-ink transition-colors hover:border-ink/40 hover:bg-fill focus-visible:ring-2 focus-visible:ring-ink focus-visible:outline-none"
             >
