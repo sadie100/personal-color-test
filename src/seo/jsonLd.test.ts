@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- tests assert against loosely-typed schema.org JSON-LD objects */
 import { describe, it, expect } from "vitest";
 import { buildJsonLd } from "./jsonLd";
 import { prerenderRoutes, ORIGIN } from "./routeMeta";
@@ -27,7 +26,9 @@ describe("buildJsonLd", () => {
   });
 
   it("/types emits a DefinedTermSet of 8 terms", () => {
-    const set = (buildJsonLd(routeFor("/types")) as any[]).find((b) => b["@type"] === "DefinedTermSet");
+    const set = (buildJsonLd(routeFor("/types")) as any[]).find(
+      (b) => b["@type"] === "DefinedTermSet",
+    );
     expect(set.hasDefinedTerm).toHaveLength(8);
   });
 
@@ -38,14 +39,19 @@ describe("buildJsonLd", () => {
   });
 
   it("en route uses en inLanguage and en origin paths", () => {
-    const set = (buildJsonLd(routeFor("/en/types")) as any[]).find((b) => b["@type"] === "DefinedTermSet");
+    const set = (buildJsonLd(routeFor("/en/types")) as any[]).find(
+      (b) => b["@type"] === "DefinedTermSet",
+    );
     expect(set.inLanguage).toBe("en");
   });
 
   it("returns [] for an unknown non-slug route instead of throwing", () => {
     const fake = {
-      url: "/bogus", lang: "ko", logical: "/bogus",
-      title: "x", description: "y",
+      url: "/bogus",
+      lang: "ko",
+      logical: "/bogus",
+      title: "x",
+      description: "y",
       alternates: { ko: "/bogus", en: "/en/bogus" },
     } as any;
     expect(buildJsonLd(fake)).toEqual([]);
