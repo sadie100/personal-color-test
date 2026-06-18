@@ -39,4 +39,13 @@ describe("buildJsonLd", () => {
     const set = (buildJsonLd(routeFor("/en/types")) as any[]).find((b) => b["@type"] === "DefinedTermSet");
     expect(set.inLanguage).toBe("en");
   });
+
+  it("returns [] for an unknown non-slug route instead of throwing", () => {
+    const fake = {
+      url: "/bogus", lang: "ko", logical: "/bogus",
+      title: "x", description: "y",
+      alternates: { ko: "/bogus", en: "/en/bogus" },
+    } as any;
+    expect(buildJsonLd(fake)).toEqual([]);
+  });
 });

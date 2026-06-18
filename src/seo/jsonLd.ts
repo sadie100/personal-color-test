@@ -95,6 +95,7 @@ export function buildJsonLd(route: PrerenderRoute): object[] {
 
   // /types/:slug
   const slug = logical.replace("/types/", "") as ColorTypeSlug;
+  if (!t.types[slug]) return [];
   return [
     {
       "@context": "https://schema.org",
