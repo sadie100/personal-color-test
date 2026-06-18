@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- JSON-LD 블록은 라우트마다 구조가 달라 동적 접근을 위해 any 사용 */
 import { describe, it, expect } from "vitest";
 import { buildJsonLd } from "./jsonLd";
 import { prerenderRoutes, ORIGIN } from "./routeMeta";
