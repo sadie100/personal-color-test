@@ -53,6 +53,33 @@ export const About = ({ lang, onStart, onTypes }: AboutProps) => {
           </p>
         </section>
 
+        <section
+          id="importance"
+          className="border-hairline bg-surface rounded-2xl border p-6 md:p-10"
+        >
+          <h2 className="font-display text-ink mb-6 text-2xl md:text-3xl">
+            {t.about.importance.title}
+          </h2>
+          <div className="space-y-6">
+            {t.about.importance.items.map((item, index) => (
+              <div key={`importance-${index}`}>
+                <h3 className="text-ink mb-1 flex items-center gap-2 text-base font-semibold md:text-lg">
+                  <span className="text-ink-3" aria-hidden>
+                    ◉
+                  </span>
+                  {item.title}
+                </h3>
+                <p className="text-ink-2 pl-6 text-sm leading-relaxed break-keep md:text-base">
+                  {item.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+          <p className="text-ink-3 mt-8 text-sm leading-relaxed break-keep md:text-base">
+            ✻ {t.about.importance.footnote}
+          </p>
+        </section>
+
         <section id="pccs" className="border-hairline bg-surface rounded-2xl border p-6 md:p-10">
           <h2 className="font-display text-ink mb-6 text-2xl md:text-3xl">{t.about.pccs.title}</h2>
           <div className="mb-6 flex justify-center">

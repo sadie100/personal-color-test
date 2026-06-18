@@ -168,6 +168,29 @@ const ko: TranslationSchema = {
       title: "퍼스널 컬러란?",
       desc: "퍼스널 컬러란 개인이 타고난 피부, 모발, 눈동자의 색과 조화를 이루어 그 사람을 가장 매력적으로 보이게 하는 색을 말합니다. 단순히 좋아하는 색이나 유행하는 색이 아니라, 자신을 돋보이게 하는 최적의 색을 가리킵니다.",
     },
+    importance: {
+      title: "퍼스널 컬러의 중요성",
+      items: [
+        {
+          title: "이미지 향상 효과",
+          desc: "피부 톤을 화사하게 보정하고, 얼굴 윤곽을 또렷하게 보이게 하며, 인상을 긍정적으로 변화시킵니다.",
+        },
+        {
+          title: "패션·뷰티 활용",
+          desc: "의상, 메이크업, 헤어 컬러, 액세서리 선택에서 본인에게 맞는 색을 활용하면 스타일링의 완성도가 높아집니다.",
+        },
+        {
+          title: "심리적·사회적 효과",
+          desc: "자신감을 높이고, 대인관계나 사회적 상황에서 긍정적인 첫인상을 만들어 줍니다.",
+        },
+        {
+          title: "소비 트렌드 반영",
+          desc: "현대 뷰티·패션 산업에서는 맞춤형 소비가 확대되면서 퍼스널 컬러가 브랜딩, 마케팅 요소로 활용됩니다.",
+        },
+      ],
+      footnote:
+        "퍼스널 컬러는 단순히 미적인 기준을 넘어, 개인의 이미지와 정체성을 강화하는 도구로 자리잡았습니다.",
+    },
     pccs: {
       title: "PCCS 톤 시스템",
       desc: "PCCS(Practical Color Co-ordinate System)는 색상을 명도(Lightness)와 채도(Saturation) 두 축으로 분류하는 시스템입니다. 위 도표에서 세로축은 명도를, 가로축은 채도를 나타냅니다. 같은 색상이라도 명도와 채도에 따라 전혀 다른 느낌을 주며, 이것이 퍼스널 컬러 진단의 핵심 원리입니다.",
@@ -221,10 +244,6 @@ const ko: TranslationSchema = {
     faq: {
       title: "자주 묻는 질문",
       items: [
-        {
-          q: "퍼스널 컬러란 무엇인가요?",
-          a: "퍼스널 컬러는 개인의 피부톤, 눈동자 색, 머리카락 색과 가장 잘 어우러지는 색상 팔레트를 말합니다. 퍼스널 컬러에 맞는 색상을 활용하면 피부가 더 화사하고 건강해 보이는 효과가 있습니다.",
-        },
         {
           q: "자가진단은 정확한가요?",
           a: "이 테스트는 한국분장예술인협회 2급 커리큘럼 이론의 컬러칩을 바탕으로 사용자가 직접 자신의 얼굴에 맞는 색상을 고르는 테스트입니다. 자가진단이므로 전문가의 1:1 대면 진단을 완전히 대체할 수는 없습니다.",
@@ -595,6 +614,29 @@ const en: TranslationSchema = {
     whatIs: {
       title: "What is Personal Color?",
       desc: "Personal color refers to the colors that harmonize with your natural skin, hair, and eye color to make you look your most attractive. It's not simply the colors you like or what's trendy — it's the optimal set of colors that makes you stand out.",
+    },
+    importance: {
+      title: "Why Personal Color Matters",
+      items: [
+        {
+          title: "Enhanced Image",
+          desc: "Brightens your skin tone, sharpens facial contours, and creates a more positive overall impression.",
+        },
+        {
+          title: "Fashion & Beauty",
+          desc: "Using colors that suit you in clothing, makeup, hair color, and accessories raises the polish of your styling.",
+        },
+        {
+          title: "Psychological & Social Effects",
+          desc: "Boosts your confidence and helps you make a positive first impression in relationships and social situations.",
+        },
+        {
+          title: "Reflecting Consumer Trends",
+          desc: "As personalized consumption grows in the modern beauty and fashion industry, personal color is increasingly used as a branding and marketing element.",
+        },
+      ],
+      footnote:
+        "Personal color has grown beyond a purely aesthetic standard into a tool for reinforcing one's image and identity.",
     },
     pccs: {
       title: "PCCS Tone System",

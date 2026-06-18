@@ -269,6 +269,12 @@ export interface AboutPccsCopy extends AboutSectionCopy {
   imageAlt: string;
 }
 
+export interface AboutImportanceCopy {
+  title: string;
+  items: AboutSectionCopy[];
+  footnote: string;
+}
+
 export interface AboutSeasonsCopy {
   title: string;
   spring: AboutSectionCopy;
@@ -307,6 +313,7 @@ export interface AboutNamespace {
   title: string;
   intro: string;
   whatIs: AboutSectionCopy;
+  importance: AboutImportanceCopy;
   pccs: AboutPccsCopy;
   seasons: AboutSeasonsCopy;
   tones: AboutTonesCopy;
