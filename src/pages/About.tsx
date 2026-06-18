@@ -182,7 +182,7 @@ export const About = ({ lang, onStart, onTypes }: AboutProps) => {
         </section>
 
         <section id="author" className="rounded-2xl border border-hairline bg-surface p-6 md:p-10">
-          <h2 className="mb-3 font-display text-xl text-ink md:text-2xl">{t.about.bio.title}</h2>
+          <h2 className="mb-3 font-display font-semibold text-xl text-ink md:text-2xl">{t.about.bio.title}</h2>
           <p className="text-sm leading-relaxed break-keep text-ink-2">{t.about.bio.text}</p>
         </section>
 

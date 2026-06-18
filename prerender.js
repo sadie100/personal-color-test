@@ -19,6 +19,16 @@ const esc = (s) =>
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
 
+const escJsonLd = (obj) => {
+  const json = JSON.stringify(obj);
+  return json
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026")
+    .replace(new RegExp(String.fromCharCode(0x2028), "g"), "\\u2028")
+    .replace(new RegExp(String.fromCharCode(0x2029), "g"), "\\u2029");
+};
+
 const applyMeta = ({ title, description }) => (html) => {
   const t = esc(title);
   const d = esc(description);
@@ -53,7 +63,7 @@ for (const route of prerenderRoutes) {
   html = applyMeta(route)(html);
   html = html.replace("</head>", `${headLinks(route)}\n  </head>`);
   const ld = buildJsonLd(route);
-  const ldScript = `    <script type="application/ld+json">${JSON.stringify(ld)}</script>`;
+  const ldScript = `    <script type="application/ld+json">${escJsonLd(ld)}</script>`;
   html = html.replace("</head>", `${ldScript}\n  </head>`);
   if (route.lang === "en") {
     html = html.replace('<html lang="ko">', '<html lang="en">');
