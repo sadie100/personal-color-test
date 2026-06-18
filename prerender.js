@@ -33,6 +33,7 @@ const applyMeta = ({ title, description }) => (html) => {
 const headLinks = ({ url, lang, alternates }) =>
   [
     `<link rel="canonical" href="${ORIGIN}${url}" />`,
+    `<meta property="og:url" content="${ORIGIN}${url}" />`,
     `<link rel="alternate" hreflang="ko" href="${ORIGIN}${alternates.ko}" />`,
     `<link rel="alternate" hreflang="en" href="${ORIGIN}${alternates.en}" />`,
     `<link rel="alternate" hreflang="x-default" href="${ORIGIN}${alternates.ko}" />`,
