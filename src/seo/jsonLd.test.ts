@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- tests assert against loosely-typed schema.org JSON-LD objects */
 import { describe, it, expect } from "vitest";
 import { buildJsonLd } from "./jsonLd";
 import { prerenderRoutes, ORIGIN } from "./routeMeta";
