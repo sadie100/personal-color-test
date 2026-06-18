@@ -85,6 +85,22 @@ const sitemap = [
 ].join("\n");
 writeFileSync(resolve(dist, "sitemap.xml"), sitemap, "utf-8");
 
+// Generate llms-full.txt: a single-fetch overview of every page's title + description.
+const llmsFull = [
+  "# Personal Color Self Test — Full Page Index",
+  "",
+  ...prerenderRoutes.map((route) =>
+    [
+      `## ${ORIGIN}${route.url}`,
+      `Title: ${route.title}`,
+      `Description: ${route.description}`,
+      "",
+    ].join("\n"),
+  ),
+].join("\n");
+writeFileSync(resolve(dist, "llms-full.txt"), llmsFull, "utf-8");
+console.log("wrote dist/llms-full.txt");
+
 // The SSR bundle is only needed during prerendering — drop it from the deployed output.
 rmSync(resolve(dist, "server"), { recursive: true, force: true });
 
