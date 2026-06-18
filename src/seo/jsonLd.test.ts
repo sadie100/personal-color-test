@@ -2,6 +2,7 @@
 import { describe, it, expect } from "vitest";
 import { buildJsonLd } from "./jsonLd";
 import { prerenderRoutes, ORIGIN } from "./routeMeta";
+import { translations } from "../i18n/translations";
 
 const routeFor = (url: string) => prerenderRoutes.find((r) => r.url === url)!;
 
@@ -48,5 +49,15 @@ describe("buildJsonLd", () => {
       alternates: { ko: "/bogus", en: "/en/bogus" },
     } as any;
     expect(buildJsonLd(fake)).toEqual([]);
+  });
+
+  it("/about emits a FAQPage block with mainEntity Questions matching translations", () => {
+    const blocks = buildJsonLd(routeFor("/about")) as any[];
+    const faq = blocks.find((b) => b["@type"] === "FAQPage");
+    expect(faq).toBeDefined();
+    const expectedCount = translations.ko.about.faq.items.length;
+    expect(faq.mainEntity).toHaveLength(expectedCount);
+    expect(faq.mainEntity[0]["@type"]).toBe("Question");
+    expect(faq.mainEntity[0].acceptedAnswer["@type"]).toBe("Answer");
   });
 });

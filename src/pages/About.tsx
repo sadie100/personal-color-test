@@ -169,6 +169,18 @@ export const About = ({ lang, onStart, onTypes }: AboutProps) => {
           </div>
         </section>
 
+        <section className="rounded-2xl border border-hairline bg-surface p-6 md:p-10">
+          <h2 className="mb-6 font-display text-2xl text-ink md:text-3xl">{t.about.faq.title}</h2>
+          <div className="space-y-6">
+            {t.about.faq.items.map((item, index) => (
+              <div key={`faq-${index}`}>
+                <h3 className="mb-2 font-display text-base font-semibold text-ink">{item.q}</h3>
+                <p className="text-sm leading-relaxed break-keep text-ink-2">{item.a}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <section className="rounded-2xl border border-hairline bg-surface p-8 text-center md:p-12">
           <h2 className="mb-4 font-display text-2xl text-ink md:text-3xl">{t.about.cta}</h2>
           <button

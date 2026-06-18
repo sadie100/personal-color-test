@@ -70,6 +70,18 @@ export function buildJsonLd(route: PrerenderRoute): object[] {
         publisher: pub,
         speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "h2"] },
       },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": `${abs("/about")}#faq`,
+        url: abs("/about"),
+        inLanguage: lang,
+        mainEntity: t.about.faq.items.map((item) => ({
+          "@type": "Question",
+          name: item.q,
+          acceptedAnswer: { "@type": "Answer", text: item.a },
+        })),
+      },
     ];
   }
 

@@ -292,6 +292,16 @@ export interface AboutHowItWorksCopy {
   step3: string;
 }
 
+export interface AboutFaqItem {
+  q: string;
+  a: string;
+}
+
+export interface AboutFaqCopy {
+  title: string;
+  items: AboutFaqItem[];
+}
+
 export interface AboutNamespace {
   title: string;
   intro: string;
@@ -300,6 +310,7 @@ export interface AboutNamespace {
   seasons: AboutSeasonsCopy;
   tones: AboutTonesCopy;
   howItWorks: AboutHowItWorksCopy;
+  faq: AboutFaqCopy;
   cta: string;
 }
 
