@@ -4,9 +4,9 @@ import { colorTypeSlugs } from "../utils/colorTypeSlug";
 import { localizePath } from "../utils/localizePath";
 import { ORIGIN, type PrerenderRoute } from "./routeMeta";
 
-// Author identity — fill from user input (Tier 4). Handle is fine; never claim a credential.
-const AUTHOR_NAME = "Personal Color Self Test"; // [REPLACE with name/handle once provided]
-const AUTHOR_SAMEAS: string[] = []; // [REPLACE with real profile URLs, or leave empty]
+// Author identity — personal project by Sadie Kim; references KMUA theory, no credential claimed.
+const AUTHOR_NAME = "Sadie Kim";
+const AUTHOR_SAMEAS: string[] = [];
 
 const publisher = (lang: "ko" | "en") => ({
   "@type": "Person",
