@@ -7,6 +7,7 @@ import { colorTypeMetas } from "../data/colorTypeMeta";
 import { translations } from "../i18n/translations";
 import type { Color, ColorTypeSlug, Lang } from "../types";
 import { colorTypeSlugs, fromSlug } from "../utils/colorTypeSlug";
+import { localizePath } from "../utils/localizePath";
 
 interface ColorTypeDetailProps {
   lang: Lang;
@@ -44,7 +45,7 @@ export const ColorTypeDetail = ({ lang }: ColorTypeDetailProps) => {
   const palette = useMemo(() => (slug ? colorData[colorTypeMetas[slug].type] : []), [slug]);
 
   if (!slug) {
-    return <Navigate to="/types" replace />;
+    return <Navigate to={localizePath(lang, "/types")} replace />;
   }
 
   const meta = colorTypeMetas[slug];
@@ -64,7 +65,7 @@ export const ColorTypeDetail = ({ lang }: ColorTypeDetailProps) => {
         <div className="page-container flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div>
             <Link
-              to="/types"
+              to={localizePath(lang, "/types")}
               className="inline-flex text-xs font-semibold tracking-wide uppercase text-ink-3 transition-colors hover:text-ink"
             >
               {detailCopy.backToList}
@@ -181,7 +182,7 @@ export const ColorTypeDetail = ({ lang }: ColorTypeDetailProps) => {
 
         <nav aria-label={detailCopy.backToList} className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <Link
-            to={`/types/${prev}`}
+            to={localizePath(lang, `/types/${prev}`)}
             className={[
               "flex items-center justify-between gap-3 rounded-2xl border bg-surface p-4 transition-all",
               "hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink",
@@ -202,7 +203,7 @@ export const ColorTypeDetail = ({ lang }: ColorTypeDetailProps) => {
             />
           </Link>
           <Link
-            to={`/types/${next}`}
+            to={localizePath(lang, `/types/${next}`)}
             className={[
               "flex items-center justify-between gap-3 rounded-2xl border bg-surface p-4 transition-all",
               "hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink",

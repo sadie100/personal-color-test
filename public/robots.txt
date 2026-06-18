@@ -6,5 +6,7 @@ Allow: /
 # Exclude per-user / interactive pages from indexing
 Disallow: /results
 Disallow: /test
+Disallow: /en/results
+Disallow: /en/test
 
 Sitemap: https://personal-color.dev/sitemap.xml

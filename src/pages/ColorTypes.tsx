@@ -4,6 +4,7 @@ import { colorData } from "../data/colorData";
 import { colorTypeMetas, seasonSlugGroups } from "../data/colorTypeMeta";
 import { translations } from "../i18n/translations";
 import type { ColorTypeSlug, Lang } from "../types";
+import { localizePath } from "../utils/localizePath";
 
 interface ColorTypesProps {
   lang: Lang;
@@ -24,7 +25,7 @@ const TypeCard = ({ slug, lang }: TypeCardProps) => {
   return (
     <li>
       <Link
-        to={`/types/${slug}`}
+        to={localizePath(lang, `/types/${slug}`)}
         className={[
           "group flex h-full flex-col overflow-hidden rounded-3xl border border-hairline bg-surface shadow-sm transition-all",
           "hover:-translate-y-0.5 hover:shadow-lg focus-visible:-translate-y-0.5 focus-visible:shadow-lg",

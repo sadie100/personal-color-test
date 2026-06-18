@@ -6,7 +6,10 @@
   "packageManager": "pnpm@10.7.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && vite build --ssr src/entry-server.tsx --outDir dist/server && node prerender.js",
+    "build:client": "vite build",
+    "build:ssr": "vite build --ssr src/entry-server.tsx --outDir dist/server",
+    "prerender": "node prerender.js",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
     "lint": "eslint .",
