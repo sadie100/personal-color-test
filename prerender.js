@@ -4,6 +4,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const dist = resolve(__dirname, "dist");
+const BUILD_DATE = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
 
 const { render, prerenderRoutes, ORIGIN } = await import(
   pathToFileURL(resolve(dist, "server/entry-server.js")).href
@@ -69,6 +70,7 @@ const sitemap = [
     [
       "  <url>",
       `    <loc>${ORIGIN}${route.url}</loc>`,
+      `    <lastmod>${BUILD_DATE}</lastmod>`,
       `    <xhtml:link rel="alternate" hreflang="ko" href="${ORIGIN}${route.alternates.ko}" />`,
       `    <xhtml:link rel="alternate" hreflang="en" href="${ORIGIN}${route.alternates.en}" />`,
       `    <xhtml:link rel="alternate" hreflang="x-default" href="${ORIGIN}${route.alternates.ko}" />`,
