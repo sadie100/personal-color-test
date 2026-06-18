@@ -15,7 +15,7 @@ interface TestSetupProps {
 export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProps) => {
   const t = translations[lang];
   const [selectedMode, setSelectedMode] = useState<TestMode>("detailed");
-  const [selectedDisplay, setSelectedDisplay] = useState<TestDisplayMode>("chip");
+  const [selectedDisplay, setSelectedDisplay] = useState<TestDisplayMode>("camera");
 
   const displayOptions: Array<{
     value: TestDisplayMode;
@@ -23,14 +23,14 @@ export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProp
     description: string;
   }> = [
     {
-      value: "chip",
-      label: t.test.display.chip.label,
-      description: t.test.display.chip.description,
-    },
-    {
       value: "camera",
       label: t.test.display.camera.label,
       description: t.test.display.camera.description,
+    },
+    {
+      value: "chip",
+      label: t.test.display.chip.label,
+      description: t.test.display.chip.description,
     },
   ];
 
@@ -60,11 +60,11 @@ export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProp
   ];
 
   return (
-    <div className="relative min-h-screen w-full bg-paper px-4 py-6 text-ink sm:px-6">
+    <div className="bg-paper text-ink relative min-h-screen w-full px-4 py-6 sm:px-6">
       <div className="absolute top-4 right-4 left-4 flex items-center justify-between gap-2">
         <button
           onClick={onHome}
-          className="rounded-lg border border-hairline bg-surface px-4 py-2 text-sm font-semibold text-ink transition hover:bg-hairline/40 active:scale-95"
+          className="border-hairline bg-surface text-ink hover:bg-hairline/40 rounded-lg border px-4 py-2 text-sm font-semibold transition active:scale-95"
         >
           {t.test.home}
         </button>
@@ -72,20 +72,20 @@ export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProp
       </div>
 
       <div className="mx-auto flex min-h-[calc(100vh-3rem)] w-full max-w-3xl items-center justify-center pt-16">
-        <div className="w-full rounded-3xl border border-hairline bg-surface p-6 sm:p-8">
+        <div className="border-hairline bg-surface w-full rounded-3xl border p-6 sm:p-8">
           <div className="mb-8">
-            <h1 className="font-display text-3xl text-ink sm:text-4xl">{t.test.setup.title}</h1>
-            <p className="mt-3 text-sm text-ink-2 sm:text-base">{t.test.setup.description}</p>
+            <h1 className="font-display text-ink text-3xl sm:text-4xl">{t.test.setup.title}</h1>
+            <p className="text-ink-2 mt-3 text-sm sm:text-base">{t.test.setup.description}</p>
           </div>
 
           <div className="mb-6">
-            <h2 className="mb-3 text-sm font-semibold tracking-wide text-ink-3 uppercase">
+            <h2 className="text-ink-3 mb-3 text-sm font-semibold tracking-wide uppercase">
               {t.test.display.title}
             </h2>
             <div
               role="radiogroup"
               aria-label={t.test.display.title}
-              className="grid grid-cols-2 gap-2 rounded-2xl border border-hairline bg-paper p-1.5"
+              className="border-hairline bg-paper grid grid-cols-2 gap-2 rounded-2xl border p-1.5"
             >
               {displayOptions.map((option) => {
                 const isSelected = selectedDisplay === option.value;
@@ -97,9 +97,7 @@ export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProp
                     aria-checked={isSelected}
                     onClick={() => setSelectedDisplay(option.value)}
                     className={`rounded-xl px-3 py-2.5 text-center transition ${
-                      isSelected
-                        ? "bg-accent text-accent-fg"
-                        : "text-ink-2 hover:bg-hairline/40"
+                      isSelected ? "bg-accent text-accent-fg" : "text-ink-2 hover:bg-hairline/40"
                     }`}
                   >
                     <span className="block text-sm font-semibold">{option.label}</span>
@@ -142,15 +140,15 @@ export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProp
                     ].join(" ")}
                   >
                     <span className="flex items-center gap-2">
-                      <span className="block text-lg font-semibold text-ink">{card.title}</span>
+                      <span className="text-ink block text-lg font-semibold">{card.title}</span>
                       {isRecommended && (
-                        <span className="rounded-full bg-accent px-2.5 py-0.5 text-xs font-bold text-accent-fg">
+                        <span className="bg-accent text-accent-fg rounded-full px-2.5 py-0.5 text-xs font-bold">
                           {card.recommended}
                         </span>
                       )}
                     </span>
-                    <span className="mt-2 block text-sm text-ink-2">{card.description}</span>
-                    <span className="mt-4 inline-flex rounded-full border border-hairline px-3 py-1 text-xs font-semibold text-ink-3">
+                    <span className="text-ink-2 mt-2 block text-sm">{card.description}</span>
+                    <span className="border-hairline text-ink-3 mt-4 inline-flex rounded-full border px-3 py-1 text-xs font-semibold">
                       {card.countLabel}
                     </span>
                   </button>
@@ -161,12 +159,12 @@ export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProp
 
           <section
             aria-label={t.test.setup.howTo.title}
-            className="mt-6 rounded-2xl border border-hairline bg-paper p-4 sm:p-5"
+            className="border-hairline bg-paper mt-6 rounded-2xl border p-4 sm:p-5"
           >
-            <h3 className="text-sm font-semibold tracking-wide text-ink-3 uppercase">
+            <h3 className="text-ink-3 text-sm font-semibold tracking-wide uppercase">
               {t.test.setup.howTo.title}
             </h3>
-            <ul className="mt-3 space-y-2.5 text-sm leading-relaxed text-ink-2">
+            <ul className="text-ink-2 mt-3 space-y-2.5 text-sm leading-relaxed">
               <li className="flex gap-3">
                 <span aria-hidden className="mt-0.5 text-base">
                   ↔
@@ -190,7 +188,7 @@ export const TestSetup = ({ lang, onToggleLang, onHome, onStart }: TestSetupProp
                 displayMode: selectedDisplay,
               })
             }
-            className="mt-6 w-full rounded-lg bg-accent px-6 py-4 text-base font-bold text-accent-fg transition hover:opacity-90 active:scale-95"
+            className="bg-accent text-accent-fg mt-6 w-full rounded-lg px-6 py-4 text-base font-bold transition hover:opacity-90 active:scale-95"
           >
             {t.test.mode.startSelected}
           </button>
