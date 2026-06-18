@@ -360,6 +360,7 @@ export interface TypeDetailCopy {
   prev: string;
   next: string;
   backToList: string;
+  learnAboutToneSystem: string;
   heroMetaSeason: (season: string) => string;
   heroMetaBase: (base: string) => string;
   heroMetaTone: (tone: string) => string;

@@ -47,7 +47,7 @@ export const About = ({ lang, onStart, onTypes }: AboutProps) => {
       </section>
 
       <div className="page-container space-y-16 px-4 py-12">
-        <section className="rounded-2xl border border-hairline bg-surface p-6 md:p-10">
+        <section id="what-is" className="rounded-2xl border border-hairline bg-surface p-6 md:p-10">
           <h2 className="mb-4 font-display text-2xl text-ink md:text-3xl">
             {t.about.whatIs.title}
           </h2>
@@ -56,7 +56,7 @@ export const About = ({ lang, onStart, onTypes }: AboutProps) => {
           </p>
         </section>
 
-        <section className="rounded-2xl border border-hairline bg-surface p-6 md:p-10">
+        <section id="pccs" className="rounded-2xl border border-hairline bg-surface p-6 md:p-10">
           <h2 className="mb-6 font-display text-2xl text-ink md:text-3xl">
             {t.about.pccs.title}
           </h2>
@@ -72,7 +72,7 @@ export const About = ({ lang, onStart, onTypes }: AboutProps) => {
           </p>
         </section>
 
-        <section>
+        <section id="seasons">
           <h2 className="mb-8 font-display text-2xl text-ink md:text-3xl">
             {t.about.seasons.title}
           </h2>
@@ -119,7 +119,7 @@ export const About = ({ lang, onStart, onTypes }: AboutProps) => {
           </div>
         </section>
 
-        <section>
+        <section id="tones">
           <h2 className="mb-8 font-display text-2xl text-ink md:text-3xl">
             {t.about.tones.title}
           </h2>
