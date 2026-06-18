@@ -1,4 +1,5 @@
 import pccsImage from "../assets/pccs_tone_map.jpg";
+import pccsCategorizeImage from "../assets/pccs_tone_map_categorize.png";
 import { colorData } from "../data/colorData";
 import { translations } from "../i18n/translations";
 import type { AboutSeasonSlug, AboutToneSlug, Lang, PersonalColorType } from "../types";
@@ -38,42 +39,72 @@ export const About = ({ lang, onStart, onTypes }: AboutProps) => {
   const t = translations[lang];
 
   return (
-    <div className="min-h-screen w-full bg-paper pt-16">
-      <section className="page-container px-4 py-16">
-        <h1 className="font-display text-4xl text-ink md:text-5xl">{t.about.title}</h1>
-        <p className="mt-4 max-w-2xl text-base leading-relaxed break-keep text-ink-2 md:text-lg">
-          {t.about.intro}
-        </p>
+    <div className="bg-paper min-h-screen w-full pt-16">
+      <section className="page-container px-4 pt-16">
+        <h1 className="font-display text-ink text-4xl md:text-5xl">{t.about.title}</h1>
       </section>
 
       <div className="page-container space-y-16 px-4 py-12">
-        <section className="rounded-2xl border border-hairline bg-surface p-6 md:p-10">
-          <h2 className="mb-4 font-display text-2xl text-ink md:text-3xl">
+        <section id="what-is" className="border-hairline bg-surface rounded-2xl border p-6 md:p-10">
+          <h2 className="font-display text-ink mb-4 text-2xl md:text-3xl">
             {t.about.whatIs.title}
           </h2>
-          <p className="text-base leading-relaxed break-keep text-ink-2 md:text-lg">
+          <p className="text-ink-2 text-base leading-relaxed break-keep md:text-lg">
             {t.about.whatIs.desc}
           </p>
         </section>
 
-        <section className="rounded-2xl border border-hairline bg-surface p-6 md:p-10">
-          <h2 className="mb-6 font-display text-2xl text-ink md:text-3xl">
-            {t.about.pccs.title}
+        <section
+          id="importance"
+          className="border-hairline bg-surface rounded-2xl border p-6 md:p-10"
+        >
+          <h2 className="font-display text-ink mb-6 text-2xl md:text-3xl">
+            {t.about.importance.title}
           </h2>
-          <div className="mb-6 flex justify-center">
-            <img
-              src={pccsImage}
-              alt={t.about.pccs.imageAlt}
-              className="max-w-full rounded-xl border border-hairline md:max-w-lg"
-            />
+          <div className="space-y-6">
+            {t.about.importance.items.map((item, index) => (
+              <div key={`importance-${index}`}>
+                <h3 className="text-ink mb-1 flex items-center gap-2 text-base font-semibold md:text-lg">
+                  <span className="text-ink-3" aria-hidden>
+                    ◉
+                  </span>
+                  {item.title}
+                </h3>
+                <p className="text-ink-2 pl-6 text-sm leading-relaxed break-keep md:text-base">
+                  {item.desc}
+                </p>
+              </div>
+            ))}
           </div>
-          <p className="text-base leading-relaxed break-keep text-ink-2 md:text-lg">
-            {t.about.pccs.desc}
+          <p className="text-ink-3 mt-8 text-sm leading-relaxed break-keep md:text-base">
+            ✻ {t.about.importance.footnote}
           </p>
         </section>
 
-        <section>
-          <h2 className="mb-8 font-display text-2xl text-ink md:text-3xl">
+        <section id="pccs" className="border-hairline bg-surface rounded-2xl border p-6 md:p-10">
+          <h2 className="font-display text-ink mb-6 text-2xl md:text-3xl">{t.about.pccs.title}</h2>
+          <div className="mb-6 flex flex-col items-center justify-center gap-4 md:flex-row md:items-start">
+            <img
+              src={pccsImage}
+              alt={t.about.pccs.imageAlt}
+              className="border-hairline max-w-full rounded-xl border md:max-w-sm"
+            />
+            <img
+              src={pccsCategorizeImage}
+              alt={t.about.pccs.imageAlt2}
+              className="border-hairline max-w-full rounded-xl border md:max-w-sm"
+            />
+          </div>
+          <p className="text-ink-2 text-base leading-relaxed break-keep md:text-lg">
+            {t.about.pccs.desc}
+          </p>
+          <p className="text-ink-2 mt-4 text-base leading-relaxed break-keep md:text-lg">
+            {t.about.pccs.desc2}
+          </p>
+        </section>
+
+        <section id="seasons">
+          <h2 className="font-display text-ink mb-8 text-2xl md:text-3xl">
             {t.about.seasons.title}
           </h2>
           <div className="space-y-12">
@@ -82,12 +113,12 @@ export const About = ({ lang, onStart, onTypes }: AboutProps) => {
               const copy = t.about.seasons[season.slug];
               return (
                 <article key={season.slug}>
-                  <h3 className="font-display text-3xl text-ink md:text-4xl">{copy.title}</h3>
-                  <p className="mt-2 max-w-2xl text-sm leading-relaxed break-keep text-ink-2 md:text-base">
+                  <h3 className="font-display text-ink text-3xl md:text-4xl">{copy.title}</h3>
+                  <p className="text-ink-2 mt-2 max-w-3xl text-sm leading-relaxed break-keep md:text-base">
                     {copy.desc}
                   </p>
                   <div
-                    className="mt-4 flex h-16 w-full overflow-hidden rounded-2xl border border-hairline md:h-20"
+                    className="border-hairline mt-4 flex h-16 w-full overflow-hidden rounded-2xl border md:h-20"
                     aria-hidden
                   >
                     {chips.map((color, index) => (
@@ -106,42 +137,34 @@ export const About = ({ lang, onStart, onTypes }: AboutProps) => {
           <div className="mt-8 text-right">
             <button
               onClick={onTypes}
-              className="group inline-flex cursor-pointer items-center gap-2 rounded-lg border border-hairline bg-surface px-5 py-3 text-sm font-medium text-ink transition-colors hover:bg-hairline/40"
+              className="group border-hairline bg-surface text-ink hover:bg-hairline/40 inline-flex cursor-pointer items-center gap-2 rounded-lg border px-5 py-3 text-sm font-medium transition-colors"
             >
               {t.about.seasons.seeAllTypes}
-              <span
-                className="transition-transform group-hover:translate-x-0.5"
-                aria-hidden
-              >
+              <span className="transition-transform group-hover:translate-x-0.5" aria-hidden>
                 →
               </span>
             </button>
           </div>
         </section>
 
-        <section>
-          <h2 className="mb-8 font-display text-2xl text-ink md:text-3xl">
-            {t.about.tones.title}
-          </h2>
+        <section id="tones">
+          <h2 className="font-display text-ink mb-8 text-2xl md:text-3xl">{t.about.tones.title}</h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {toneItems.map((tone) => {
               const copy = t.about.tones[tone.slug];
               const swatches = colorData[tone.sampleKey].slice(0, 4);
               return (
-                <div
-                  key={tone.slug}
-                  className="rounded-2xl border border-hairline bg-surface p-6"
-                >
-                  <div className="mb-2 text-2xl text-ink-3" aria-hidden>
+                <div key={tone.slug} className="border-hairline bg-surface rounded-2xl border p-6">
+                  <div className="text-ink-3 mb-2 text-2xl" aria-hidden>
                     {tone.icon}
                   </div>
-                  <h3 className="mb-2 font-display text-lg text-ink">{copy.title}</h3>
-                  <p className="text-sm leading-relaxed break-keep text-ink-2">{copy.desc}</p>
+                  <h3 className="font-display text-ink mb-2 text-lg">{copy.title}</h3>
+                  <p className="text-ink-2 text-sm leading-relaxed break-keep">{copy.desc}</p>
                   <div className="mt-3 flex gap-1.5" aria-hidden>
                     {swatches.map((color, index) => (
                       <span
                         key={`${tone.slug}-${color.hex}-${index}`}
-                        className="h-8 w-8 rounded-full border border-hairline"
+                        className="border-hairline h-8 w-8 rounded-full border"
                         style={{ backgroundColor: color.hex }}
                         title={color.name}
                       />
@@ -153,27 +176,41 @@ export const About = ({ lang, onStart, onTypes }: AboutProps) => {
           </div>
         </section>
 
-        <section className="rounded-2xl border border-hairline bg-surface p-6 md:p-10">
-          <h2 className="mb-6 font-display text-2xl text-ink md:text-3xl">
+        <section className="border-hairline bg-surface rounded-2xl border p-6 md:p-10">
+          <h2 className="font-display text-ink mb-6 text-2xl md:text-3xl">
             {t.about.howItWorks.title}
           </h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            {[t.about.howItWorks.step1, t.about.howItWorks.step2, t.about.howItWorks.step3].map((step, index) => (
-              <div key={`step-${index}`} className="flex gap-3">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent font-display text-lg text-accent-fg">
-                  {index + 1}
+            {[t.about.howItWorks.step1, t.about.howItWorks.step2, t.about.howItWorks.step3].map(
+              (step, index) => (
+                <div key={`step-${index}`} className="flex gap-3">
+                  <div className="bg-accent font-display text-accent-fg flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-lg">
+                    {index + 1}
+                  </div>
+                  <p className="text-ink-2 pt-1 text-sm leading-relaxed break-keep">{step}</p>
                 </div>
-                <p className="pt-1 text-sm leading-relaxed break-keep text-ink-2">{step}</p>
+              ),
+            )}
+          </div>
+        </section>
+
+        <section className="border-hairline bg-surface rounded-2xl border p-6 md:p-10">
+          <h2 className="font-display text-ink mb-6 text-2xl md:text-3xl">{t.about.faq.title}</h2>
+          <div className="space-y-6">
+            {t.about.faq.items.map((item, index) => (
+              <div key={`faq-${index}`}>
+                <h3 className="font-display text-ink mb-2 text-base font-semibold">{item.q}</h3>
+                <p className="text-ink-2 text-sm leading-relaxed break-keep">{item.a}</p>
               </div>
             ))}
           </div>
         </section>
 
-        <section className="rounded-2xl border border-hairline bg-surface p-8 text-center md:p-12">
-          <h2 className="mb-4 font-display text-2xl text-ink md:text-3xl">{t.about.cta}</h2>
+        <section className="border-hairline bg-surface rounded-2xl border p-8 text-center md:p-12">
+          <h2 className="font-display text-ink mb-4 text-2xl md:text-3xl">{t.about.cta}</h2>
           <button
             onClick={onStart}
-            className="cursor-pointer rounded-lg bg-accent px-8 py-4 text-base font-bold text-accent-fg transition-opacity hover:opacity-90 active:scale-95"
+            className="bg-accent text-accent-fg cursor-pointer rounded-lg px-8 py-4 text-base font-bold transition-opacity hover:opacity-90 active:scale-95"
           >
             {t.home.startButton}
           </button>

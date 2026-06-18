@@ -128,6 +128,14 @@ export const ColorTypeDetail = ({ lang }: ColorTypeDetailProps) => {
               className="sm:col-span-2"
             />
           </dl>
+          <p className="mt-4 text-sm text-ink-2">
+            <Link
+              to={`${localizePath(lang, "/about")}#pccs`}
+              className="text-ink-2 underline hover:text-ink"
+            >
+              {detailCopy.learnAboutToneSystem}
+            </Link>
+          </p>
         </section>
 
         <section aria-labelledby="keywords-heading">

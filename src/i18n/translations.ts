@@ -36,7 +36,8 @@ const ko: TranslationSchema = {
       description: "테스트 모드에 따라 보여드리는 컬러칩 구성이 달라집니다.",
       howTo: {
         title: "이렇게 진행돼요",
-        swipe: "한 장씩 넘기면서 좋아요 / 싫어요로 평가해요. 좌우 스와이프, ←/→ 키, ✕/♥ 버튼 모두 가능해요.",
+        swipe:
+          "한 장씩 넘기면서 좋아요 / 싫어요로 평가해요. 좌우 스와이프, ←/→ 키, ✕/♥ 버튼 모두 가능해요.",
         judge:
           "단순히 좋아하는 색이 아니라, 색을 얼굴 가까이에 댔을 때 피부에 생기가 돌고 명암이 자연스럽게 살아나는 색을 골라보세요.",
       },
@@ -165,30 +166,56 @@ const ko: TranslationSchema = {
       "퍼스널 컬러는 개인의 타고난 신체 색상(피부, 눈동자, 머리카락)과 가장 조화를 이루는 색상 팔레트를 찾는 컬러 분석 시스템입니다.",
     whatIs: {
       title: "퍼스널 컬러란?",
-      desc: "퍼스널 컬러 진단은 개인의 피부 톤, 눈동자 색, 머리카락 색 등 타고난 신체 색상을 분석하여 가장 잘 어울리는 색상 그룹을 찾아주는 것입니다. 자신에게 맞는 색상을 입으면 피부가 더 밝고 건강해 보이며, 맞지 않는 색상은 피부를 칙칙하게 만들 수 있습니다.",
+      desc: "퍼스널 컬러란 개인이 타고난 피부, 모발, 눈동자의 색과 조화를 이루어 그 사람을 가장 매력적으로 보이게 하는 색을 말합니다. 단순히 좋아하는 색이나 유행하는 색이 아니라, 자신을 돋보이게 하는 최적의 색을 가리킵니다.",
+    },
+    importance: {
+      title: "퍼스널 컬러의 중요성",
+      items: [
+        {
+          title: "이미지 향상 효과",
+          desc: "피부 톤을 화사하게 보정하고, 얼굴 윤곽을 또렷하게 보이게 하며, 인상을 긍정적으로 변화시킵니다.",
+        },
+        {
+          title: "패션·뷰티 활용",
+          desc: "의상, 메이크업, 헤어 컬러, 액세서리 선택에서 본인에게 맞는 색을 활용하면 스타일링의 완성도가 높아집니다.",
+        },
+        {
+          title: "심리적·사회적 효과",
+          desc: "자신감을 높이고, 대인관계나 사회적 상황에서 긍정적인 첫인상을 만들어 줍니다.",
+        },
+        {
+          title: "소비 트렌드 반영",
+          desc: "현대 뷰티·패션 산업에서는 맞춤형 소비가 확대되면서 퍼스널 컬러가 브랜딩, 마케팅 요소로 활용됩니다.",
+        },
+      ],
+      footnote:
+        "퍼스널 컬러는 단순히 미적인 기준을 넘어, 개인의 이미지와 정체성을 강화하는 도구로 자리잡았습니다.",
     },
     pccs: {
       title: "PCCS 톤 시스템",
       desc: "PCCS(Practical Color Co-ordinate System)는 색상을 명도(Lightness)와 채도(Saturation) 두 축으로 분류하는 시스템입니다. 위 도표에서 세로축은 명도를, 가로축은 채도를 나타냅니다. 같은 색상이라도 명도와 채도에 따라 전혀 다른 느낌을 주며, 이것이 퍼스널 컬러 진단의 핵심 원리입니다.",
+      desc2:
+        "세부 타입은 이 PCCS 톤을 기준으로 라이트·다크·브라이트·뮤트 네 가지로 나뉩니다. 라이트는 라이트·페일 톤, 다크는 딥·다크·다크그레이시 톤, 브라이트는 브라이트·비비드 톤, 뮤트는 소프트·라이트그레이시·그레이시·덜·스트롱 톤에 해당합니다. 이 세부 타입은 웜톤과 쿨톤, 봄·여름·가을·겨울의 사계절 체계로 분류되며, 개인의 피부, 모발, 눈동자 색과 조화를 이루는 색상 범위를 판단하는 기준이 됩니다.",
       imageAlt: "PCCS 톤 분류 도표 - 명도와 채도에 따른 색상 분류",
+      imageAlt2: "PCCS 톤맵 위에 라이트·브라이트·뮤트·다크 세부 타입 범위를 표시한 도표",
     },
     seasons: {
       title: "4계절 컬러 시스템",
       spring: {
         title: "봄 (Spring)",
-        desc: "따뜻하고 밝은 색감이 특징입니다. 복숭아색, 코럴, 밝은 노랑 등 화사하고 생기 있는 색상이 어울리며, 피부에 황금빛 웜톤을 가진 분들에게 잘 맞습니다.",
+        desc: "옐로우 베이스의 따뜻하고 밝은 색감이 특징입니다. 복숭아색, 코럴, 밝은 노랑 등 화사하고 생기 있는 색상이 어울리며, 피부에 은은하게 노란빛이 감돌며 따뜻한 인상을 줍니다.",
       },
       summer: {
         title: "여름 (Summer)",
-        desc: "차갑고 부드러운 색감이 특징입니다. 라벤더, 로즈핑크, 스카이블루 등 은은하고 우아한 파스텔 톤이 어울리며, 피부에 분홍빛 쿨톤을 가진 분들에게 잘 맞습니다.",
+        desc: "블루 베이스의 밝고 부드러운 색감이 특징입니다. 라벤더, 로즈핑크, 스카이블루 등 은은하고 우아한 파스텔 톤이 어울리며, 피부에 푸른 기운이 은은하게 감돌아 투명감이 있습니다.",
       },
       autumn: {
         title: "가을 (Autumn)",
-        desc: "따뜻하고 깊은 색감이 특징입니다. 테라코타, 올리브, 머스타드 등 자연에서 볼 수 있는 깊고 풍부한 색상이 어울리며, 피부에 따뜻한 올리브톤을 가진 분들에게 잘 맞습니다.",
+        desc: "옐로우 베이스의 따뜻하고 성숙한 색감이 특징입니다. 테라코타, 올리브, 머스타드 등 자연에서 볼 수 있는 깊이 있고 차분한 색상이 어울리며, 피부에 황금빛이 감돌아 따뜻하고 성숙한 분위기를 줍니다.",
       },
       winter: {
         title: "겨울 (Winter)",
-        desc: "차갑고 선명한 색감이 특징입니다. 순백, 블랙, 로열블루, 마젠타 등 강렬하고 대비가 뚜렷한 색상이 어울리며, 피부가 하얗거나 깊은 쿨톤을 가진 분들에게 잘 맞습니다.",
+        desc: "블루 베이스의 강렬하고 세련된 색감이 특징입니다. 순백, 블랙, 로열블루, 마젠타 등 강렬하고 대비가 뚜렷한 색상이 어울리며, 피부가 맑고 투명해 차갑고 세련된 인상을 줍니다.",
       },
       seeAllTypes: "8가지 타입 자세히 보기",
     },
@@ -213,11 +240,39 @@ const ko: TranslationSchema = {
     },
     howItWorks: {
       title: "테스트 방법",
-      step1: "다양한 색상을 풀스크린으로 감상합니다",
+      step1: "다양한 색상을 얼굴에 대보며 어울리는지 살펴봅니다",
       step2: "각 색상에 대해 좋아요 또는 싫어요로 평가합니다",
       step3: "선호하는 색상 패턴을 분석하여 당신의 퍼스널 컬러를 알려드립니다",
     },
+    faq: {
+      title: "자주 묻는 질문",
+      items: [
+        {
+          q: "자가진단은 정확한가요?",
+          a: "이 테스트는 한국분장예술인협회 2급 커리큘럼 이론의 컬러칩을 바탕으로 사용자가 직접 자신의 얼굴에 맞는 색상을 고르는 테스트입니다. 자가진단이므로 전문가의 1:1 대면 진단을 완전히 대체할 수는 없습니다.",
+        },
+        {
+          q: "전문 1:1 컨설팅과 무엇이 다른가요?",
+          a: "전문 컨설팅은 조명이 통제된 환경에서 숙련된 전문가가 판별합니다. 본 테스트는 디스플레이의 색감과 주변 조명에 따라 결과가 달라질 수 있으므로 참고용으로만 활용해 주세요.",
+        },
+        {
+          q: "조명이 결과에 영향을 주나요?",
+          a: "네, 화면 밝기와 주변 조명은 색상 인식에 영향을 줄 수 있습니다. 자연광이 드는 환경이나 색온도가 균일한 조명 아래에서 테스트하면 더 일관된 결과를 얻을 수 있습니다.",
+        },
+      ],
+    },
     cta: "지금 테스트 해보기",
+    bio: {
+      title: "만든 사람",
+      text: "이 사이트는 Sadie Kim이 한국분장예술인협회 퍼스널 컬러 2급 커리큘럼 이론을 학습·참고하여 만든 개인 프로젝트입니다.",
+    },
+  },
+  footer: {
+    disclaimer: "본 테스트는 스타일링 참고용이며 전문가의 1:1 진단을 대체하지 않습니다.",
+    privacy: "테스트는 브라우저에서만 동작하며 결과를 서버에 저장하지 않습니다.",
+    theory: "한국분장예술인협회 퍼스널 컬러 2급 커리큘럼 이론을 참고하여 설계했습니다.",
+    contact: { label: "문의", email: "03sadie@gmail.com" },
+    copyright: "© 2026 Sadie Kim",
   },
   styling: {
     title: "스타일링 가이드",
@@ -260,6 +315,7 @@ const ko: TranslationSchema = {
       prev: "이전 타입",
       next: "다음 타입",
       backToList: "← 타입 목록으로",
+      learnAboutToneSystem: "톤 이론 자세히 보기 →",
       heroMetaSeason: (season: string) => `계절 · ${season}`,
       heroMetaBase: (base: string) => `베이스 · ${base}`,
       heroMetaTone: (tone: string) => `세부톤 · ${tone}`,
@@ -560,30 +616,56 @@ const en: TranslationSchema = {
       "Personal color analysis is a color system that identifies the palette of colors that best harmonize with your natural body colors — skin tone, eye color, and hair color.",
     whatIs: {
       title: "What is Personal Color?",
-      desc: "Personal color diagnosis analyzes your natural body colors — skin tone, eye color, and hair color — to find the color group that suits you best. Wearing your right colors makes your skin look brighter and healthier, while wrong colors can make you look dull and tired.",
+      desc: "Personal color refers to the colors that harmonize with your natural skin, hair, and eye color to make you look your most attractive. It's not simply the colors you like or what's trendy — it's the optimal set of colors that makes you stand out.",
+    },
+    importance: {
+      title: "Why Personal Color Matters",
+      items: [
+        {
+          title: "Enhanced Image",
+          desc: "Brightens your skin tone, sharpens facial contours, and creates a more positive overall impression.",
+        },
+        {
+          title: "Fashion & Beauty",
+          desc: "Using colors that suit you in clothing, makeup, hair color, and accessories raises the polish of your styling.",
+        },
+        {
+          title: "Psychological & Social Effects",
+          desc: "Boosts your confidence and helps you make a positive first impression in relationships and social situations.",
+        },
+        {
+          title: "Reflecting Consumer Trends",
+          desc: "As personalized consumption grows in the modern beauty and fashion industry, personal color is increasingly used as a branding and marketing element.",
+        },
+      ],
+      footnote:
+        "Personal color has grown beyond a purely aesthetic standard into a tool for reinforcing one's image and identity.",
     },
     pccs: {
       title: "PCCS Tone System",
       desc: "PCCS (Practical Color Co-ordinate System) classifies colors along two axes: Lightness and Saturation. In the chart above, the vertical axis represents lightness and the horizontal axis represents saturation. The same hue can feel completely different depending on its lightness and saturation — this is the core principle behind personal color analysis.",
+      desc2:
+        "Based on these PCCS tones, the detailed types divide into four groups: Light, Dark, Bright, and Muted. Light covers the light and pale tones; Dark covers the deep, dark, and dark-grayish tones; Bright covers the bright and vivid tones; and Muted covers the soft, light-grayish, grayish, dull, and strong tones. These detailed types are organized by the four-season system of warm and cool undertones — spring, summer, autumn, and winter — and serve as the basis for determining the range of colors that harmonize with your skin, hair, and eye color.",
       imageAlt: "PCCS Tone Classification Chart — colors organized by lightness and saturation",
+      imageAlt2: "PCCS tone map with the Light, Bright, Muted, and Dark detailed-type ranges outlined",
     },
     seasons: {
       title: "The 4 Season Color System",
       spring: {
         title: "Spring",
-        desc: "Characterized by warm and bright colors. Peach, coral, and bright yellow are flattering choices. Best suited for those with a golden warm undertone in their skin.",
+        desc: "A yellow-based palette of warm, bright colors. Peach, coral, and bright yellow are flattering choices, lending the skin a subtle yellow glow and a warm impression.",
       },
       summer: {
         title: "Summer",
-        desc: "Characterized by cool and soft colors. Lavender, rose pink, and sky blue pastels are ideal. Best suited for those with a pinkish cool undertone in their skin.",
+        desc: "A blue-based palette of light, soft colors. Lavender, rose pink, and sky blue pastels are ideal, giving the skin a subtle blue undertone and a translucent look.",
       },
       autumn: {
         title: "Autumn",
-        desc: "Characterized by warm and deep colors. Terracotta, olive, and mustard — rich, earthy tones found in nature. Best suited for those with a warm olive undertone.",
+        desc: "A yellow-based palette of warm, mature colors. Terracotta, olive, and mustard — deep, calm tones found in nature — are flattering, giving the skin a golden glow and a warm, mature mood.",
       },
       winter: {
         title: "Winter",
-        desc: "Characterized by cool and vivid colors. Pure white, black, royal blue, and magenta — bold, high-contrast colors. Best suited for those with a fair or deep cool undertone.",
+        desc: "A blue-based palette of bold, refined colors. Pure white, black, royal blue, and magenta — bold, high-contrast colors — are flattering, giving clear, translucent skin a cool, refined impression.",
       },
       seeAllTypes: "Explore all 8 types",
     },
@@ -608,11 +690,45 @@ const en: TranslationSchema = {
     },
     howItWorks: {
       title: "How the Test Works",
-      step1: "View various colors in full-screen mode",
+      step1: "Hold various colors up to your face to see how they suit you",
       step2: "Rate each color with like or dislike",
       step3: "We analyze your color preferences to reveal your personal color type",
     },
+    faq: {
+      title: "Frequently Asked Questions",
+      items: [
+        {
+          q: "What is personal color?",
+          a: "Personal color refers to the palette of colors that best harmonize with your natural skin tone, eye color, and hair color. Wearing your personal colors makes your complexion look brighter and more vibrant.",
+        },
+        {
+          q: "How accurate is the self-diagnosis?",
+          a: "This test uses the color chips from the Korean Association of Makeup Artists Level-2 curriculum theory, and you pick the colors that suit your own face yourself. Because it is a self-diagnosis, it cannot fully replace a professional 1:1 in-person diagnosis.",
+        },
+        {
+          q: "How is this different from a professional 1:1 consultation?",
+          a: "A professional consultation is assessed by a trained expert in a controlled lighting environment. Results of this test can vary depending on your display's color rendering and ambient lighting, so please use it for reference only.",
+        },
+        {
+          q: "Does lighting affect the results?",
+          a: "Yes, screen brightness and ambient lighting can influence color perception. For the most consistent results, take the test in natural light or under lighting with a uniform color temperature.",
+        },
+      ],
+    },
     cta: "Take the Test Now",
+    bio: {
+      title: "About the Author",
+      text: "This site is a personal project by Sadie Kim, built with reference to the Korea Makeup Artists Association Level-2 personal color curriculum theory.",
+    },
+  },
+  footer: {
+    disclaimer:
+      "This test is for styling reference only and does not replace a professional 1:1 consultation.",
+    privacy: "The test runs entirely in your browser; results are never stored on a server.",
+    theory:
+      "Designed with reference to the Korea Makeup Artists Association Level-2 personal color curriculum theory.",
+    contact: { label: "Contact", email: "03sadie@gmail.com" },
+    copyright: "© 2026 Sadie Kim",
   },
   styling: {
     title: "Styling Guide",
@@ -636,10 +752,22 @@ const en: TranslationSchema = {
     pageIntro:
       "Eight detailed types classified by undertone (warm / cool), brightness, and chroma. Tap any card to explore its theoretical traits and curated styling guide.",
     seasonGroups: {
-      spring: { title: "Spring — Warm & Vivid", desc: "Two yellow-based types that read bright and lively." },
-      summer: { title: "Summer — Cool & Soft", desc: "Two blue-based types that read clear and calm." },
-      autumn: { title: "Autumn — Warm & Deep", desc: "Two yellow-based types with added depth and weight." },
-      winter: { title: "Winter — Cool & Crisp", desc: "Two blue-based types with sharp, vivid contrast." },
+      spring: {
+        title: "Spring — Warm & Vivid",
+        desc: "Two yellow-based types that read bright and lively.",
+      },
+      summer: {
+        title: "Summer — Cool & Soft",
+        desc: "Two blue-based types that read clear and calm.",
+      },
+      autumn: {
+        title: "Autumn — Warm & Deep",
+        desc: "Two yellow-based types with added depth and weight.",
+      },
+      winter: {
+        title: "Winter — Cool & Crisp",
+        desc: "Two blue-based types with sharp, vivid contrast.",
+      },
     },
     cardViewDetail: "View details →",
     detail: {
@@ -655,6 +783,7 @@ const en: TranslationSchema = {
       prev: "Previous type",
       next: "Next type",
       backToList: "← Back to all types",
+      learnAboutToneSystem: "Learn about the tone system →",
       heroMetaSeason: (season: string) => `Season · ${season}`,
       heroMetaBase: (base: string) => `Undertone · ${base}`,
       heroMetaTone: (tone: string) => `Detail tone · ${tone}`,

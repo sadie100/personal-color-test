@@ -93,6 +93,7 @@ export interface TranslationSchema {
   styling: StylingNamespace;
   types: TypesNamespace;
   attribution: AttributionNamespace;
+  footer: FooterNamespace;
 }
 
 export interface NavNamespace {
@@ -266,6 +267,14 @@ export interface AboutSectionCopy {
 
 export interface AboutPccsCopy extends AboutSectionCopy {
   imageAlt: string;
+  imageAlt2: string;
+  desc2: string;
+}
+
+export interface AboutImportanceCopy {
+  title: string;
+  items: AboutSectionCopy[];
+  footnote: string;
 }
 
 export interface AboutSeasonsCopy {
@@ -292,15 +301,41 @@ export interface AboutHowItWorksCopy {
   step3: string;
 }
 
+export interface AboutFaqItem {
+  q: string;
+  a: string;
+}
+
+export interface AboutFaqCopy {
+  title: string;
+  items: AboutFaqItem[];
+}
+
 export interface AboutNamespace {
   title: string;
   intro: string;
   whatIs: AboutSectionCopy;
+  importance: AboutImportanceCopy;
   pccs: AboutPccsCopy;
   seasons: AboutSeasonsCopy;
   tones: AboutTonesCopy;
   howItWorks: AboutHowItWorksCopy;
+  faq: AboutFaqCopy;
   cta: string;
+  bio: AboutBioCopy;
+}
+
+export interface AboutBioCopy {
+  title: string;
+  text: string;
+}
+
+export interface FooterNamespace {
+  disclaimer: string;
+  privacy: string;
+  theory: string;
+  contact: { label: string; email: string };
+  copyright: string;
 }
 
 export interface StylingNamespace {
@@ -349,6 +384,7 @@ export interface TypeDetailCopy {
   prev: string;
   next: string;
   backToList: string;
+  learnAboutToneSystem: string;
   heroMetaSeason: (season: string) => string;
   heroMetaBase: (base: string) => string;
   heroMetaTone: (tone: string) => string;

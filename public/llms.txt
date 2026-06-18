@@ -19,6 +19,25 @@
 - [Winter Bright](https://personal-color.dev/types/winter-bright): Vivid, cool winter bright type
 - [Winter Dark](https://personal-color.dev/types/winter-dark): Deep, cool winter dark type
 
+## English Pages
+
+- [Home (EN)](https://personal-color.dev/en): Start the test and service overview (English)
+- [About Personal Color (EN)](https://personal-color.dev/en/about): Personal color concepts, the PCCS tone system, and theory source (English)
+- [Color Type Encyclopedia (EN)](https://personal-color.dev/en/types): Full list of the 8 personal color types (English)
+- [Spring Light (EN)](https://personal-color.dev/en/types/spring-light): Bright, warm spring light type (English)
+- [Spring Bright (EN)](https://personal-color.dev/en/types/spring-bright): Vivid, warm spring bright type (English)
+- [Summer Light (EN)](https://personal-color.dev/en/types/summer-light): Soft, cool summer light type (English)
+- [Summer Muted (EN)](https://personal-color.dev/en/types/summer-muted): Calm, cool summer muted type (English)
+- [Autumn Muted (EN)](https://personal-color.dev/en/types/autumn-muted): Calm, warm autumn muted type (English)
+- [Autumn Dark (EN)](https://personal-color.dev/en/types/autumn-dark): Deep, warm autumn dark type (English)
+- [Winter Bright (EN)](https://personal-color.dev/en/types/winter-bright): Vivid, cool winter bright type (English)
+- [Winter Dark (EN)](https://personal-color.dev/en/types/winter-dark): Deep, cool winter dark type (English)
+
+## Optional
+
+- The test (`/test`) and results (`/results`) pages are per-user interactive screens and are not intended for indexing or AI retrieval.
+- English equivalents of the test and results pages exist at `/en/test` and `/en/results` but are likewise excluded.
+
 ## Notes
 
 - Theory source: Korea Makeup Artists Association (한국분장예술인협회) personal color consultant curriculum

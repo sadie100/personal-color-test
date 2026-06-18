@@ -6,6 +6,7 @@ import { StaticRouter } from "react-router-dom";
 import App from "./App";
 
 export { prerenderRoutes, ORIGIN } from "./seo/routeMeta";
+export { buildJsonLd } from "./seo/jsonLd";
 
 export function render(url: string): string {
   return renderToString(

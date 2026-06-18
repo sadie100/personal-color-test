@@ -4,8 +4,9 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const dist = resolve(__dirname, "dist");
+const BUILD_DATE = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
 
-const { render, prerenderRoutes, ORIGIN } = await import(
+const { render, prerenderRoutes, ORIGIN, buildJsonLd } = await import(
   pathToFileURL(resolve(dist, "server/entry-server.js")).href
 );
 
@@ -17,6 +18,16 @@ const esc = (s) =>
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
+
+const escJsonLd = (obj) => {
+  const json = JSON.stringify(obj);
+  return json
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026")
+    .replace(new RegExp(String.fromCharCode(0x2028), "g"), "\\u2028")
+    .replace(new RegExp(String.fromCharCode(0x2029), "g"), "\\u2029");
+};
 
 const applyMeta = ({ title, description }) => (html) => {
   const t = esc(title);
@@ -33,6 +44,7 @@ const applyMeta = ({ title, description }) => (html) => {
 const headLinks = ({ url, lang, alternates }) =>
   [
     `<link rel="canonical" href="${ORIGIN}${url}" />`,
+    `<meta property="og:url" content="${ORIGIN}${url}" />`,
     `<link rel="alternate" hreflang="ko" href="${ORIGIN}${alternates.ko}" />`,
     `<link rel="alternate" hreflang="en" href="${ORIGIN}${alternates.en}" />`,
     `<link rel="alternate" hreflang="x-default" href="${ORIGIN}${alternates.ko}" />`,
@@ -50,6 +62,9 @@ for (const route of prerenderRoutes) {
   );
   html = applyMeta(route)(html);
   html = html.replace("</head>", `${headLinks(route)}\n  </head>`);
+  const ld = buildJsonLd(route);
+  const ldScript = `    <script type="application/ld+json">${escJsonLd(ld)}</script>`;
+  html = html.replace("</head>", `${ldScript}\n  </head>`);
   if (route.lang === "en") {
     html = html.replace('<html lang="ko">', '<html lang="en">');
   }
@@ -68,6 +83,7 @@ const sitemap = [
     [
       "  <url>",
       `    <loc>${ORIGIN}${route.url}</loc>`,
+      `    <lastmod>${BUILD_DATE}</lastmod>`,
       `    <xhtml:link rel="alternate" hreflang="ko" href="${ORIGIN}${route.alternates.ko}" />`,
       `    <xhtml:link rel="alternate" hreflang="en" href="${ORIGIN}${route.alternates.en}" />`,
       `    <xhtml:link rel="alternate" hreflang="x-default" href="${ORIGIN}${route.alternates.ko}" />`,
@@ -78,6 +94,22 @@ const sitemap = [
   "",
 ].join("\n");
 writeFileSync(resolve(dist, "sitemap.xml"), sitemap, "utf-8");
+
+// Generate llms-full.txt: a single-fetch overview of every page's title + description.
+const llmsFull = [
+  "# Personal Color Self Test — Full Page Index",
+  "",
+  ...prerenderRoutes.map((route) =>
+    [
+      `## ${ORIGIN}${route.url}`,
+      `Title: ${route.title}`,
+      `Description: ${route.description}`,
+      "",
+    ].join("\n"),
+  ),
+].join("\n");
+writeFileSync(resolve(dist, "llms-full.txt"), llmsFull, "utf-8");
+console.log("wrote dist/llms-full.txt");
 
 // The SSR bundle is only needed during prerendering — drop it from the deployed output.
 rmSync(resolve(dist, "server"), { recursive: true, force: true });
