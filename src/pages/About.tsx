@@ -114,7 +114,7 @@ export const About = ({ lang, onStart, onTypes }: AboutProps) => {
               return (
                 <article key={season.slug}>
                   <h3 className="font-display text-ink text-3xl md:text-4xl">{copy.title}</h3>
-                  <p className="text-ink-2 mt-2 max-w-2xl text-sm leading-relaxed break-keep md:text-base">
+                  <p className="text-ink-2 mt-2 max-w-3xl text-sm leading-relaxed break-keep md:text-base">
                     {copy.desc}
                   </p>
                   <div

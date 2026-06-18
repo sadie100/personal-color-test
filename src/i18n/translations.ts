@@ -203,19 +203,19 @@ const ko: TranslationSchema = {
       title: "4계절 컬러 시스템",
       spring: {
         title: "봄 (Spring)",
-        desc: "따뜻하고 밝은 색감이 특징입니다. 복숭아색, 코럴, 밝은 노랑 등 화사하고 생기 있는 색상이 어울리며, 피부에 황금빛 웜톤을 가진 분들에게 잘 맞습니다.",
+        desc: "옐로우 베이스의 따뜻하고 밝은 색감이 특징입니다. 복숭아색, 코럴, 밝은 노랑 등 화사하고 생기 있는 색상이 어울리며, 피부에 은은하게 노란빛이 감돌며 따뜻한 인상을 줍니다.",
       },
       summer: {
         title: "여름 (Summer)",
-        desc: "차갑고 부드러운 색감이 특징입니다. 라벤더, 로즈핑크, 스카이블루 등 은은하고 우아한 파스텔 톤이 어울리며, 피부에 분홍빛 쿨톤을 가진 분들에게 잘 맞습니다.",
+        desc: "블루 베이스의 밝고 부드러운 색감이 특징입니다. 라벤더, 로즈핑크, 스카이블루 등 은은하고 우아한 파스텔 톤이 어울리며, 피부에 푸른 기운이 은은하게 감돌아 투명감이 있습니다.",
       },
       autumn: {
         title: "가을 (Autumn)",
-        desc: "따뜻하고 깊은 색감이 특징입니다. 테라코타, 올리브, 머스타드 등 자연에서 볼 수 있는 깊고 풍부한 색상이 어울리며, 피부에 따뜻한 올리브톤을 가진 분들에게 잘 맞습니다.",
+        desc: "옐로우 베이스의 따뜻하고 성숙한 색감이 특징입니다. 테라코타, 올리브, 머스타드 등 자연에서 볼 수 있는 깊이 있고 차분한 색상이 어울리며, 피부에 황금빛이 감돌아 따뜻하고 성숙한 분위기를 줍니다.",
       },
       winter: {
         title: "겨울 (Winter)",
-        desc: "차갑고 선명한 색감이 특징입니다. 순백, 블랙, 로열블루, 마젠타 등 강렬하고 대비가 뚜렷한 색상이 어울리며, 피부가 하얗거나 깊은 쿨톤을 가진 분들에게 잘 맞습니다.",
+        desc: "블루 베이스의 강렬하고 세련된 색감이 특징입니다. 순백, 블랙, 로열블루, 마젠타 등 강렬하고 대비가 뚜렷한 색상이 어울리며, 피부가 맑고 투명해 차갑고 세련된 인상을 줍니다.",
       },
       seeAllTypes: "8가지 타입 자세히 보기",
     },
@@ -653,19 +653,19 @@ const en: TranslationSchema = {
       title: "The 4 Season Color System",
       spring: {
         title: "Spring",
-        desc: "Characterized by warm and bright colors. Peach, coral, and bright yellow are flattering choices. Best suited for those with a golden warm undertone in their skin.",
+        desc: "A yellow-based palette of warm, bright colors. Peach, coral, and bright yellow are flattering choices, lending the skin a subtle yellow glow and a warm impression.",
       },
       summer: {
         title: "Summer",
-        desc: "Characterized by cool and soft colors. Lavender, rose pink, and sky blue pastels are ideal. Best suited for those with a pinkish cool undertone in their skin.",
+        desc: "A blue-based palette of light, soft colors. Lavender, rose pink, and sky blue pastels are ideal, giving the skin a subtle blue undertone and a translucent look.",
       },
       autumn: {
         title: "Autumn",
-        desc: "Characterized by warm and deep colors. Terracotta, olive, and mustard — rich, earthy tones found in nature. Best suited for those with a warm olive undertone.",
+        desc: "A yellow-based palette of warm, mature colors. Terracotta, olive, and mustard — deep, calm tones found in nature — are flattering, giving the skin a golden glow and a warm, mature mood.",
       },
       winter: {
         title: "Winter",
-        desc: "Characterized by cool and vivid colors. Pure white, black, royal blue, and magenta — bold, high-contrast colors. Best suited for those with a fair or deep cool undertone.",
+        desc: "A blue-based palette of bold, refined colors. Pure white, black, royal blue, and magenta — bold, high-contrast colors — are flattering, giving clear, translucent skin a cool, refined impression.",
       },
       seeAllTypes: "Explore all 8 types",
     },
