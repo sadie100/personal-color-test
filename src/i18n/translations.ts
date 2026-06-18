@@ -286,14 +286,6 @@ const ko: TranslationSchema = {
       winter: { title: "겨울 — 시원하고 또렷한", desc: "푸른기에 선명함이 더해진 강렬한 두 타입." },
     },
     cardViewDetail: "자세히 보기 →",
-    comparison: {
-      sectionTitle: "8타입 한눈에 비교",
-      colType: "타입",
-      colSeason: "계절",
-      colBase: "베이스",
-      colKeywords: "키워드",
-      colSignature: "대표 색상",
-    },
     detail: {
       baseLabel: "색상 베이스",
       brightnessLabel: "명도",
@@ -729,14 +721,6 @@ const en: TranslationSchema = {
       winter: { title: "Winter — Cool & Crisp", desc: "Two blue-based types with sharp, vivid contrast." },
     },
     cardViewDetail: "View details →",
-    comparison: {
-      sectionTitle: "All 8 Types at a Glance",
-      colType: "Type",
-      colSeason: "Season",
-      colBase: "Undertone",
-      colKeywords: "Keywords",
-      colSignature: "Signature Color",
-    },
     detail: {
       baseLabel: "Undertone",
       brightnessLabel: "Brightness",

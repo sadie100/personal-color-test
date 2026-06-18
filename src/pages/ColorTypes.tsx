@@ -4,7 +4,6 @@ import { colorData } from "../data/colorData";
 import { colorTypeMetas, seasonSlugGroups } from "../data/colorTypeMeta";
 import { translations } from "../i18n/translations";
 import type { ColorTypeSlug, Lang } from "../types";
-import { colorTypeSlugs } from "../utils/colorTypeSlug";
 import { localizePath } from "../utils/localizePath";
 
 interface ColorTypesProps {
@@ -98,70 +97,6 @@ export const ColorTypes = ({ lang }: ColorTypesProps) => {
           {t.pageIntro}
         </p>
       </section>
-
-      <div className="page-container px-4 pb-12 pt-0">
-        <section aria-labelledby="comparison-heading">
-          <h2
-            id="comparison-heading"
-            className="mb-4 font-display text-2xl text-ink md:text-3xl"
-          >
-            {t.comparison.sectionTitle}
-          </h2>
-          <div className="overflow-x-auto rounded-2xl border border-hairline">
-            <table className="w-full border-collapse text-sm">
-              <thead>
-                <tr className="bg-fill">
-                  <th scope="col" className="px-4 py-3 text-left font-semibold text-ink">
-                    {t.comparison.colType}
-                  </th>
-                  <th scope="col" className="px-4 py-3 text-left font-semibold text-ink">
-                    {t.comparison.colSeason}
-                  </th>
-                  <th scope="col" className="px-4 py-3 text-left font-semibold text-ink">
-                    {t.comparison.colBase}
-                  </th>
-                  <th scope="col" className="px-4 py-3 text-left font-semibold text-ink">
-                    {t.comparison.colKeywords}
-                  </th>
-                  <th scope="col" className="px-4 py-3 text-left font-semibold text-ink">
-                    {t.comparison.colSignature}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {colorTypeSlugs.map((slug) => {
-                  const meta = colorTypeMetas[slug];
-                  const copy = translations[lang].types[slug];
-                  return (
-                    <tr key={slug} className="border-t border-hairline hover:bg-fill/50">
-                      <td className="px-4 py-3 font-semibold text-ink">
-                        <Link
-                          to={localizePath(lang, `/types/${slug}`)}
-                          className="underline-offset-2 hover:underline focus-visible:underline focus-visible:outline-none"
-                        >
-                          {copy.title}
-                        </Link>
-                      </td>
-                      <td className="px-4 py-3 text-ink-2">{meta.season}</td>
-                      <td className="px-4 py-3 text-ink-2">{meta.base}</td>
-                      <td className="px-4 py-3 text-ink-2">
-                        {copy.keywords.slice(0, 3).join(" · ")}
-                      </td>
-                      <td className="px-4 py-3">
-                        <span
-                          className="inline-block h-6 w-10 rounded-md border border-hairline shadow-sm"
-                          style={{ backgroundColor: meta.signatureHex }}
-                          aria-label={meta.signatureHex}
-                        />
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </section>
-      </div>
 
       <div className="page-container space-y-14 px-4 py-12">
         {seasonSlugGroups.map((group) => {

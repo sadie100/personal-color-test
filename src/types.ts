@@ -386,22 +386,12 @@ export interface TypeGroupCopy {
   desc: string;
 }
 
-export interface TypeComparisonCopy {
-  sectionTitle: string;
-  colType: string;
-  colSeason: string;
-  colBase: string;
-  colKeywords: string;
-  colSignature: string;
-}
-
 export interface TypesNamespace {
   pageTitle: string;
   pageSubtitle: string;
   pageIntro: string;
   seasonGroups: Record<AboutSeasonSlug, TypeGroupCopy>;
   cardViewDetail: string;
-  comparison: TypeComparisonCopy;
   detail: TypeDetailCopy;
   "spring-light": TypeContentCopy;
   "spring-bright": TypeContentCopy;
