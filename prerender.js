@@ -6,7 +6,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const dist = resolve(__dirname, "dist");
 const BUILD_DATE = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
 
-const { render, prerenderRoutes, ORIGIN } = await import(
+const { render, prerenderRoutes, ORIGIN, buildJsonLd } = await import(
   pathToFileURL(resolve(dist, "server/entry-server.js")).href
 );
 
@@ -52,6 +52,9 @@ for (const route of prerenderRoutes) {
   );
   html = applyMeta(route)(html);
   html = html.replace("</head>", `${headLinks(route)}\n  </head>`);
+  const ld = buildJsonLd(route);
+  const ldScript = `    <script type="application/ld+json">${JSON.stringify(ld)}</script>`;
+  html = html.replace("</head>", `${ldScript}\n  </head>`);
   if (route.lang === "en") {
     html = html.replace('<html lang="ko">', '<html lang="en">');
   }
