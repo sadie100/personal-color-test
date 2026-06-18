@@ -1,4 +1,5 @@
 import pccsImage from "../assets/pccs_tone_map.jpg";
+import pccsCategorizeImage from "../assets/pccs_tone_map_categorize.png";
 import { colorData } from "../data/colorData";
 import { translations } from "../i18n/translations";
 import type { AboutSeasonSlug, AboutToneSlug, Lang, PersonalColorType } from "../types";
@@ -82,15 +83,23 @@ export const About = ({ lang, onStart, onTypes }: AboutProps) => {
 
         <section id="pccs" className="border-hairline bg-surface rounded-2xl border p-6 md:p-10">
           <h2 className="font-display text-ink mb-6 text-2xl md:text-3xl">{t.about.pccs.title}</h2>
-          <div className="mb-6 flex justify-center">
+          <div className="mb-6 flex flex-col items-center justify-center gap-4 md:flex-row md:items-start">
             <img
               src={pccsImage}
               alt={t.about.pccs.imageAlt}
-              className="border-hairline max-w-full rounded-xl border md:max-w-lg"
+              className="border-hairline max-w-full rounded-xl border md:max-w-sm"
+            />
+            <img
+              src={pccsCategorizeImage}
+              alt={t.about.pccs.imageAlt2}
+              className="border-hairline max-w-full rounded-xl border md:max-w-sm"
             />
           </div>
           <p className="text-ink-2 text-base leading-relaxed break-keep md:text-lg">
             {t.about.pccs.desc}
+          </p>
+          <p className="text-ink-2 mt-4 text-base leading-relaxed break-keep md:text-lg">
+            {t.about.pccs.desc2}
           </p>
         </section>
 

@@ -194,7 +194,10 @@ const ko: TranslationSchema = {
     pccs: {
       title: "PCCS 톤 시스템",
       desc: "PCCS(Practical Color Co-ordinate System)는 색상을 명도(Lightness)와 채도(Saturation) 두 축으로 분류하는 시스템입니다. 위 도표에서 세로축은 명도를, 가로축은 채도를 나타냅니다. 같은 색상이라도 명도와 채도에 따라 전혀 다른 느낌을 주며, 이것이 퍼스널 컬러 진단의 핵심 원리입니다.",
+      desc2:
+        "세부 타입은 이 PCCS 톤을 기준으로 라이트·다크·브라이트·뮤트 네 가지로 나뉩니다. 라이트는 라이트·페일 톤, 다크는 딥·다크·다크그레이시 톤, 브라이트는 브라이트·비비드 톤, 뮤트는 소프트·라이트그레이시·그레이시·덜·스트롱 톤에 해당합니다. 이 세부 타입은 웜톤과 쿨톤, 봄·여름·가을·겨울의 사계절 체계로 분류되며, 개인의 피부, 모발, 눈동자 색과 조화를 이루는 색상 범위를 판단하는 기준이 됩니다.",
       imageAlt: "PCCS 톤 분류 도표 - 명도와 채도에 따른 색상 분류",
+      imageAlt2: "PCCS 톤맵 위에 라이트·브라이트·뮤트·다크 세부 타입 범위를 표시한 도표",
     },
     seasons: {
       title: "4계절 컬러 시스템",
@@ -641,7 +644,10 @@ const en: TranslationSchema = {
     pccs: {
       title: "PCCS Tone System",
       desc: "PCCS (Practical Color Co-ordinate System) classifies colors along two axes: Lightness and Saturation. In the chart above, the vertical axis represents lightness and the horizontal axis represents saturation. The same hue can feel completely different depending on its lightness and saturation — this is the core principle behind personal color analysis.",
+      desc2:
+        "Based on these PCCS tones, the detailed types divide into four groups: Light, Dark, Bright, and Muted. Light covers the light and pale tones; Dark covers the deep, dark, and dark-grayish tones; Bright covers the bright and vivid tones; and Muted covers the soft, light-grayish, grayish, dull, and strong tones. These detailed types are organized by the four-season system of warm and cool undertones — spring, summer, autumn, and winter — and serve as the basis for determining the range of colors that harmonize with your skin, hair, and eye color.",
       imageAlt: "PCCS Tone Classification Chart — colors organized by lightness and saturation",
+      imageAlt2: "PCCS tone map with the Light, Bright, Muted, and Dark detailed-type ranges outlined",
     },
     seasons: {
       title: "The 4 Season Color System",

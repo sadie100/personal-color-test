@@ -267,6 +267,8 @@ export interface AboutSectionCopy {
 
 export interface AboutPccsCopy extends AboutSectionCopy {
   imageAlt: string;
+  imageAlt2: string;
+  desc2: string;
 }
 
 export interface AboutImportanceCopy {
