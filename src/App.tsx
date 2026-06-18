@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 
+import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import { diagnosticChips } from "./data/colorData";
 import { About } from "./pages/About";
@@ -309,6 +310,7 @@ function App() {
         {renderRoutes("en")}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+      {screen !== "test" && <Footer lang={lang} />}
     </div>
   );
 }

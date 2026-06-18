@@ -93,6 +93,7 @@ export interface TranslationSchema {
   styling: StylingNamespace;
   types: TypesNamespace;
   attribution: AttributionNamespace;
+  footer: FooterNamespace;
 }
 
 export interface NavNamespace {
@@ -312,6 +313,20 @@ export interface AboutNamespace {
   howItWorks: AboutHowItWorksCopy;
   faq: AboutFaqCopy;
   cta: string;
+  bio: AboutBioCopy;
+}
+
+export interface AboutBioCopy {
+  title: string;
+  text: string;
+}
+
+export interface FooterNamespace {
+  disclaimer: string;
+  privacy: string;
+  theory: string;
+  contact: { label: string; email: string };
+  copyright: string;
 }
 
 export interface StylingNamespace {

@@ -243,6 +243,20 @@ const ko: TranslationSchema = {
       ],
     },
     cta: "지금 테스트 해보기",
+    bio: {
+      title: "만든 사람",
+      text: "이 사이트는 Sadie Kim이 한국분장예술인협회 퍼스널 컬러 2급 커리큘럼 이론을 학습·참고하여 만든 개인 프로젝트입니다.",
+    },
+  },
+  footer: {
+    disclaimer:
+      "본 테스트는 스타일링 참고용이며 전문가의 1:1 진단을 대체하지 않습니다.",
+    privacy:
+      "테스트는 브라우저에서만 동작하며 결과를 서버에 저장하지 않습니다.",
+    theory:
+      "한국분장예술인협회 퍼스널 컬러 2급 커리큘럼 이론을 참고하여 설계했습니다.",
+    contact: { label: "문의", email: "03sadie@gmail.com" },
+    copyright: "© 2026 Sadie Kim",
   },
   styling: {
     title: "스타일링 가이드",
@@ -672,6 +686,20 @@ const en: TranslationSchema = {
       ],
     },
     cta: "Take the Test Now",
+    bio: {
+      title: "About the Author",
+      text: "This site is a personal project by Sadie Kim, built with reference to the Korea Makeup Artists Association Level-2 personal color curriculum theory.",
+    },
+  },
+  footer: {
+    disclaimer:
+      "This test is for styling reference only and does not replace a professional 1:1 consultation.",
+    privacy:
+      "The test runs entirely in your browser; results are never stored on a server.",
+    theory:
+      "Designed with reference to the Korea Makeup Artists Association Level-2 personal color curriculum theory.",
+    contact: { label: "Contact", email: "03sadie@gmail.com" },
+    copyright: "© 2026 Sadie Kim",
   },
   styling: {
     title: "Styling Guide",
