@@ -240,7 +240,7 @@ const ko: TranslationSchema = {
     },
     howItWorks: {
       title: "테스트 방법",
-      step1: "다양한 색상을 풀스크린으로 감상합니다",
+      step1: "다양한 색상을 얼굴에 대보며 어울리는지 살펴봅니다",
       step2: "각 색상에 대해 좋아요 또는 싫어요로 평가합니다",
       step3: "선호하는 색상 패턴을 분석하여 당신의 퍼스널 컬러를 알려드립니다",
     },
@@ -690,7 +690,7 @@ const en: TranslationSchema = {
     },
     howItWorks: {
       title: "How the Test Works",
-      step1: "View various colors in full-screen mode",
+      step1: "Hold various colors up to your face to see how they suit you",
       step2: "Rate each color with like or dislike",
       step3: "We analyze your color preferences to reveal your personal color type",
     },
